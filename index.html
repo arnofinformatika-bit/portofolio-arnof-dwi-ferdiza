@@ -8,9 +8,11 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <!-- html2pdf library -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     
     <style>
-        /* Variabel Warna Tema Gelap */
+        /* Variabel Warna Tema Gelap (Default) */
         :root {
             --bg-color: #0f172a;
             --sidebar-bg: #1e293b;
@@ -20,7 +22,21 @@
             --accent-color: #38bdf8;
             --accent-hover: #0284c7;
             --border-color: #334155;
-            --transition: all 0.3s ease;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+        }
+
+        /* Variabel Warna Tema Terang */
+        body.light-mode {
+            --bg-color: #f1f5f9;
+            --sidebar-bg: #ffffff;
+            --card-bg: #ffffff;
+            --text-primary: #1e293b;
+            --text-secondary: #64748b;
+            --accent-color: #0284c7;
+            --accent-hover: #0369a1;
+            --border-color: #e2e8f0;
+            --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
         }
 
         * {
@@ -36,6 +52,7 @@
             display: flex;
             min-height: 100vh;
             overflow-x: hidden;
+            transition: background-color 0.4s ease, color 0.4s ease;
         }
 
         /* Sidebar Styling */
@@ -199,6 +216,14 @@
             border-radius: 12px;
             border: 1px solid var(--border-color);
             margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
         }
 
         .text-lead {
@@ -441,11 +466,166 @@
 
             .menu-toggle {
                 display: block;
+                top: 0.8rem;
+                right: 1rem;
             }
-            
-            .section-title {
-                font-size: 1.5rem;
-            }
+        }
+
+        /* Floating Theme Toggle (Premium Style) */
+        .theme-switch-wrapper {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 1002;
+            display: flex;
+            align-items: center;
+        }
+
+        .theme-switch {
+            display: inline-block;
+            height: 34px;
+            position: relative;
+            width: 60px;
+        }
+
+        .theme-switch input {
+            display: none;
+        }
+
+        .slider {
+            background-color: var(--sidebar-bg);
+            bottom: 0;
+            cursor: pointer;
+            left: 0;
+            position: absolute;
+            right: 0;
+            top: 0;
+            transition: .4s;
+            border-radius: 34px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 5px;
+        }
+
+        .slider:before {
+            background-color: var(--accent-color);
+            bottom: 3px;
+            content: "";
+            height: 26px;
+            left: 4px;
+            position: absolute;
+            transition: .4s;
+            width: 26px;
+            border-radius: 50%;
+            z-index: 2;
+        }
+
+        input:checked + .slider {
+            background-color: #f59e0b;
+            border-color: #f59e0b;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(26px);
+            background-color: #fff;
+        }
+
+        .slider i {
+            font-size: 14px;
+            z-index: 1;
+        }
+
+        .fa-sun { color: #f59e0b; }
+        .fa-moon { color: #94a3b8; }
+
+        input:checked + .slider .fa-sun { color: #fff; }
+        input:checked + .slider .fa-moon { color: #fff; }
+        /* CV Template Styling (Hidden) */
+        #cv-template {
+            display: none;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 0;
+            margin: 0;
+            background: white;
+            color: #1e293b;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.4;
+        }
+        
+        .cv-header {
+            background: #0f172a;
+            color: white;
+            padding: 30px;
+            margin: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cv-grid {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 30px;
+            padding: 20px 30px;
+        }
+
+        .cv-sidebar {
+            border-right: 1px solid #e2e8f0;
+            padding-right: 20px;
+        }
+
+        .cv-section {
+            margin-bottom: 18px;
+        }
+
+        .cv-section-title {
+            font-size: 11pt;
+            font-weight: 700;
+            color: #0284c7;
+            border-bottom: 2px solid #e2e8f0;
+            margin-bottom: 8px;
+            padding-bottom: 3px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cv-item {
+            margin-bottom: 12px;
+        }
+
+        .cv-item h4 {
+            margin: 0;
+            font-size: 10pt;
+            color: #0f172a;
+        }
+
+        .cv-item .date {
+            font-size: 8pt;
+            color: #0284c7;
+            font-weight: 600;
+            margin-bottom: 2px;
+        }
+
+        .cv-item p {
+            margin: 2px 0;
+            font-size: 9pt;
+            color: #475569;
+            text-align: justify;
+        }
+
+        .cv-tag {
+            display: inline-block;
+            background: #f1f5f9;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 8pt;
+            margin: 2px;
+            color: #475569;
+            border: 1px solid #e2e8f0;
         }
     </style>
 </head>
@@ -477,7 +657,24 @@
             <li><a href="#" onclick="showSection('gallery')"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
             <li><a href="#" onclick="showSection('achievements')"><i class="fas fa-trophy"></i> Pencapaian</a></li>
         </ul>
+
+        <!-- Sidebar Footer -->
+        <div style="margin-top: 1rem; text-align: center; font-size: 0.7rem; color: var(--text-secondary); opacity: 0.7;">
+            <div>&copy; 2026 Arnof Dwi Ferdiza</div>
+            <div>V.2.0.4 | System Stable</div>
+        </div>
     </nav>
+
+    <!-- Floating Theme Switch -->
+    <div class="theme-switch-wrapper">
+        <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox" />
+            <div class="slider">
+                <i class="fas fa-moon"></i>
+                <i class="fas fa-sun"></i>
+            </div>
+        </label>
+    </div>
 
     <!-- Main Content Area -->
     <main class="main-content">
@@ -541,6 +738,12 @@
                     <a href="https://wa.me/6285896611944" target="_blank" class="btn"><i class="fab fa-whatsapp"></i> WhatsApp</a>
                     <a href="https://www.linkedin.com/in/arnof-dwi-ferdiza-39150a333?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
                     <a href="mailto:arnofdwiferdiza11@gmail.com" class="btn"><i class="fas fa-envelope"></i> Email</a>
+                </div>
+
+                <div style="margin-top: 2rem;">
+                    <button onclick="downloadCV()" class="btn" style="background: var(--accent-color); border-color: var(--accent-color); color: #fff; padding: 0.8rem 2rem; font-weight: 600; cursor: pointer;">
+                        <i class="fas fa-download"></i> Download CV (PDF)
+                    </button>
                 </div>
             </div>
         </section>
@@ -863,7 +1066,151 @@
 
     </main>
 
+    <!-- CV TEMPLATE (HIDDEN) -->
+    <div id="cv-template">
+        <div class="cv-header">
+            <div>
+                <h1 style="margin: 0; font-size: 22pt; letter-spacing: 1px;">ARNOF DWI FERDIZA</h1>
+                <p style="margin: 5px 0; color: #38bdf8; font-weight: 500; font-size: 11pt;">Informatics Student | UI/UX Designer | Web Developer</p>
+            </div>
+            <div style="text-align: right; font-size: 8pt; line-height: 1.6;">
+                <p><i class="fas fa-map-marker-alt"></i> Way Kanan, Lampung</p>
+                <p><i class="fas fa-envelope"></i> arnofdwiferdiza11@gmail.com</p>
+                <p><i class="fas fa-phone"></i> +62 858-9661-1944</p>
+                <p><i class="fab fa-linkedin"></i> linkedin.com/in/arnof-dwi-ferdiza</p>
+            </div>
+        </div>
+
+        <div class="cv-grid">
+            <!-- Sidebar Kolom Kiri -->
+            <div class="cv-sidebar">
+                <div class="cv-section">
+                    <div class="cv-section-title">Contact & Social</div>
+                    <p style="font-size: 9pt;"><i class="fab fa-instagram"></i> @yay_ferdiza</p>
+                    <p style="font-size: 9pt;"><i class="fab fa-tiktok"></i> @nof.dwifer</p>
+                </div>
+
+                <div class="cv-section">
+                    <div class="cv-section-title">Education</div>
+                    <div class="cv-item">
+                        <div class="date">2024 - Present</div>
+                        <h4>Universitas Bandar Lampung</h4>
+                        <p>S1 Informatika</p>
+                    </div>
+                    <div class="cv-item">
+                        <div class="date">2021 - 2024</div>
+                        <h4>SMA Negeri 01 Pakuan Ratu</h4>
+                        <p>High School Diploma</p>
+                    </div>
+                </div>
+
+                <div class="cv-section">
+                    <div class="cv-section-title">Technical Skills</div>
+                    <div style="margin-top: 5px;">
+                        <span class="cv-tag">HTML5</span>
+                        <span class="cv-tag">CSS3</span>
+                        <span class="cv-tag">JavaScript</span>
+                        <span class="cv-tag">Node.js</span>
+                        <span class="cv-tag">Python</span>
+                        <span class="cv-tag">SQL</span>
+                        <span class="cv-tag">Arduino</span>
+                        <span class="cv-tag">ESP32</span>
+                        <span class="cv-tag">Figma</span>
+                        <span class="cv-tag">Canva</span>
+                        <span class="cv-tag">Adobe Illustrator</span>
+                        <span class="cv-tag">Photoshop</span>
+                        <span class="cv-tag">Git/GitHub</span>
+                        <span class="cv-tag">Vercel</span>
+                    </div>
+                </div>
+
+                <div class="cv-section">
+                    <div class="cv-section-title">Certifications</div>
+                    <ul style="font-size: 8pt; padding-left: 15px; color: #475569;">
+                        <li>AI Praktis Untuk Produktivitas (Dicoding)</li>
+                        <li>Aplikasi Gen AI dengan Azure (Dicoding)</li>
+                        <li>Data Science with Microsoft Fabric</li>
+                        <li>Computational Thinking (UBL Trainer)</li>
+                        <li>12+ Essential Skills (KEMNAKER)</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Content Kolom Kanan -->
+            <div class="cv-main">
+                <div class="cv-section">
+                    <div class="cv-section-title">Profile Summary</div>
+                    <p style="font-size: 9pt; line-height: 1.6;">Mahasiswa Informatika UBL angkatan 2024 yang berdedikasi tinggi dalam mengeksplorasi teknologi digital. Memiliki spesialisasi dalam UI/UX Design dan Web Development. Aktif dalam riset robotika di Pusat Studi Mekatronika & Otomasi serta berkontribusi dalam organisasi kemahasiswaan. Memiliki visi untuk menciptakan solusi teknologi yang fungsional dan memiliki estetika visual yang kuat.</p>
+                </div>
+
+                <div class="cv-section">
+                    <div class="cv-section-title">Experiences</div>
+                    <div class="cv-item">
+                        <div class="date">2024 - Present</div>
+                        <h4>Pusat Studi Mekatronika & Otomasi</h4>
+                        <p>Bertanggung jawab dalam pengerjaan proyek inovatif mekatronika dan kolaborasi riset sistem kontrol cerdas.</p>
+                    </div>
+                    <div class="cv-item">
+                        <div class="date">2024 - Present</div>
+                        <h4>Anggota Robotic UBL</h4>
+                        <p>Fokus pada pengembangan integrasi sensor dan sistem otomasi robotika kompetitif.</p>
+                    </div>
+                    <div class="cv-item">
+                        <div class="date">2024 - Present</div>
+                        <h4>Divisi Kominfo - HMIF UBL</h4>
+                        <p>Mengelola alur informasi dan komunikasi organisasi serta desain publikasi digital.</p>
+                    </div>
+                    <div class="cv-item">
+                        <div class="date">2024 - Present</div>
+                        <h4>Freelance UI/UX & Graphic Designer</h4>
+                        <p>Mendesain antarmuka aplikasi mobile/web serta aset visual kreatif untuk berbagai klien dan proyek.</p>
+                    </div>
+                </div>
+
+                <div class="cv-section">
+                    <div class="cv-section-title">Achievements</div>
+                    <div class="cv-item">
+                        <h4>Beasiswa Progresif Alur AI Engineer</h4>
+                        <p>Coding Camp 2026 - Peserta terpilih program intensif pengembangan kecerdasan buatan.</p>
+                    </div>
+                    <div class="cv-item">
+                        <h4>Dicoding DBS Foundation Grantee</h4>
+                        <p>Penerima beasiswa kelas profesional pengembangan software dari Dicoding.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 7pt; color: #94a3b8; text-align: center;">
+            Document officially generated by Arnof Dwi Ferdiza Portfolio System
+        </div>
+    </div>
+
     <script>
+        // PDF Download Function
+        function downloadCV() {
+            const element = document.getElementById('cv-template');
+            element.style.display = 'block'; 
+
+            const opt = {
+                margin:       0,
+                filename:     'CV_Arnof_Dwi_Ferdiza.pdf',
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { 
+                    scale: 3, 
+                    useCORS: true, 
+                    scrollY: 0,
+                    scrollX: 0,
+                    windowWidth: document.documentElement.offsetWidth
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.display = 'none'; 
+            });
+        }
+
         // Function to show sections with a "New Session" loading effect
         function showSection(sectionId) {
             const loader = document.getElementById('loader');
@@ -916,10 +1263,32 @@
             });
         }
 
-        // Initialize System Log
+        // Initialize System
         document.addEventListener('DOMContentLoaded', () => {
             console.log("Dashboard System Initialized...");
             console.log("Welcome, Arnof Dwi Ferdiza.");
+            
+            // Theme Logic
+            const themeCheckbox = document.getElementById('checkbox');
+            const body = document.body;
+
+            // Check saved theme
+            const currentTheme = localStorage.getItem('theme');
+            if (currentTheme === 'light') {
+                body.classList.add('light-mode');
+                themeCheckbox.checked = true;
+            }
+
+            themeCheckbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    body.classList.add('light-mode');
+                    localStorage.setItem('theme', 'light');
+                } else {
+                    body.classList.remove('light-mode');
+                    localStorage.setItem('theme', 'dark');
+                }
+            });
+
             loadGallery();
         });
 
