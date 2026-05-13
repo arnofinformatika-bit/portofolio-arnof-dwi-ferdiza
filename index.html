@@ -924,6 +924,103 @@
             padding: 3rem;
             color: var(--text-secondary);
         }
+
+        /* Mobile Responsiveness for Logbook */
+        @media (max-width: 768px) {
+            .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr {
+                display: block;
+            }
+
+            .custom-table thead tr {
+                position: absolute;
+                top: -9999px;
+                left: -9999px;
+            }
+
+            .custom-table tr {
+                border: 1px solid var(--border-color);
+                border-radius: 15px;
+                margin-bottom: 1.5rem;
+                background: var(--card-bg);
+                box-shadow: var(--shadow);
+                overflow: hidden;
+            }
+
+            .custom-table td {
+                border: none;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+                position: relative;
+                padding-left: 1rem;
+                padding-top: 2rem;
+                text-align: left;
+                white-space: normal;
+            }
+
+            body.light-mode .custom-table td {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            }
+
+            .custom-table td::before {
+                content: attr(data-label);
+                position: absolute;
+                top: 0.8rem;
+                left: 1rem;
+                width: 100%;
+                padding-right: 10px;
+                white-space: nowrap;
+                font-weight: 700;
+                font-size: 0.65rem;
+                color: #04c0ff;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+            }
+
+            .custom-table td:last-child {
+                border-bottom: none;
+                background: rgba(56, 189, 248, 0.03);
+                padding-top: 1rem;
+                padding-bottom: 1rem;
+                display: flex;
+                justify-content: center;
+            }
+
+            .custom-table td:last-child::before {
+                display: none;
+            }
+
+            .btn-delete {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 0.5rem;
+                padding: 0.8rem;
+            }
+
+            .btn-delete::after {
+                content: 'Hapus Catatan';
+                font-size: 0.8rem;
+                font-weight: 600;
+            }
+
+            .logbook-controls {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .logbook-controls button {
+                width: 100%;
+            }
+        }
+
+        /* Modal Responsiveness */
+        @media (max-width: 576px) {
+            .modal-content {
+                width: 92%;
+                margin: 10% auto;
+                padding: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -2648,10 +2745,10 @@
             logs.forEach(log => {
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td>${log.activity}</td>
-                    <td>${log.result}</td>
-                    <td>${log.obstacle}</td>
-                    <td style="font-size: 0.8rem; color: var(--text-secondary);">${log.time}</td>
+                    <td data-label="Aktifitas">${log.activity}</td>
+                    <td data-label="Hasil">${log.result}</td>
+                    <td data-label="Kendala">${log.obstacle}</td>
+                    <td data-label="Waktu Dibuat" style="font-size: 0.8rem; color: var(--text-secondary);">${log.time}</td>
                     <td class="col-action">
                         <button class="btn-delete" onclick="deleteLog(${log.id})" title="Hapus Log">
                             <i class="fas fa-trash"></i>
