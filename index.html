@@ -649,6 +649,281 @@
             color: #475569;
             border: 1px solid #e2e8f0;
         }
+
+        /* Learning Path Styles */
+        .learning-path-container {
+            position: relative;
+            padding: 1rem 0;
+        }
+
+        .semester-block {
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .semester-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            background: rgba(56, 189, 248, 0.05);
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            border-left: 5px solid var(--accent-color);
+        }
+
+        .semester-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .semester-sks {
+            font-size: 0.9rem;
+            background: var(--accent-color);
+            color: white;
+            padding: 0.2rem 0.8rem;
+            border-radius: 20px;
+            font-weight: 600;
+        }
+
+        .courses-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .course-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .course-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent-color);
+            box-shadow: var(--shadow);
+        }
+
+        .course-status-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            padding: 0.3rem 1rem;
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            border-bottom-left-radius: 12px;
+        }
+
+        .status-sudah { background: #10b981; color: white; }
+        .status-sedang { background: #f59e0b; color: white; }
+        .status-belum { background: #ff0404; color: white; }
+
+        .course-code {
+            font-size: 0.75rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            letter-spacing: 1px;
+        }
+
+        .course-name {
+            font-size: 1.05rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            line-height: 1.4;
+        }
+
+        .course-info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-top: auto;
+            padding-top: 0.8rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .course-type-container {
+            display: flex;
+            gap: 0.4rem;
+            margin-top: 0.2rem;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 0.2rem 0.7rem;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: inline-block;
+        }
+
+        .badge-wajib {
+            background: #1e3a8a; /* Navy */
+            color: #ffffff;
+            border: 1px solid #1e40af;
+        }
+
+        .badge-category {
+            background: #475569; /* Grey */
+            color: #ffffff;
+            border: 1px solid #334155;
+        }
+
+        body.light-mode .badge-category {
+            background: #94a3b8;
+            border-color: #cbd5e1;
+        }
+
+        .course-grade {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .badge-grade {
+            padding: 0.1rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .grade-a {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10b981;
+        }
+
+        .grade-ab, .grade-b {
+            background: rgba(56, 189, 248, 0.1);
+            color: var(--accent-color);
+        }
+
+        .grade-none {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            font-size: 0.7rem;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .course-sks-val {
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        @media (max-width: 640px) {
+            .courses-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .semester-header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+        /* Logbook Table Styles */
+        .logbook-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow);
+        }
+
+        .custom-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            min-width: 800px;
+        }
+
+        .custom-table th {
+            background: #04c0ff; /* Blue Header */
+            padding: 1.2rem 1rem;
+            font-weight: 600;
+            color: #ffffff;
+            border-bottom: none;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .custom-table tr:first-child th:first-child {
+            border-top-left-radius: 11px;
+        }
+
+        .custom-table tr:first-child th:last-child {
+            border-top-right-radius: 11px;
+        }
+
+        .custom-table td {
+            padding: 1rem;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+            vertical-align: top;
+        }
+
+        .custom-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .custom-table tr:hover {
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        body.light-mode .custom-table tr:hover {
+            background: rgba(0, 0, 0, 0.02);
+        }
+
+        .col-activity { width: 25%; }
+        .col-result { width: 25%; }
+        .col-obstacle { width: 20%; }
+        .col-time { width: 15%; }
+        .col-action { width: 10%; text-align: center; }
+
+        .btn-delete {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+            border: 1px solid rgba(239, 68, 68, 0.2);
+            padding: 0.4rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .btn-delete:hover {
+            background: #ef4444;
+            color: white;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            color: var(--text-secondary);
+        }
     </style>
 </head>
 <body>
@@ -676,6 +951,8 @@
             <li><a href="#" onclick="showSection('skills')"><i class="fas fa-code"></i> Skill</a></li>
             <li><a href="#" onclick="showSection('experience')"><i class="fas fa-briefcase"></i> Pengalaman</a></li>
             <li><a href="#" onclick="showSection('certificates')"><i class="fas fa-certificate"></i> Sertifikat</a></li>
+            <li><a href="#" onclick="showSection('learning-path')"><i class="fas fa-map-signs"></i> Learning Path</a></li>
+            <li><a href="#" onclick="showSection('logbook')"><i class="fas fa-book"></i> Logbook</a></li>
             <li><a href="#" onclick="showSection('gallery')"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
             <li><a href="#" onclick="showSection('achievements')"><i class="fas fa-trophy"></i> Pencapaian</a></li>
         </ul>
@@ -1045,6 +1322,972 @@
             </div>
         </section>
 
+        <!-- SECTION: LEARNING PATH -->
+        <section id="learning-path">
+            <h2 class="section-title">Learning <span class="highlight">Path</span></h2>
+            
+            <div class="learning-path-container">
+                
+                <!-- 2024-2025/Ganjil -->
+                <div class="semester-block">
+                    <div class="semester-header">
+                        <div class="semester-title">2024-2025 / Ganjil</div>
+                        <div class="semester-sks">18 SKS</div>
+                    </div>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">UN108</div>
+                            <div class="course-name">Personal Development</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 1 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK107</div>
+                            <div class="course-name">Pengantar Desain Sistem</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK102</div>
+                            <div class="course-name">Matematika Dasar</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK101</div>
+                            <div class="course-name">Pengantar TI & Komunikasi</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">UN101</div>
+                            <div class="course-name">Pendidikan Agama Islam</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">UN-6102</div>
+                            <div class="course-name">Pancasila</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">UN-6105</div>
+                            <div class="course-name">English for General Communication</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">UN-6104</div>
+                            <div class="course-name">Innovation & Entrepreunership</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2024-2025/Genap -->
+                <div class="semester-block">
+                    <div class="semester-header">
+                        <div class="semester-title">2024-2025 / Genap</div>
+                        <div class="semester-sks">20 SKS</div>
+                    </div>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">FK-6205</div>
+                            <div class="course-name">Algoritma dan Struktur Data</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">UN-6202</div>
+                            <div class="course-name">Bahasa Indonesia</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">UN-6203</div>
+                            <div class="course-name">Kewarganegaraan</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">UN-6205</div>
+                            <div class="course-name">Analytical and Creative Thinking</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">FK-6206</div>
+                            <div class="course-name">Prak. Algoritma dan Struktur Data</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">PRAKTIKUM</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 1 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">UN305</div>
+                            <div class="course-name">Pendidikan Anti Korupsi</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">UN109</div>
+                            <div class="course-name">Olahraga, Seni & Budaya I</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 1 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK103</div>
+                            <div class="course-name">Pemrograman I</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-b">B</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK105</div>
+                            <div class="course-name">Basis Data I</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-b">B</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK104</div>
+                            <div class="course-name">Prak. Pemrograman I</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 1 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-ab">AB</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK106</div>
+                            <div class="course-name">Prak Basis Data I</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 1 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-b">B</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2025-2026/Ganjil -->
+                <div class="semester-block">
+                    <div class="semester-header">
+                        <div class="semester-title">2025-2026 / Ganjil</div>
+                        <div class="semester-sks">22 SKS</div>
+                    </div>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK202</div>
+                            <div class="course-name">Pemrograman II</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-ab">AB</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK206</div>
+                            <div class="course-name">Analisa Kebutuhan Sistem</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK-6306</div>
+                            <div class="course-name">Jaringan Komputer</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">IF-6301</div>
+                            <div class="course-name">Kecerdasan Buatan</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-ab">AB</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK204</div>
+                            <div class="course-name">Basis Data II</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-b">B</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK205</div>
+                            <div class="course-name">Prak. Basis Data II</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 1 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-b">B</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK203</div>
+                            <div class="course-name">Prak. Pemrograman II</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 1 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-ab">AB</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">UN-6301</div>
+                            <div class="course-name">Pilihan Industri 1</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">NON GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK201</div>
+                            <div class="course-name">Matematika Lanjut</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2025-2026/Genap -->
+                <div class="semester-block">
+                    <div class="semester-header">
+                        <div class="semester-title">2025-2026 / Genap</div>
+                        <div class="semester-sks">20 SKS</div>
+                    </div>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">UN-6302</div>
+                            <div class="course-name">Pilihan Industri 2</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">NON GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">FK-6401</div>
+                            <div class="course-name">Rekayasa Perangkat Lunak</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">FK-6403</div>
+                            <div class="course-name">Prak. Pemrograman III</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">PRAKTIKUM</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 1 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">IF-6401</div>
+                            <div class="course-name">IoT & Cyber-Physical Systems</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">IF-6402</div>
+                            <div class="course-name">Computer Vision & Pengolahan Citra Digital</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">IF-6403</div>
+                            <div class="course-name">Sistem Cerdas dan Otomasi</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">FK-6402</div>
+                            <div class="course-name">Pemrograman III</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sedang">Sedang Ambil</div>
+                            <div class="course-code">FK-6404</div>
+                            <div class="course-name">Sistem Operasi</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2026-2027/Ganjil -->
+                <div class="semester-block">
+                    <div class="semester-header">
+                        <div class="semester-title">2026-2027 / Ganjil</div>
+                        <div class="semester-sks">23 SKS</div>
+                    </div>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">IF-6503</div>
+                            <div class="course-name">Rekayasa Perangkat Lunak Lanjut</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">UN-6303</div>
+                            <div class="course-name">Pilihan Industri 3</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">NON GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">UN-6501</div>
+                            <div class="course-name">Community & Industrial Service</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">UN-6502</div>
+                            <div class="course-name">Persiapan Pemagangan</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">NON GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 0 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">IF-6604</div>
+                            <div class="course-name">Pilihan Profesi 1</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">NON GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">FK-6502</div>
+                            <div class="course-name">Data Mining</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK-6501</div>
+                            <div class="course-name">Statistik</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-b">B</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK-6503</div>
+                            <div class="course-name">Interaksi Manusia dan Komputer</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">FK-6504</div>
+                            <div class="course-name">Sistem Terdistribusi</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">FK-6505</div>
+                            <div class="course-name">Kewirausahaan dan Teknologi</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-a">A</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2026-2027/Genap -->
+                <div class="semester-block">
+                    <div class="semester-header">
+                        <div class="semester-title">2026-2027 / Genap</div>
+                        <div class="semester-sks">23 SKS</div>
+                    </div>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">FK-6602</div>
+                            <div class="course-name">Etika Profesi TI</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">UN-6304</div>
+                            <div class="course-name">Pilihan Industri 4</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">NON GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">IF-6405</div>
+                            <div class="course-name">Cloud, Edge, & Fog Computing</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">FK-6605</div>
+                            <div class="course-name">Metodologi Penelitian</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">FK-6604</div>
+                            <div class="course-name">Keamanan Siber</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">FK-6601</div>
+                            <div class="course-name">Pengujian dan Kualitas Sistem</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">IF-6605</div>
+                            <div class="course-name">Pilihan Profesi 2</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">NON GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">IF-6601</div>
+                            <div class="course-name">Teori Bahasa Formal & Otomata</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">FK-6603</div>
+                            <div class="course-name">Manajemen Proyek</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2027-2028/Ganjil -->
+                <div class="semester-block">
+                    <div class="semester-header">
+                        <div class="semester-title">2027-2028 / Ganjil</div>
+                        <div class="semester-sks">4 SKS</div>
+                    </div>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">UN-6701</div>
+                            <div class="course-name">Pemagangan</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">NON GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 4 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2027-2028/Genap -->
+                <div class="semester-block">
+                    <div class="semester-header">
+                        <div class="semester-title">2027-2028 / Genap</div>
+                        <div class="semester-sks">20 SKS</div>
+                    </div>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">UN-6305</div>
+                            <div class="course-name">Pilihan Industri 5</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">NON GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">IF-6501</div>
+                            <div class="course-name">Graph Database & Knowledge Graph</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">IF-6502</div>
+                            <div class="course-name">Green Computing & Sustainable AI</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">IF-6404</div>
+                            <div class="course-name">Deep Learning</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">IF-6606</div>
+                            <div class="course-name">Pilihan Profesi 3</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">NON GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-sudah">Sudah Ambil</div>
+                            <div class="course-code">IF-6302</div>
+                            <div class="course-name">Machine Learning</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-ab">AB</span></div>
+                            </div>
+                        </div>
+                        <div class="course-card">
+                            <div class="course-status-badge status-belum">Belum Ambil</div>
+                            <div class="course-code">FK-6801</div>
+                            <div class="course-name">Tugas Akhir</div>
+                            <div class="course-type-container">
+                                <span class="badge badge-wajib">Wajib</span>
+                                <span class="badge badge-category">GENERIC</span>
+                            </div>
+                            <div class="course-info-row">
+                                <div class="course-sks-val"><i class="fas fa-clock"></i> 4 SKS</div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SECTION: LOGBOOK -->
+        <section id="logbook">
+            <div class="logbook-controls">
+                <div>
+                    <h2 class="section-title" style="margin-bottom: 0.5rem;">Logbook <span class="highlight">ARNOF DWI FERDIZA</span></h2>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Catatan logbook kegiatan selama perkuliahan</p>
+                </div>
+                <button onclick="openLogbookModal()" class="btn" style="background: var(--accent-color); color: white; border-color: var(--accent-color); font-weight: 600;">
+                    <i class="fas fa-plus"></i> Tambah Data
+                </button>
+            </div>
+
+            <div class="table-container">
+                <table class="custom-table" id="logbookTable">
+                    <thead>
+                        <tr>
+                            <th class="col-activity">Aktifitas</th>
+                            <th class="col-result">Hasil</th>
+                            <th class="col-obstacle">Kendala</th>
+                            <th class="col-time">Waktu Dibuat</th>
+                            <th class="col-action">Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody id="logbook-container">
+                        <!-- Data will be loaded here -->
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <!-- MODAL LOGBOOK -->
+        <div id="logbookModal" class="modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 style="color: var(--accent-color);">Tambah Logbook Baru</h3>
+                    <button class="close-modal" onclick="closeLogbookModal()">&times;</button>
+                </div>
+                <form id="logbookForm">
+                    <div class="form-group">
+                        <label for="logActivity">Aktifitas</label>
+                        <textarea id="logActivity" class="form-control" placeholder="Apa yang Anda kerjakan?" required rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="logResult">Hasil</label>
+                        <textarea id="logResult" class="form-control" placeholder="Apa hasil dari aktifitas tersebut?" required rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="logObstacle">Kendala</label>
+                        <textarea id="logObstacle" class="form-control" placeholder="Apa kendala yang dihadapi? (Opsional)" rows="2"></textarea>
+                    </div>
+                    <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                        <button type="button" onclick="closeLogbookModal()" class="btn" style="flex: 1;">Batal</button>
+                        <button type="submit" class="btn" style="flex: 1; background: var(--accent-color); color: white; border-color: var(--accent-color);">Simpan Data</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
         <!-- SECTION: GALERI KEGIATAN -->
         <section id="gallery">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
@@ -1323,7 +2566,110 @@
             });
 
             loadGallery();
+            loadLogbook();
         });
+
+        // Logbook Functions
+        function openLogbookModal() {
+            document.getElementById('logbookModal').style.display = 'flex';
+        }
+
+        function closeLogbookModal() {
+            document.getElementById('logbookModal').style.display = 'none';
+            document.getElementById('logbookForm').reset();
+        }
+
+        // Close logbook modal when clicking outside
+        window.onclick = function(event) {
+            const uploadModal = document.getElementById('uploadModal');
+            const logbookModal = document.getElementById('logbookModal');
+            if (event.target == uploadModal) {
+                closeUploadModal();
+            }
+            if (event.target == logbookModal) {
+                closeLogbookModal();
+            }
+        }
+
+        const logbookForm = document.getElementById('logbookForm');
+        if (logbookForm) {
+            logbookForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const activity = document.getElementById('logActivity').value;
+                const result = document.getElementById('logResult').value;
+                const obstacle = document.getElementById('logObstacle').value || '-';
+                const timestamp = new Date().toLocaleString('id-ID', { 
+                    day: '2-digit', 
+                    month: 'short', 
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                const newLog = {
+                    id: Date.now(),
+                    activity: activity,
+                    result: result,
+                    obstacle: obstacle,
+                    time: timestamp
+                };
+
+                // Save to localStorage
+                let logs = JSON.parse(localStorage.getItem('logbookEntries')) || [];
+                logs.unshift(newLog); // Add to beginning
+                localStorage.setItem('logbookEntries', JSON.stringify(logs));
+
+                // Reload table and close modal
+                loadLogbook();
+                closeLogbookModal();
+            });
+        }
+
+        function loadLogbook() {
+            const container = document.getElementById('logbook-container');
+            if (!container) return;
+
+            const logs = JSON.parse(localStorage.getItem('logbookEntries')) || [];
+            
+            if (logs.length === 0) {
+                container.innerHTML = `
+                    <tr>
+                        <td colspan="5" class="empty-state">
+                            <i class="fas fa-info-circle" style="display: block; font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
+                            Belum ada data logbook. Klik "Tambah Data" untuk memulai.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            logs.forEach(log => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>${log.activity}</td>
+                    <td>${log.result}</td>
+                    <td>${log.obstacle}</td>
+                    <td style="font-size: 0.8rem; color: var(--text-secondary);">${log.time}</td>
+                    <td class="col-action">
+                        <button class="btn-delete" onclick="deleteLog(${log.id})" title="Hapus Log">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                container.appendChild(tr);
+            });
+        }
+
+        function deleteLog(id) {
+            if (confirm('Hapus catatan logbook ini?')) {
+                let logs = JSON.parse(localStorage.getItem('logbookEntries')) || [];
+                logs = logs.filter(l => l.id !== id);
+                localStorage.setItem('logbookEntries', JSON.stringify(logs));
+                loadLogbook();
+            }
+        }
 
         // Gallery Functions
         function openUploadModal() {
