@@ -475,21 +475,42 @@
         @media (max-width: 768px) {
             .sidebar {
                 transform: translateX(-100%);
+                width: 280px;
+                box-shadow: none;
             }
 
             .sidebar.show {
                 transform: translateX(0);
+                box-shadow: 10px 0 30px rgba(0,0,0,0.5);
             }
 
             .main-content {
-                margin-left: 0;
-                padding: 4rem 1.5rem 2rem 1.5rem; /* Tambah padding atas untuk menu button */
+                margin-left: 0 !important;
+                width: 100% !important;
+                padding: 5rem 1rem 2rem 1rem;
             }
 
             .menu-toggle {
                 display: block;
-                top: 0.8rem;
+                top: 1rem;
                 right: 1rem;
+            }
+
+            /* Overlay for mobile sidebar */
+            .sidebar-overlay {
+                display: none;
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                backdrop-filter: blur(3px);
+                z-index: 999;
+            }
+
+            .sidebar-overlay.show {
+                display: block;
             }
         }
 
@@ -1035,6 +1056,9 @@
     <button class="menu-toggle" id="menu-btn">
         <i class="fas fa-bars"></i>
     </button>
+
+    <!-- Overlay for Mobile -->
+    <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
     <!-- Sidebar Dashboard -->
     <nav class="sidebar" id="sidebar">
@@ -2613,9 +2637,11 @@
                     }
                 });
 
-                // Hide sidebar on mobile after clicking
+                // Hide sidebar and overlay on mobile after clicking
                 if (window.innerWidth <= 768) {
                     sidebar.classList.remove('show');
+                    const overlay = document.getElementById('sidebar-overlay');
+                    if (overlay) overlay.classList.remove('show');
                 }
 
                 // Hide loader
@@ -2629,10 +2655,17 @@
         // Toggle Sidebar on Mobile
         const menuBtn = document.getElementById('menu-btn');
         const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('sidebar-overlay');
 
-        if (menuBtn && sidebar) {
+        if (menuBtn && sidebar && overlay) {
             menuBtn.addEventListener('click', () => {
                 sidebar.classList.toggle('show');
+                overlay.classList.toggle('show');
+            });
+
+            overlay.addEventListener('click', () => {
+                sidebar.classList.remove('show');
+                overlay.classList.remove('show');
             });
         }
 
