@@ -1068,6 +1068,7 @@
         <h2 class="sidebar-title">Arnof Dwi Ferdiza</h2>
         <ul class="nav-links">
             <li><a href="#" class="active" onclick="showSection('home')"><i class="fas fa-home"></i> Beranda</a></li>
+            <li><a href="#" onclick="showSection('projects')"><i class="fas fa-project-diagram"></i> Projek Selesai</a></li>
             <li><a href="#" onclick="showSection('about')"><i class="fas fa-user"></i> Tentang Saya</a></li>
             <li><a href="#" onclick="showSection('education')"><i class="fas fa-graduation-cap"></i> Pendidikan</a></li>
             <li><a href="#" onclick="showSection('skills')"><i class="fas fa-code"></i> Skill</a></li>
@@ -1111,7 +1112,7 @@
 
             <!-- Dashboard Stats Row -->
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
-                <div class="card" onclick="showSection('gallery')" style="margin-bottom: 0; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-left: 4px solid var(--accent-color); cursor: pointer; transition: transform 0.2s ease;">
+                <div class="card" onclick="showSection('projects')" style="margin-bottom: 0; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-left: 4px solid var(--accent-color); cursor: pointer; transition: transform 0.2s ease;">
                     <div style="background: rgba(56, 189, 248, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-tasks" style="color: var(--accent-color); font-size: 1.5rem;"></i>
                     </div>
@@ -2410,6 +2411,49 @@
             </div>
         </div>
 
+        <!-- SECTION: PROJEK SELESAI -->
+        <section id="projects">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+                <h2 class="section-title" style="margin-bottom: 0;">Projek <span class="highlight">Selesai</span></h2>
+                <button class="btn" onclick="openProjectModal()"><i class="fas fa-plus"></i> Tambah Projek</button>
+            </div>
+            
+            <div class="card">
+                <p class="text-lead" style="margin-bottom: 1.5rem;">Kumpulan projek yang telah saya selesaikan, mencakup pengembangan website, aplikasi, dan desain UI/UX.</p>
+                <div class="gallery-grid" id="projects-container">
+                    <!-- Data projek akan dimuat di sini -->
+                </div>
+            </div>
+
+            <!-- Modal Project -->
+            <div id="projectModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h3 style="color: var(--accent-color);">Tambah Projek Baru</h3>
+                        <button class="close-modal" onclick="closeProjectModal()">&times;</button>
+                    </div>
+                    <form id="projectForm">
+                        <div class="form-group">
+                            <label for="projectTitle">Nama Projek</label>
+                            <input type="text" id="projectTitle" class="form-control" placeholder="Contoh: E-Commerce Website" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectLink">Link Projek (URL)</label>
+                            <input type="url" id="projectLink" class="form-control" placeholder="https://github.com/..." required>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectImage">Pilih Gambar Projek</label>
+                            <input type="file" id="projectImage" class="form-control" accept="image/*" required>
+                        </div>
+                        <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
+                            <button type="button" onclick="closeProjectModal()" class="btn" style="flex: 1;">Batal</button>
+                            <button type="submit" class="btn" style="flex: 1; background: var(--accent-color); color: white; border-color: var(--accent-color);">Simpan Projek</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </section>
+
         <!-- SECTION: GALERI KEGIATAN -->
         <section id="gallery">
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
@@ -2698,7 +2742,120 @@
 
             loadGallery();
             loadLogbook();
+            loadProjects();
         });
+
+        // Project Functions
+        function openProjectModal() {
+            document.getElementById('projectModal').style.display = 'flex';
+        }
+
+        function closeProjectModal() {
+            document.getElementById('projectModal').style.display = 'none';
+            document.getElementById('projectForm').reset();
+        }
+
+        const projectForm = document.getElementById('projectForm');
+        if (projectForm) {
+            projectForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const title = document.getElementById('projectTitle').value;
+                const link = document.getElementById('projectLink').value;
+                const fileInput = document.getElementById('projectImage');
+                const file = fileInput.files[0];
+
+                if (file) {
+                    const reader = new FileReader();
+                    reader.onload = function(event) {
+                        const imageData = event.target.result;
+                        const newProject = {
+                            id: Date.now(),
+                            title: title,
+                            link: link,
+                            image: imageData
+                        };
+
+                        // Save to localStorage
+                        let projects = JSON.parse(localStorage.getItem('completedProjects')) || [];
+                        projects.unshift(newProject);
+                        localStorage.setItem('completedProjects', JSON.stringify(projects));
+
+                        // Reload and close
+                        loadProjects();
+                        closeProjectModal();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            });
+        }
+
+        function loadProjects() {
+            const container = document.getElementById('projects-container');
+            if (!container) return;
+
+            let projects = JSON.parse(localStorage.getItem('completedProjects'));
+            
+            // Inisialisasi dengan projek default jika belum ada data atau data kosong
+            if (!projects || projects.length === 0) {
+                projects = [
+                    {
+                        id: 'default-1',
+                        title: 'Diet Sehat Yuk',
+                        link: 'https://diet-sehat-yuks-741694573454.asia-southeast1.run.app',
+                        image: 'foto/PROJECT/diet sehat yuk.png'
+                    }
+                ];
+                localStorage.setItem('completedProjects', JSON.stringify(projects));
+            }
+
+            if (projects.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-secondary);">
+                        <i class="fas fa-project-diagram fa-3x" style="margin-bottom: 1rem; opacity: 0.3;"></i>
+                        <p>Belum ada projek yang diunggah. Klik "Tambah Projek" untuk memulai.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            projects.forEach(project => {
+                const item = document.createElement('div');
+                item.className = 'gallery-item';
+                item.style.height = '280px';
+                item.style.flexDirection = 'column';
+                item.style.position = 'relative';
+                item.style.overflow = 'hidden';
+                item.style.border = '1px solid var(--border-color)';
+                item.style.background = 'var(--card-bg)';
+
+                item.innerHTML = `
+                    <img src="${project.image}" alt="${project.title}" style="height: 180px; width: 100%; object-fit: cover;">
+                    <div style="padding: 1rem; width: 100%; display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
+                        <h4 style="font-size: 0.95rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${project.title}</h4>
+                        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
+                            <a href="${project.link}" target="_blank" class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; background: rgba(56, 189, 248, 0.1); color: var(--accent-color); border-color: rgba(56, 189, 248, 0.2);">
+                                <i class="fas fa-external-link-alt"></i> Lihat Projek
+                            </a>
+                        </div>
+                    </div>
+                    <button class="delete-btn" onclick="deleteProject(${project.id})" style="display: flex; background: rgba(239, 68, 68, 0.9);" title="Hapus Projek">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        function deleteProject(id) {
+            if (confirm('Hapus projek ini?')) {
+                let projects = JSON.parse(localStorage.getItem('completedProjects')) || [];
+                projects = projects.filter(p => p.id !== id);
+                localStorage.setItem('completedProjects', JSON.stringify(projects));
+                loadProjects();
+            }
+        }
 
         // Logbook Functions
         function openLogbookModal() {
@@ -2714,11 +2871,15 @@
         window.onclick = function(event) {
             const uploadModal = document.getElementById('uploadModal');
             const logbookModal = document.getElementById('logbookModal');
+            const projectModal = document.getElementById('projectModal');
             if (event.target == uploadModal) {
                 closeUploadModal();
             }
             if (event.target == logbookModal) {
                 closeLogbookModal();
+            }
+            if (event.target == projectModal) {
+                closeProjectModal();
             }
         }
 
