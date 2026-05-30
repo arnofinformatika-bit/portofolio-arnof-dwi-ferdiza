@@ -43,7 +43,7 @@
         /* Variabel Warna Tema Terang */
         body.light-mode {
             --bg-color: #f1f5f9;
-            --sidebar-bg: #f0f8ff; /* Biru pastel lembut (AliceBlue) untuk light mode */
+            --sidebar-bg: #dbeafe; /* Biru terang lembut untuk light mode */
             --card-bg: #ffffff;
             --text-primary: #1e293b;
             --text-secondary: #64748b;
@@ -3355,10 +3355,12 @@
             if (savedName) {
                 // If name is already in sessionStorage, hide overlay immediately
                 overlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
                 if (greetingName) greetingName.textContent = savedName;
             } else {
                 // Otherwise show the overlay
                 overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
             }
         });
 
@@ -3376,6 +3378,7 @@
                 
                 setTimeout(() => {
                     overlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
                     // Trigger the loading effect into the home section
                     showSection('home'); 
                 }, 500);
