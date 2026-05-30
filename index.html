@@ -2828,7 +2828,7 @@
             element.style.display = 'block'; 
 
             const opt = {
-                margin:       0,
+                margin:       [10, 0, 10, 0],
                 filename:     'CV_Arnof_Dwi_Ferdiza.pdf',
                 image:        { type: 'jpeg', quality: 1 },
                 html2canvas:  { 
@@ -2838,7 +2838,8 @@
                     scrollX: 0,
                     windowWidth: document.documentElement.offsetWidth
                 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: ['css', 'legacy'], avoid: 'tr' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
@@ -2861,7 +2862,7 @@
             element.style.display = 'block'; 
 
             const opt = {
-                margin:       0,
+                margin:       [10, 0, 10, 0],
                 filename:     'Transkrip_Nilai_Arnof_Dwi_Ferdiza.pdf',
                 image:        { type: 'jpeg', quality: 1 },
                 html2canvas:  { 
@@ -2871,7 +2872,8 @@
                     scrollX: 0,
                     windowWidth: document.documentElement.offsetWidth
                 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak:    { mode: ['css', 'legacy'], avoid: 'tr' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
