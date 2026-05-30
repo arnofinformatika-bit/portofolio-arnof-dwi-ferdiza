@@ -686,6 +686,37 @@
             border: 1px solid #e2e8f0;
         }
 
+        /* Transcript Template Styles */
+        #transcript-template {
+            display: none;
+            width: 210mm;
+            min-height: 297mm;
+            padding: 20px 0;
+            margin: 0;
+            background: white;
+            color: #1e293b;
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.4;
+        }
+        .transcript-header {
+            padding: 10px 30px;
+        }
+        .transcript-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 9pt;
+        }
+        .transcript-table th, .transcript-table td {
+            border: 1px solid #cbd5e1;
+            padding: 8px;
+            text-align: left;
+        }
+        .transcript-table th {
+            background-color: #f1f5f9;
+            font-weight: 600;
+            text-align: center;
+        }
+
         /* Learning Path Styles */
         .learning-path-container {
             position: relative;
@@ -1469,6 +1500,12 @@
         <section id="learning-path">
             <h2 class="section-title">Learning <span class="highlight">Path</span></h2>
             
+            <div style="margin-bottom: 2rem; display: flex; justify-content: flex-end;">
+                <button onclick="downloadTranscript()" class="btn" style="background-color: var(--accent-color); color: #fff; border: none; font-weight: 500; padding: 0.8rem 1.5rem; box-shadow: var(--shadow);">
+                    <i class="fas fa-file-pdf"></i> Download Transkrip Nilai Sementara
+                </button>
+            </div>
+
             <div class="learning-path-container">
                 
                 <!-- 2024-2025/Ganjil -->
@@ -2653,6 +2690,75 @@
         </div>
     </div>
 
+    <!-- Transcript Template (Hidden) -->
+    <div id="transcript-template">
+        <div class="transcript-header">
+            <h1 style="margin: 0; font-size: 18pt; text-align: center; color: #0f172a; letter-spacing: 1px;">TRANSKRIP NILAI SEMENTARA</h1>
+            <p style="text-align: center; font-size: 10pt; margin: 5px 0; color: #475569;">Universitas Bandar Lampung - Program Studi Informatika</p>
+            <hr style="margin-top: 15px; border: 1px solid #e2e8f0;">
+        </div>
+        
+        <div class="transcript-info" style="margin: 20px 30px; font-size: 10pt; color: #1e293b;">
+            <table style="width: 100%; border-collapse: collapse; border: none;">
+                <tr>
+                    <td style="width: 130px; padding: 4px 0; border: none;"><strong>Nama</strong></td>
+                    <td style="padding: 4px 0; border: none;">: Arnof Dwi Ferdiza</td>
+                    <td style="width: 130px; padding: 4px 0; border: none;"><strong>Program Studi</strong></td>
+                    <td style="padding: 4px 0; border: none;">: S1 Informatika</td>
+                </tr>
+                <tr>
+                    <td style="padding: 4px 0; border: none;"><strong>Tahun Masuk</strong></td>
+                    <td style="padding: 4px 0; border: none;">: 2024</td>
+                    <td style="padding: 4px 0; border: none;"><strong>Jenjang</strong></td>
+                    <td style="padding: 4px 0; border: none;">: Sarjana (S1)</td>
+                </tr>
+            </table>
+        </div>
+        
+        <div style="margin: 0 30px;">
+            <table class="transcript-table">
+                <thead>
+                    <tr>
+                        <th style="width: 5%;">No</th>
+                        <th style="width: 15%;">Kode MK</th>
+                        <th style="width: 50%;">Mata Kuliah</th>
+                        <th style="width: 10%;">SKS</th>
+                        <th style="width: 20%;">Nilai</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Semester Ganjil -->
+                    <tr><td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 1 (Ganjil 2024-2025)</td></tr>
+                    <tr><td style="text-align: center;">1</td><td>UN108</td><td>Personal Development</td><td style="text-align: center;">1</td><td style="text-align: center;">A</td></tr>
+                    <tr><td style="text-align: center;">2</td><td>FK107</td><td>Pengantar Desain Sistem</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
+                    <tr><td style="text-align: center;">3</td><td>FK102</td><td>Matematika Dasar</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
+                    <tr><td style="text-align: center;">4</td><td>FK101</td><td>Pengantar TI & Komunikasi</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
+                    <tr><td style="text-align: center;">5</td><td>UN101</td><td>Pendidikan Agama Islam</td><td style="text-align: center;">2</td><td style="text-align: center;">A</td></tr>
+                    <tr><td style="text-align: center;">6</td><td>UN-6102</td><td>Pancasila</td><td style="text-align: center;">2</td><td style="text-align: center;">A</td></tr>
+                    <tr><td style="text-align: center;">7</td><td>UN-6105</td><td>English for General Communication</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
+                    <tr><td style="text-align: center;">8</td><td>UN-6104</td><td>Innovation & Entrepreunership</td><td style="text-align: center;">2</td><td style="text-align: center;">A</td></tr>
+                    <!-- Semester Genap -->
+                    <tr><td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 2 (Genap 2024-2025)</td></tr>
+                    <tr><td style="text-align: center;">9</td><td>FK-6205</td><td>Algoritma dan Struktur Data</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
+                    <tr><td style="text-align: center;">10</td><td>UN-6202</td><td>Bahasa Indonesia</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
+                    <tr><td style="text-align: center;">11</td><td>UN-6203</td><td>Kewarganegaraan</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
+                    <tr><td style="text-align: center;">12</td><td>UN-6205</td><td>Analytical and Creative Thinking</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
+                    <tr><td style="text-align: center;">13</td><td>FK-6206</td><td>Prak. Algoritma dan Struktur Data</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
+                </tbody>
+            </table>
+        </div>
+        
+        <div style="margin: 40px 30px 10px 30px; text-align: right; font-size: 10pt; color: #1e293b;">
+            <p>Bandar Lampung, <span id="transcript-date"></span></p>
+            <br><br><br>
+            <p><strong>Arnof Dwi Ferdiza</strong></p>
+        </div>
+        
+        <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 7pt; color: #94a3b8; text-align: center;">
+            Document officially generated by Arnof Dwi Ferdiza Portfolio System
+        </div>
+    </div>
+
     <script>
         // PDF Download Function
         function downloadCV() {
@@ -2662,6 +2768,39 @@
             const opt = {
                 margin:       0,
                 filename:     'CV_Arnof_Dwi_Ferdiza.pdf',
+                image:        { type: 'jpeg', quality: 1 },
+                html2canvas:  { 
+                    scale: 3, 
+                    useCORS: true, 
+                    scrollY: 0,
+                    scrollX: 0,
+                    windowWidth: document.documentElement.offsetWidth
+                },
+                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.display = 'none'; 
+            });
+        }
+
+        // PDF Download Function for Transcript
+        function downloadTranscript() {
+            const element = document.getElementById('transcript-template');
+            
+            // Update current date
+            const dateSpan = element.querySelector('#transcript-date');
+            if(dateSpan) {
+                const today = new Date();
+                const options = { year: 'numeric', month: 'long', day: 'numeric' };
+                dateSpan.textContent = today.toLocaleDateString('id-ID', options);
+            }
+
+            element.style.display = 'block'; 
+
+            const opt = {
+                margin:       0,
+                filename:     'Transkrip_Nilai_Arnof_Dwi_Ferdiza.pdf',
                 image:        { type: 'jpeg', quality: 1 },
                 html2canvas:  { 
                     scale: 3, 
