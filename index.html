@@ -1105,7 +1105,8 @@
             <h2 style="margin-bottom: 0.5rem; font-size: 1.5rem;">Selamat Datang!</h2>
             <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">Silakan masukkan nama lengkap Anda sebelum masuk ke portofolio.</p>
             <form id="welcomeForm" onsubmit="submitWelcomeForm(event)">
-                <input type="text" id="visitorName" class="form-control" placeholder="Nama Lengkap Anda..." required style="margin-bottom: 1.2rem; text-align: center; font-size: 1.05rem; padding: 0.8rem; border-radius: 10px;">
+                <input type="text" id="visitorName" class="form-control" placeholder="Nama Lengkap Anda..." required style="margin-bottom: 0.5rem; text-align: center; font-size: 1.05rem; padding: 0.8rem; border-radius: 10px;">
+                <div id="name-error" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 1rem; display: none; font-weight: 500;">Isi nama lengkap Anda dengan benar (hanya huruf).</div>
                 <button type="submit" class="btn" style="width: 100%; background: var(--accent-color); color: white; border: none; padding: 0.8rem; font-size: 1.05rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Masuk Portofolio <i class="fas fa-sign-in-alt" style="margin-left: 8px;"></i></button>
             </form>
         </div>
@@ -3367,6 +3368,18 @@
         function submitWelcomeForm(e) {
             e.preventDefault();
             const nameInput = document.getElementById('visitorName').value.trim();
+            const errorElement = document.getElementById('name-error');
+            
+            // Regex to allow only letters, spaces, dots, and single quotes. Must be at least 2 characters.
+            const isValidName = /^[a-zA-Z\s\.,']+$/.test(nameInput) && nameInput.length >= 2;
+
+            if (!isValidName) {
+                errorElement.style.display = 'block';
+                return;
+            } else {
+                errorElement.style.display = 'none';
+            }
+
             if (nameInput) {
                 sessionStorage.setItem('visitorName', nameInput);
                 const greetingName = document.getElementById('user-greeting-name');
