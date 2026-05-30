@@ -716,6 +716,10 @@
             font-weight: 600;
             text-align: center;
         }
+        .transcript-table tr {
+            page-break-inside: avoid !important;
+            break-inside: avoid !important;
+        }
 
         /* Learning Path Styles */
         .learning-path-container {
@@ -2839,7 +2843,7 @@
                     windowWidth: document.documentElement.offsetWidth
                 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['css', 'legacy'], avoid: 'tr' }
+                pagebreak:    { mode: 'css', avoid: 'tr' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
@@ -2873,7 +2877,7 @@
                     windowWidth: document.documentElement.offsetWidth
                 },
                 jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: ['css', 'legacy'], avoid: 'tr' }
+                pagebreak:    { mode: 'css', avoid: 'tr' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
