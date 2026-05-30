@@ -1142,6 +1142,9 @@
             <li><a href="#" onclick="showSection('logbook')"><i class="fas fa-book"></i> Logbook</a></li>
             <li><a href="#" onclick="showSection('gallery')"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
             <li><a href="#" onclick="showSection('achievements')"><i class="fas fa-trophy"></i> Pencapaian</a></li>
+            <li style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+                <a href="#" onclick="logoutVisitor()" style="color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Keluar / Ganti Nama</a>
+            </li>
         </ul>
 
         <!-- Sidebar Footer -->
@@ -3376,6 +3379,14 @@
                     // Trigger the loading effect into the home section
                     showSection('home'); 
                 }, 500);
+            }
+        }
+
+        // Function to logout visitor
+        function logoutVisitor() {
+            if (confirm('Apakah Anda yakin ingin mengganti nama tamu atau keluar dari sesi ini?')) {
+                sessionStorage.removeItem('visitorName');
+                location.reload();
             }
         }
     </script>
