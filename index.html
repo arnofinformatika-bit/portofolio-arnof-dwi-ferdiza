@@ -1122,6 +1122,13 @@
 </head>
 <body>
 
+    <!-- Maintenance / Server Error Overlay -->
+    <div id="maintenance-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 1000000; display: none; justify-content: center; align-items: center; flex-direction: column; color: white; text-align: center; padding: 2rem;">
+        <i class="fas fa-plug" style="font-size: 5rem; color: #ef4444; margin-bottom: 1.5rem;"></i>
+        <h1 style="font-size: 2rem; margin-bottom: 0.5rem; color: #ef4444;">Gagal Koneksi Server</h1>
+        <p style="color: #94a3b8; font-size: 1rem; max-width: 400px; line-height: 1.6;">Server tidak dapat dijangkau saat ini. Harap coba lagi nanti atau tunggu hingga perbaikan selesai. <br><br><strong style="color: #38bdf8;">Sistem akan kembali normal pada pukul 04:00 WIB.</strong></p>
+    </div>
+
     <!-- Welcome Overlay -->
     <div id="welcome-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 10000; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.5s ease;">
         <div class="card" style="width: 90%; max-width: 400px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); border-color: var(--accent-color);">
@@ -2881,6 +2888,39 @@
     </div>
 
     <script>
+        // Maintenance Check Function
+        function checkMaintenance() {
+            // Get current time
+            const now = new Date();
+            // Convert to WIB (UTC+7)
+            const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
+            const wib = new Date(utc + (3600000 * 7));
+            
+            const hours = wib.getHours();
+            const minutes = wib.getMinutes();
+            const currentMinutes = hours * 60 + minutes;
+            
+            const startMaintenance = 22 * 60 + 45; // 22:45
+            const endMaintenance = 4 * 60;         // 04:00
+            
+            const overlay = document.getElementById('maintenance-overlay');
+            
+            // Maintenance window: from 22:45 to 23:59 OR 00:00 to 03:59
+            if (currentMinutes >= startMaintenance || currentMinutes < endMaintenance) {
+                overlay.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            } else {
+                overlay.style.display = 'none';
+                if (document.getElementById('welcome-overlay').style.display === 'none') {
+                    document.body.style.overflow = 'auto';
+                }
+            }
+        }
+
+        // Run immediately and then every minute
+        checkMaintenance();
+        setInterval(checkMaintenance, 60000);
+
         // PDF Download Function
         function downloadCV() {
             const element = document.getElementById('cv-template');
@@ -3431,7 +3471,7 @@
 
         // Function to logout visitor
         function logoutVisitor() {
-            if (confirm('Apakah Anda yakin ingin mengganti nama tamu atau keluar dari sesi ini?')) {
+            if (confirm('Apakah Anda yakin ingin mengganti nama tamu atau keluar dari sesi ini bro?')) {
                 sessionStorage.removeItem('visitorName');
                 location.reload();
             }
