@@ -1228,7 +1228,13 @@
             pointer-events: none;
         }
 
-        .goog-te-banner-frame.skiptranslate {
+        /* Menyembunyikan SEMUA jenis banner Google Translate (Versi Lama & Baru) */
+        .goog-te-banner-frame.skiptranslate, 
+        .goog-te-banner-frame,
+        #goog-gt-tt,
+        .goog-te-balloon-frame,
+        .VIpgJd-ZVi9od-aZ2wEe-wOHMyf,
+        .VIpgJd-ZVi9od-aZ2wEe-wOHMyf-ti6hGc {
             display: none !important;
         }
 
@@ -1236,10 +1242,8 @@
             top: 0px !important;
         }
 
-        .goog-tooltip {
-            display: none !important;
-        }
-
+        /* Menyembunyikan tooltip saat hover text */
+        .goog-tooltip,
         .goog-tooltip:hover {
             display: none !important;
         }
