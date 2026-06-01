@@ -1,19 +1,23 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
+
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Portofolio resmi Arnof Dwi Ferdiza, Mahasiswa Informatika di Universitas Bandar Lampung (UBL). Menampilkan proyek IT, pengalaman, dan keterampilan dalam pengembangan web, UI/UX, dan software developer.">
-    <meta name="keywords" content="Arnof Dwi Ferdiza, Portofolio Arnof, Web Developer Lampung, Mahasiswa Informatika UBL, Programmer Lampung, Software Engineer, UI/UX Designer, Frontend Developer, Backend Developer">
+    <meta name="description"
+        content="Portofolio resmi Arnof Dwi Ferdiza, Mahasiswa Informatika di Universitas Bandar Lampung (UBL). Menampilkan proyek IT, pengalaman, dan keterampilan dalam pengembangan web, UI/UX, dan software developer.">
+    <meta name="keywords"
+        content="Arnof Dwi Ferdiza, Portofolio Arnof, Web Developer Lampung, Mahasiswa Informatika UBL, Programmer Lampung, Software Engineer, UI/UX Designer, Frontend Developer, Backend Developer">
     <meta name="author" content="Arnof Dwi Ferdiza">
     <meta name="robots" content="index, follow">
     <meta name="google-site-verification" content="qg3nkj8K5eAR_TNYVBFf5Z6HcByvwohMHaZDcHlhFvM" />
-    
+
     <!-- Open Graph / Social Media Meta Tags -->
-    <meta property="og:title" content="Portofolio | Arnof Dwi Ferdiza">
-    <meta property="og:description" content="Jelajahi portofolio, proyek, dan pengalaman Arnof Dwi Ferdiza di bidang Informatika dan Web Development.">
+    <meta property="og:title" content="Portofolio Arnof Dwi Ferdiza">
+    <meta property="og:description"
+        content="Jelajahi portofolio, proyek, dan pengalaman Arnof Dwi Ferdiza di bidang Informatika dan Web Development.">
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="Portofolio Arnof Dwi Ferdiza">
 
@@ -21,15 +25,17 @@
     <!-- Font Awesome untuk Ikon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- html2pdf library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    
+
     <style>
         /* Variabel Warna Tema Gelap (Default) */
         :root {
             --bg-color: #0f172a;
-            --sidebar-bg: #0c2b4e; /* Biru gelap lembut untuk dark mode */
+            --sidebar-bg: #0c2b4e;
+            /* Biru gelap lembut untuk dark mode */
             --card-bg: #1e293b;
             --text-primary: #f8fafc;
             --text-secondary: #94a3b8;
@@ -43,7 +49,8 @@
         /* Variabel Warna Tema Terang */
         body.light-mode {
             --bg-color: #f1f5f9;
-            --sidebar-bg: #dbeafe; /* Biru terang lembut untuk light mode */
+            --sidebar-bg: #dbeafe;
+            /* Biru terang lembut untuk light mode */
             --card-bg: #ffffff;
             --text-primary: #1e293b;
             --text-secondary: #64748b;
@@ -163,14 +170,15 @@
         }
 
         @keyframes dashboardEnter {
-            from { 
-                opacity: 0; 
-                transform: scale(0.98) translateY(10px); 
+            from {
+                opacity: 0;
+                transform: scale(0.98) translateY(10px);
                 filter: blur(5px);
             }
-            to { 
-                opacity: 1; 
-                transform: scale(1) translateY(0); 
+
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
                 filter: blur(0);
             }
         }
@@ -194,7 +202,7 @@
         .loader-bar {
             width: 200px;
             height: 4px;
-            background: rgba(255,255,255,0.05);
+            background: rgba(255, 255, 255, 0.05);
             border-radius: 10px;
             overflow: hidden;
             position: relative;
@@ -211,8 +219,13 @@
         }
 
         @keyframes loading {
-            0% { left: -100%; }
-            100% { left: 100%; }
+            0% {
+                left: -100%;
+            }
+
+            100% {
+                left: 100%;
+            }
         }
 
         .section-title {
@@ -496,7 +509,7 @@
 
             .sidebar.show {
                 transform: translateX(0);
-                box-shadow: 10px 0 30px rgba(0,0,0,0.5);
+                box-shadow: 10px 0 30px rgba(0, 0, 0, 0.5);
             }
 
             .main-content {
@@ -519,7 +532,7 @@
                 left: 0;
                 width: 100%;
                 height: 100%;
-                background: rgba(0,0,0,0.5);
+                background: rgba(0, 0, 0, 0.5);
                 backdrop-filter: blur(3px);
                 z-index: 999;
             }
@@ -607,12 +620,12 @@
             z-index: 2;
         }
 
-        input:checked + .slider {
+        input:checked+.slider {
             background-color: #f59e0b;
             border-color: #f59e0b;
         }
 
-        input:checked + .slider:before {
+        input:checked+.slider:before {
             transform: translateX(26px);
             background-color: #fff;
         }
@@ -622,11 +635,22 @@
             z-index: 1;
         }
 
-        .fa-sun { color: #f59e0b; }
-        .fa-moon { color: #94a3b8; }
+        .fa-sun {
+            color: #f59e0b;
+        }
 
-        input:checked + .slider .fa-sun { color: #fff; }
-        input:checked + .slider .fa-moon { color: #fff; }
+        .fa-moon {
+            color: #94a3b8;
+        }
+
+        input:checked+.slider .fa-sun {
+            color: #fff;
+        }
+
+        input:checked+.slider .fa-moon {
+            color: #fff;
+        }
+
         /* CV Template Styling (Hidden) */
         #cv-template {
             display: none;
@@ -639,7 +663,7 @@
             font-family: 'Poppins', sans-serif;
             line-height: 1.4;
         }
-        
+
         .cv-header {
             background: #0f172a;
             color: white;
@@ -724,24 +748,30 @@
             font-family: 'Poppins', sans-serif;
             line-height: 1.4;
         }
+
         .transcript-header {
             padding: 10px 30px;
         }
+
         .transcript-table {
             width: 100%;
             border-collapse: collapse;
             font-size: 9pt;
         }
-        .transcript-table th, .transcript-table td {
+
+        .transcript-table th,
+        .transcript-table td {
             border: 1px solid #cbd5e1;
             padding: 8px;
             text-align: left;
         }
+
         .transcript-table th {
             background-color: #f1f5f9;
             font-weight: 600;
             text-align: center;
         }
+
         .transcript-table tr {
             page-break-inside: avoid !important;
             break-inside: avoid !important;
@@ -820,9 +850,20 @@
             border-bottom-left-radius: 12px;
         }
 
-        .status-sudah { background: #10b981; color: white; }
-        .status-sedang { background: #f59e0b; color: white; }
-        .status-belum { background: #ff0404; color: white; }
+        .status-sudah {
+            background: #10b981;
+            color: white;
+        }
+
+        .status-sedang {
+            background: #f59e0b;
+            color: white;
+        }
+
+        .status-belum {
+            background: #ff0404;
+            color: white;
+        }
 
         .course-code {
             font-size: 0.75rem;
@@ -867,13 +908,15 @@
         }
 
         .badge-wajib {
-            background: #1e3a8a; /* Navy */
+            background: #1e3a8a;
+            /* Navy */
             color: #ffffff;
             border: 1px solid #1e40af;
         }
 
         .badge-category {
-            background: #475569; /* Grey */
+            background: #475569;
+            /* Grey */
             color: #ffffff;
             border: 1px solid #334155;
         }
@@ -902,7 +945,8 @@
             color: #10b981;
         }
 
-        .grade-ab, .grade-b {
+        .grade-ab,
+        .grade-b {
             background: rgba(56, 189, 248, 0.1);
             color: var(--accent-color);
         }
@@ -924,13 +968,14 @@
             .courses-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .semester-header {
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 0.5rem;
             }
         }
+
         /* Logbook Table Styles */
         .logbook-controls {
             display: flex;
@@ -957,7 +1002,8 @@
         }
 
         .custom-table th {
-            background: #04c0ff; /* Blue Header */
+            background: #04c0ff;
+            /* Blue Header */
             padding: 1.2rem 1rem;
             font-weight: 600;
             color: #ffffff;
@@ -995,11 +1041,26 @@
             background: rgba(0, 0, 0, 0.02);
         }
 
-        .col-activity { width: 25%; }
-        .col-result { width: 25%; }
-        .col-obstacle { width: 20%; }
-        .col-time { width: 15%; }
-        .col-action { width: 10%; text-align: center; }
+        .col-activity {
+            width: 25%;
+        }
+
+        .col-result {
+            width: 25%;
+        }
+
+        .col-obstacle {
+            width: 20%;
+        }
+
+        .col-time {
+            width: 15%;
+        }
+
+        .col-action {
+            width: 10%;
+            text-align: center;
+        }
 
         .btn-delete {
             color: #ef4444;
@@ -1024,7 +1085,13 @@
 
         /* Mobile Responsiveness for Logbook */
         @media (max-width: 768px) {
-            .custom-table, .custom-table thead, .custom-table tbody, .custom-table th, .custom-table td, .custom-table tr {
+
+            .custom-table,
+            .custom-table thead,
+            .custom-table tbody,
+            .custom-table th,
+            .custom-table td,
+            .custom-table tr {
                 display: block;
             }
 
@@ -1118,36 +1185,115 @@
                 padding: 1.5rem;
             }
         }
+
+        /* Custom Language Switcher Styles */
+        .lang-switcher {
+            display: flex;
+            justify-content: center;
+            gap: 0.4rem;
+            margin-top: -1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .lang-btn {
+            background: var(--accent-color);
+            color: #fff;
+            border: none;
+            padding: 0.2rem 0.6rem;
+            border-radius: 50px;
+            font-size: 0.7rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+            white-space: nowrap;
+        }
+
+        .lang-btn:hover {
+            opacity: 0.8;
+            transform: translateY(-2px);
+        }
+
+        .lang-btn.active {
+            background: var(--accent-hover);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Menyembunyikan elemen bawaan Google Translate dengan aman */
+        #google_translate_element {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            opacity: 0;
+            z-index: -100;
+            pointer-events: none;
+        }
+
+        .goog-te-banner-frame.skiptranslate {
+            display: none !important;
+        }
+
+        body {
+            top: 0px !important;
+        }
+
+        .goog-tooltip {
+            display: none !important;
+        }
+
+        .goog-tooltip:hover {
+            display: none !important;
+        }
+
+        .goog-text-highlight {
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+        }
     </style>
 </head>
+
 <body>
 
     <!-- Maintenance / Server Error Overlay -->
-    <div id="maintenance-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 1000000; display: none; justify-content: center; align-items: center; flex-direction: column; color: white; text-align: center; padding: 2rem;">
+    <div id="maintenance-overlay"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 1000000; display: none; justify-content: center; align-items: center; flex-direction: column; color: white; text-align: center; padding: 2rem;">
         <i class="fas fa-plug" style="font-size: 5rem; color: #ef4444; margin-bottom: 1.5rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem; color: #ef4444;">Gagal Koneksi Server</h1>
-        <p style="color: #94a3b8; font-size: 1rem; max-width: 400px; line-height: 1.6;">Server tidak dapat dijangkau saat ini. Harap coba lagi nanti atau tunggu hingga perbaikan selesai. <br><br><strong style="color: #38bdf8;">Sistem akan kembali normal pada pukul 04:00 WIB.</strong></p>
+        <p style="color: #94a3b8; font-size: 1rem; max-width: 400px; line-height: 1.6;">Server tidak dapat dijangkau
+            saat ini BRO!!. Harap coba lagi nanti atau tunggu hingga perbaikan selesai. <br><br><strong
+                style="color: #38bdf8;">Sistem akan kembali normal pada pukul 04:00 WIB.</strong></p>
     </div>
 
     <!-- Welcome Overlay -->
-    <div id="welcome-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 10000; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.5s ease;">
-        <div class="card" style="width: 90%; max-width: 400px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); border-color: var(--accent-color);">
-            <div style="width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 1.5rem; overflow: hidden; border: 3px solid var(--accent-color); padding: 3px; background: var(--card-bg);">
-                <img src="arnof.jpg" alt="Foto Arnof" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+    <div id="welcome-overlay"
+        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 10000; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.5s ease;">
+        <div class="card"
+            style="width: 90%; max-width: 400px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); border-color: var(--accent-color);">
+            <div
+                style="width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 1.5rem; overflow: hidden; border: 3px solid var(--accent-color); padding: 3px; background: var(--card-bg);">
+                <img src="arnof.jpg" alt="Foto Arnof"
+                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
             </div>
             <h2 style="margin-bottom: 0.5rem; font-size: 1.5rem;">Selamat Datang!</h2>
-            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">Silakan masukkan nama lengkap Anda sebelum masuk ke portofolio.</p>
+            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">Silakan masukkan nama
+                lengkap Anda sebelum masuk ke portofolio.</p>
             <form id="welcomeForm" onsubmit="submitWelcomeForm(event)">
-                <input type="text" id="visitorName" class="form-control" placeholder="Nama Lengkap Anda..." required style="margin-bottom: 0.5rem; text-align: center; font-size: 1.05rem; padding: 0.8rem; border-radius: 10px;">
-                <div id="name-error" style="color: #ef4444; font-size: 0.85rem; margin-bottom: 1rem; display: none; font-weight: 500;">Isi nama lengkap Anda dengan benar (hanya huruf).</div>
-                <button type="submit" class="btn" style="width: 100%; background: var(--accent-color); color: white; border: none; padding: 0.8rem; font-size: 1.05rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Masuk Portofolio <i class="fas fa-sign-in-alt" style="margin-left: 8px;"></i></button>
+                <input type="text" id="visitorName" class="form-control" placeholder="Nama Lengkap Anda..." required
+                    style="margin-bottom: 0.5rem; text-align: center; font-size: 1.05rem; padding: 0.8rem; border-radius: 10px;">
+                <div id="name-error"
+                    style="color: #ef4444; font-size: 0.85rem; margin-bottom: 1rem; display: none; font-weight: 500;">
+                    Isi nama lengkap Anda dengan benar (hanya huruf).</div>
+                <button type="submit" class="btn"
+                    style="width: 100%; background: var(--accent-color); color: white; border: none; padding: 0.8rem; font-size: 1.05rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Masuk
+                    Portofolio <i class="fas fa-sign-in-alt" style="margin-left: 8px;"></i></button>
             </form>
         </div>
     </div>
 
     <!-- Loading Overlay -->
     <div id="loader">
-        <div style="color: var(--accent-color); font-size: 1.2rem; font-weight: 600; letter-spacing: 2px;">INITIALIZING SESSION...</div>
+        <div style="color: var(--accent-color); font-size: 1.2rem; font-weight: 600; letter-spacing: 2px;">INITIALIZING
+            SESSION...</div>
         <div class="loader-bar"></div>
     </div>
 
@@ -1164,32 +1310,53 @@
         <!-- GANTI src DI BAWAH INI DENGAN NAMA FILE FOTO ANDA (misal: foto-arnof.jpg) -->
         <img src="arnof.jpg" alt="Foto Arnof" class="profile-img">
         <h2 class="sidebar-title">Arnof Dwi Ferdiza</h2>
+
+        <!-- Struktur di dalam Sidebar kamu -->
+        <div class="lang-switcher">
+            <button class="lang-btn active" data-lang="id">ID</button>
+            <button class="lang-btn" data-lang="en">EN</button>
+            <button class="lang-btn" data-lang="zh-CN">中文</button>
+            <button class="lang-btn" data-lang="ja">日本語</button>
+        </div>
+
+        <!-- Elemen wajib untuk Google Translate (Tidak akan terlihat di layar) -->
+        <div id="google_translate_element"></div>
+
         <ul class="nav-links">
             <li><a href="#" class="active" onclick="showSection('home')"><i class="fas fa-home"></i> Beranda</a></li>
-            <li><a href="#" onclick="showSection('projects')"><i class="fas fa-project-diagram"></i> Projek Selesai</a></li>
+            <li><a href="#" onclick="showSection('projects')"><i class="fas fa-project-diagram"></i> Projek Selesai</a>
+            </li>
             <li><a href="#" onclick="showSection('about')"><i class="fas fa-user"></i> Tentang Saya</a></li>
             <li><a href="#" onclick="showSection('education')"><i class="fas fa-graduation-cap"></i> Pendidikan</a></li>
             <li><a href="#" onclick="showSection('skills')"><i class="fas fa-code"></i> Skill</a></li>
             <li><a href="#" onclick="showSection('experience')"><i class="fas fa-briefcase"></i> Pengalaman</a></li>
             <li><a href="#" onclick="showSection('certificates')"><i class="fas fa-certificate"></i> Sertifikat</a></li>
-            <li><a href="#" onclick="showSection('learning-path')"><i class="fas fa-map-signs"></i> Learning Path</a></li>
+            <li><a href="#" onclick="showSection('learning-path')"><i class="fas fa-map-signs"></i> Learning Path</a>
+            </li>
             <li><a href="#" onclick="showSection('logbook')"><i class="fas fa-book"></i> Logbook</a></li>
             <li><a href="#" onclick="showSection('gallery')"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
             <li><a href="#" onclick="showSection('achievements')"><i class="fas fa-trophy"></i> Pencapaian</a></li>
             <li style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
-                <a href="#" onclick="logoutVisitor()" style="color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Keluar / Ganti Nama</a>
+                <a href="#" onclick="logoutVisitor()" style="color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Keluar
+                    / Ganti Nama</a>
             </li>
         </ul>
 
+
+        <!-- Google Translate Widget (Hidden) -->
+        <div id="google_translate_element"></div>
+
         <!-- Sidebar Footer -->
-        <div style="margin-top: 1rem; text-align: center; font-size: 0.7rem; color: var(--text-secondary); opacity: 0.7;">
+        <div
+            style="margin-top: 1rem; text-align: center; font-size: 0.7rem; color: var(--text-secondary); opacity: 0.7;">
             <div>&copy; 2026 Arnof Dwi Ferdiza</div>
             <div>V.2.2.6 | Portofolio Arnof Dwi Ferdiza</div>
         </div>
     </nav>
 
     <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/6285896611944?text=hallo%20dengan%20Kak%20arnof%3F%3F%20saya%20lihat%20di%20cv%20anda%20bagus%20sekali%20apakah%20anda%20berminat%20berkontribusi%20dengan%20perusahaan%20saya" target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
+    <a href="https://wa.me/6285896611944?text=hallo%20dengan%20Kak%20arnof%3F%3F%20saya%20lihat%20di%20cv%20anda%20bagus%20sekali%20apakah%20anda%20berminat%20berkontribusi%20dengan%20perusahaan%20saya"
+        target="_blank" class="whatsapp-float" aria-label="Chat on WhatsApp">
         <i class="fab fa-whatsapp"></i>
     </a>
 
@@ -1206,48 +1373,63 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
-        
+
         <!-- SECTION: BERANDA -->
         <section id="home" class="active">
-            <div class="welcome-banner card" style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.05) 0%, transparent 100%); border-left: 4px solid var(--accent-color); margin-bottom: 2rem; padding: 1.5rem;">
-                <h2 style="font-size: 1.6rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px;">Selamat Datang, <span id="user-greeting-name" class="highlight">Tamu</span>! 👋</h2>
-                <p style="color: var(--text-secondary); font-size: 0.95rem;">Selamat menjelajahi portofolio saya. Semoga Anda menemukan informasi yang bermanfaat dan menginspirasi.</p>
+            <div class="welcome-banner card"
+                style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.05) 0%, transparent 100%); border-left: 4px solid var(--accent-color); margin-bottom: 2rem; padding: 1.5rem;">
+                <h2 style="font-size: 1.6rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px;">
+                    Selamat Datang, <span id="user-greeting-name" class="highlight">Tamu</span>! 👋</h2>
+                <p style="color: var(--text-secondary); font-size: 0.95rem;">Selamat menjelajahi portofolio saya. Semoga
+                    Anda menemukan informasi yang bermanfaat dan menginspirasi.</p>
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h1 class="section-title" style="margin-bottom: 0;">System <span class="highlight">Overview</span></h1>
-                <div style="font-size: 0.8rem; background: rgba(56, 189, 248, 0.1); padding: 0.4rem 1rem; border-radius: 20px; color: var(--accent-color); border: 1px solid rgba(56, 189, 248, 0.2);">
-                    <i class="fas fa-circle" style="font-size: 0.6rem; margin-right: 5px; animation: pulse 2s infinite;"></i> System Active
+                <div
+                    style="font-size: 0.8rem; background: rgba(56, 189, 248, 0.1); padding: 0.4rem 1rem; border-radius: 20px; color: var(--accent-color); border: 1px solid rgba(56, 189, 248, 0.2);">
+                    <i class="fas fa-circle"
+                        style="font-size: 0.6rem; margin-right: 5px; animation: pulse 2s infinite;"></i> System Active
                 </div>
             </div>
 
             <!-- Dashboard Stats Row -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
-                <div class="card" onclick="showSection('projects')" style="margin-bottom: 0; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-left: 4px solid var(--accent-color); cursor: pointer; transition: transform 0.2s ease;">
-                    <div style="background: rgba(56, 189, 248, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+            <div
+                style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1.5rem; margin-bottom: 2.5rem;">
+                <div class="card" onclick="showSection('projects')"
+                    style="margin-bottom: 0; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-left: 4px solid var(--accent-color); cursor: pointer; transition: transform 0.2s ease;">
+                    <div
+                        style="background: rgba(56, 189, 248, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-tasks" style="color: var(--accent-color); font-size: 1.5rem;"></i>
                     </div>
                     <div>
                         <div style="font-size: 1.5rem; font-weight: 700;">15+</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Projek Selesai</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Projek
+                            Selesai</div>
                     </div>
                 </div>
-                <div class="card" onclick="showSection('certificates')" style="margin-bottom: 0; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-left: 4px solid #10b981; cursor: pointer; transition: transform 0.2s ease;">
-                    <div style="background: rgba(16, 185, 129, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <div class="card" onclick="showSection('certificates')"
+                    style="margin-bottom: 0; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-left: 4px solid #10b981; cursor: pointer; transition: transform 0.2s ease;">
+                    <div
+                        style="background: rgba(16, 185, 129, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-certificate" style="color: #10b981; font-size: 1.5rem;"></i>
                     </div>
                     <div>
                         <div style="font-size: 1.5rem; font-weight: 700;">8+</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Sertifikasi</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">
+                            Sertifikasi</div>
                     </div>
                 </div>
-                <div class="card" onclick="showSection('experience')" style="margin-bottom: 0; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-left: 4px solid #f59e0b; cursor: pointer; transition: transform 0.2s ease;">
-                    <div style="background: rgba(245, 158, 11, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
+                <div class="card" onclick="showSection('experience')"
+                    style="margin-bottom: 0; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-left: 4px solid #f59e0b; cursor: pointer; transition: transform 0.2s ease;">
+                    <div
+                        style="background: rgba(245, 158, 11, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
                         <i class="fas fa-code-branch" style="color: #f59e0b; font-size: 1.5rem;"></i>
                     </div>
                     <div>
                         <div style="font-size: 1.5rem; font-weight: 700;">120+</div>
-                        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Commits</div>
+                        <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">
+                            Commits</div>
                     </div>
                 </div>
             </div>
@@ -1255,26 +1437,33 @@
             <h2 style="font-size: 1.2rem; margin-bottom: 1rem;">Personal <span class="highlight">Profile</span></h2>
             <div class="card">
                 <p class="text-lead">
-                    Saya adalah mahasiswa <span class="highlight">Informatika 2024 Universitas Bandar Lampung (UBL)</span>. 
-                    Saya berasal dari Way Kanan dan memiliki hobi di bidang <strong>design</strong> dan <strong>ngoding</strong>. 
+                    Saya adalah mahasiswa <span class="highlight">Informatika 2024 Universitas Bandar Lampung
+                        (UBL)</span>.
+                    Saya berasal dari Way Kanan dan memiliki hobi di bidang <strong>design</strong> dan
+                    <strong>ngoding</strong>.
                     Lahir pada tahun 2005, saya saat ini tinggal di desa Gunung Waras.
                 </p>
                 <p class="text-lead">
-                    Selain aktif berkuliah, saya juga ikut berorganisasi di kampus. Saya merupakan anggota 
-                    <span class="highlight">Komunikasi & Informasi HMIF UBL</span> dan juga tergabung dalam 
+                    Selain aktif berkuliah, saya juga ikut berorganisasi di kampus. Saya merupakan anggota
+                    <span class="highlight">Komunikasi & Informasi HMIF UBL</span> dan juga tergabung dalam
                     <span class="highlight">Pusat Studi Mekatronika & Otomasi</span> Dan Merupakan Anggota Robotic UBL.
                 </p>
-                
+
                 <div class="social-links">
-                    <a href="https://www.instagram.com/yay_ferdiza?igsh=MXU5ZjM5M3g2MjAzYQ==" target="_blank" class="btn"><i class="fab fa-instagram"></i> Instagram</a>
-                    <a href="https://www.tiktok.com/@nof.dwifer?_r=1&_t=ZS-96DcVWOujzD" target="_blank" class="btn"><i class="fab fa-tiktok"></i> TikTok</a>
-                    <a href="https://wa.me/6285896611944?text=hallo%20dengan%20Kak%20arnof%3F%3F%20saya%20lihat%20di%20cv%20anda%20bagus%20sekali%20apakah%20anda%20berminat%20berkontribusi%20dengan%20perusahaan%20saya" target="_blank" class="btn"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-                    <a href="https://www.linkedin.com/in/arnof-dwi-ferdiza-39150a333?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    <a href="https://www.instagram.com/yay_ferdiza?igsh=MXU5ZjM5M3g2MjAzYQ==" target="_blank"
+                        class="btn"><i class="fab fa-instagram"></i> Instagram</a>
+                    <a href="https://www.tiktok.com/@nof.dwifer?_r=1&_t=ZS-96DcVWOujzD" target="_blank" class="btn"><i
+                            class="fab fa-tiktok"></i> TikTok</a>
+                    <a href="https://wa.me/6285896611944?text=hallo%20dengan%20Kak%20arnof%3F%3F%20saya%20lihat%20di%20cv%20anda%20bagus%20sekali%20apakah%20anda%20berminat%20berkontribusi%20dengan%20perusahaan%20saya"
+                        target="_blank" class="btn"><i class="fab fa-whatsapp"></i> WhatsApp</a>
+                    <a href="https://www.linkedin.com/in/arnof-dwi-ferdiza-39150a333?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app"
+                        target="_blank" class="btn"><i class="fab fa-linkedin"></i> LinkedIn</a>
                     <a href="mailto:arnofdwiferdiza11@gmail.com" class="btn"><i class="fas fa-envelope"></i> Email</a>
                 </div>
 
                 <div style="margin-top: 2rem;">
-                    <button onclick="downloadCV()" class="btn" style="background: var(--accent-color); border-color: var(--accent-color); color: #fff; padding: 0.8rem 2rem; font-weight: 600; cursor: pointer;">
+                    <button onclick="downloadCV()" class="btn"
+                        style="background: var(--accent-color); border-color: var(--accent-color); color: #fff; padding: 0.8rem 2rem; font-weight: 600; cursor: pointer;">
                         <i class="fas fa-download"></i> Download CV (PDF)
                     </button>
                 </div>
@@ -1287,34 +1476,58 @@
             <div class="card">
                 <h3>Arnof Dwi Ferdiza</h3>
                 <p class="text-lead" style="margin-top: 1rem;">
-                    Halo! Saya <strong>Arnof Dwi Ferdiza</strong>, seorang mahasiswa <span class="highlight">Informatika angkatan 2024 di Universitas Bandar Lampung (UBL)</span>. Saya lahir pada tahun 2005 dan berasal dari Way Kanan, Lampung. Sejak lama, saya memiliki ketertarikan mendalam dalam dunia digital, khususnya di bidang <span class="highlight">UI/UX Design</span> dan <span class="highlight">Web Development</span>.
+                    Halo! Saya <strong>Arnof Dwi Ferdiza</strong>, seorang mahasiswa <span class="highlight">Informatika
+                        angkatan 2024 di Universitas Bandar Lampung (UBL)</span>. Saya lahir pada tahun 2005 dan berasal
+                    dari Way Kanan, Lampung. Sejak lama, saya memiliki ketertarikan mendalam dalam dunia digital,
+                    khususnya di bidang <span class="highlight">UI/UX Design</span> dan <span class="highlight">Web
+                        Development</span>.
                 </p>
                 <p class="text-lead">
-                    Bagi saya, desain dan coding adalah kombinasi sempurna untuk menuangkan kreativitas dan logika. Saya selalu berusaha untuk menciptakan karya yang tidak hanya berfungsi dengan baik secara teknis, tetapi juga memiliki estetika visual yang memanjakan mata pengguna.
+                    Bagi saya, desain dan coding adalah kombinasi sempurna untuk menuangkan kreativitas dan logika. Saya
+                    selalu berusaha untuk menciptakan karya yang tidak hanya berfungsi dengan baik secara teknis, tetapi
+                    juga memiliki estetika visual yang memanjakan mata pengguna.
                 </p>
                 <p class="text-lead">
-                    Saat ini, saya aktif mengasah kemampuan saya melalui berbagai organisasi kampus, seperti divisi <span class="highlight">Komunikasi & Informasi di HMIF UBL</span> dan bergabung di <span class="highlight">Pusat Studi Mekatronika & Otomasi</span>. Saya percaya bahwa belajar secara kolaboratif adalah kunci untuk berkembang pesat di industri teknologi.
+                    Saat ini, saya aktif mengasah kemampuan saya melalui berbagai organisasi kampus, seperti divisi
+                    <span class="highlight">Komunikasi & Informasi di HMIF UBL</span> dan bergabung di <span
+                        class="highlight">Pusat Studi Mekatronika & Otomasi</span>. Saya percaya bahwa belajar secara
+                    kolaboratif adalah kunci untuk berkembang pesat di industri teknologi.
                 </p>
-                
+
                 <div class="grid-2" style="margin-top: 2rem;">
                     <div>
                         <ul style="list-style: none; line-height: 2.5; color: var(--text-secondary);">
-                            <li><i class="fas fa-calendar-alt" style="width: 25px; color: var(--accent-color);"></i> <strong>Tahun Lahir:</strong> 11 November 2005</li>
-                            <li><i class="fas fa-map-marker-alt" style="width: 25px; color: var(--accent-color);"></i> <strong>Domisili:</strong> <a href="https://www.google.com/maps/place/TUAN+NAGA+BERISANG/@-4.336419,104.7457001,17z/data=!3m1!4b1!4m6!3m5!1s0x2e38dd00445528c1:0x47fb06062007d3e0!8m2!3d-4.336419!4d104.748275!16s%2Fg%2F11m5qzntc4?entry=ttu" target="_blank" style="color: inherit; text-decoration: none; transition: var(--transition);" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='inherit'">Gunung Waras, Way Kanan, Lampung</a></li>
-                            <li><i class="fas fa-envelope" style="width: 25px; color: var(--accent-color);"></i> <strong>Email:</strong> <a href="mailto:arnofdwiferdiza11@gmail.com" style="color: inherit; text-decoration: none; transition: var(--transition);" onmouseover="this.style.color='var(--accent-color)'" onmouseout="this.style.color='inherit'">arnofdwiferdiza11@gmail.com</a></li>
+                            <li><i class="fas fa-calendar-alt" style="width: 25px; color: var(--accent-color);"></i>
+                                <strong>Tahun Lahir:</strong> 11 November 2005</li>
+                            <li><i class="fas fa-map-marker-alt" style="width: 25px; color: var(--accent-color);"></i>
+                                <strong>Domisili:</strong> <a
+                                    href="https://www.google.com/maps/place/TUAN+NAGA+BERISANG/@-4.336419,104.7457001,17z/data=!3m1!4b1!4m6!3m5!1s0x2e38dd00445528c1:0x47fb06062007d3e0!8m2!3d-4.336419!4d104.748275!16s%2Fg%2F11m5qzntc4?entry=ttu"
+                                    target="_blank"
+                                    style="color: inherit; text-decoration: none; transition: var(--transition);"
+                                    onmouseover="this.style.color='var(--accent-color)'"
+                                    onmouseout="this.style.color='inherit'">Gunung Waras, Way Kanan, Lampung</a></li>
+                            <li><i class="fas fa-envelope" style="width: 25px; color: var(--accent-color);"></i>
+                                <strong>Email:</strong> <a href="mailto:arnofdwiferdiza11@gmail.com"
+                                    style="color: inherit; text-decoration: none; transition: var(--transition);"
+                                    onmouseover="this.style.color='var(--accent-color)'"
+                                    onmouseout="this.style.color='inherit'">arnofdwiferdiza11@gmail.com</a></li>
                         </ul>
                     </div>
                     <div>
                         <ul style="list-style: none; line-height: 2.5; color: var(--text-secondary);">
-                            <li><i class="fas fa-graduation-cap" style="width: 25px; color: var(--accent-color);"></i> <strong>Pendidikan:</strong> S1 Informatika UBL</li>
-                            <li><i class="fas fa-users" style="width: 25px; color: var(--accent-color);"></i> <strong>Organisasi & Pusat Studi:</strong> HMIF, Robotic UBL, & Pusat Studi Mekatronika & Otomasi</li>
-                            <li><i class="fas fa-heart" style="width: 25px; color: var(--accent-color);"></i> <strong>Hobi:</strong> Design & Coding</li>
+                            <li><i class="fas fa-graduation-cap" style="width: 25px; color: var(--accent-color);"></i>
+                                <strong>Pendidikan:</strong> S1 Informatika UBL</li>
+                            <li><i class="fas fa-users" style="width: 25px; color: var(--accent-color);"></i>
+                                <strong>Organisasi & Pusat Studi:</strong> HMIF, Robotic UBL, & Pusat Studi Mekatronika
+                                & Otomasi</li>
+                            <li><i class="fas fa-heart" style="width: 25px; color: var(--accent-color);"></i>
+                                <strong>Hobi:</strong> Design & Coding</li>
                         </ul>
                     </div>
                 </div>
             </div>
         </section>
-        
+
         <!-- SECTION: PENDIDIKAN -->
         <section id="education">
             <h2 class="section-title">Riwayat Pendidikan</h2>
@@ -1356,10 +1569,11 @@
         <!-- SECTION: SKILL -->
         <section id="skills">
             <h2 class="section-title">Keahlian & Tools</h2>
-            
+
             <div class="grid-2">
                 <div class="card">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-laptop-code"></i> Web & Programming</h3>
+                    <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-laptop-code"></i>
+                        Web & Programming</h3>
                     <div class="skill-tags">
                         <span class="skill-tag"><i class="fab fa-html5"></i> HTML5</span>
                         <span class="skill-tag"><i class="fab fa-css3-alt"></i> CSS3</span>
@@ -1371,7 +1585,8 @@
                 </div>
 
                 <div class="card">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-palette"></i> UI/UX & Design</h3>
+                    <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-palette"></i> UI/UX
+                        & Design</h3>
                     <div class="skill-tags">
                         <span class="skill-tag"><i class="fab fa-figma"></i> Figma</span>
                         <span class="skill-tag"><i class="fas fa-paint-brush"></i> Canva</span>
@@ -1383,7 +1598,8 @@
                 </div>
 
                 <div class="card">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-microchip"></i> IoT & Robotics</h3>
+                    <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-microchip"></i> IoT
+                        & Robotics</h3>
                     <div class="skill-tags">
                         <span class="skill-tag">Arduino</span>
                         <span class="skill-tag">ESP32 / ESP8266</span>
@@ -1394,7 +1610,8 @@
                 </div>
 
                 <div class="card">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-tools"></i> Development Tools</h3>
+                    <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-tools"></i>
+                        Development Tools</h3>
                     <div class="skill-tags">
                         <span class="skill-tag"><i class="fab fa-git-alt"></i> Git</span>
                         <span class="skill-tag"><i class="fab fa-github"></i> GitHub</span>
@@ -1405,7 +1622,8 @@
                 </div>
 
                 <div class="card">
-                    <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-file-word"></i> Productivity & Office</h3>
+                    <h3 style="margin-bottom: 1.5rem; color: var(--accent-color);"><i class="fas fa-file-word"></i>
+                        Productivity & Office</h3>
                     <div class="skill-tags">
                         <span class="skill-tag"><i class="fas fa-file-word"></i> Microsoft Word</span>
                         <span class="skill-tag"><i class="fas fa-file-excel"></i> Microsoft Excel</span>
@@ -1423,55 +1641,70 @@
                     <div class="timeline-item">
                         <div class="timeline-date">2026 - 2028</div>
                         <h3>Pusat Studi Mekatronika & Otomasi</h3>
-                        <p class="text-secondary" style="margin-top: 0.5rem;">Aktif dalam kegiatan pusat studi mekatronika dan otomasi Universitas Bandar Lampung bertanggung jawab mengerjakan projek bersama-sama anggota lain dan bertukar pikiran serta menuang ide kreatifitas baru.</p>
+                        <p class="text-secondary" style="margin-top: 0.5rem;">Aktif dalam kegiatan pusat studi
+                            mekatronika dan otomasi Universitas Bandar Lampung bertanggung jawab mengerjakan projek
+                            bersama-sama anggota lain dan bertukar pikiran serta menuang ide kreatifitas baru.</p>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-date">2026 - 2027</div>
                         <h3>Wakadiv Kominfo / Kadiv Humas Robotic UBL</h3>
-                        <p class="text-secondary" style="margin-top: 0.5rem;">Bertanggung jawab merancang strategi komunikasi, mengelola relasi publik, serta mendesain kampanye media digital yang inovatif guna memperkuat branding dan citra profesional tim Robotic UBL di ranah internal maupun eksternal.</p>
+                        <p class="text-secondary" style="margin-top: 0.5rem;">Bertanggung jawab merancang strategi
+                            komunikasi, mengelola relasi publik, serta mendesain kampanye media digital yang inovatif
+                            guna memperkuat branding dan citra profesional tim Robotic UBL di ranah internal maupun
+                            eksternal.</p>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-date">2024 - Sekarang</div>
                         <h3>Anggota Robotic UBL</h3>
-                        <p class="text-secondary" style="margin-top: 0.5rem;">Berfokus pada pengembangan sistem kontrol cerdas dan integrasi sensor pada berbagai jenis robot. Aktif dalam riset teknologi otomasi serta berkolaborasi dalam tim untuk menciptakan inovasi robotika yang fungsional dan kompetitif.</p>
+                        <p class="text-secondary" style="margin-top: 0.5rem;">Berfokus pada pengembangan sistem kontrol
+                            cerdas dan integrasi sensor pada berbagai jenis robot. Aktif dalam riset teknologi otomasi
+                            serta berkolaborasi dalam tim untuk menciptakan inovasi robotika yang fungsional dan
+                            kompetitif.</p>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-date">2025 - Sekarang</div>
                         <h3>Dicoding DBS Foundation</h3>
-                        <p class="text-secondary" style="margin-top: 0.5rem;">Mengikuti program pelatihan serta anggota beasiswa kelas gratis Dicoding untuk pengembangan diri serta mengasah skill coding lebih dalam.</p>
+                        <p class="text-secondary" style="margin-top: 0.5rem;">Mengikuti program pelatihan serta anggota
+                            beasiswa kelas gratis Dicoding untuk pengembangan diri serta mengasah skill coding lebih
+                            dalam.</p>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-date">2024 - Sekarang</div>
                         <h3>Vibe Coding Engineering</h3>
-                        <p class="text-secondary" style="margin-top: 0.5rem;">Membuat website menggunakan HTML, CSS, dan JavaScript serta mengembangkan UI/UX Modern.</p>
+                        <p class="text-secondary" style="margin-top: 0.5rem;">Membuat website menggunakan HTML, CSS, dan
+                            JavaScript serta mengembangkan UI/UX Modern.</p>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-date">2024 - Sekarang</div>
                         <h3>UI/UX Designer</h3>
-                        <p class="text-secondary" style="margin-top: 0.5rem;">Mengembangkan desain aplikasi mobile dan web dengan prinsip UI/UX modern dan interaktif menggunakan Figma</menu>.</p>
+                        <p class="text-secondary" style="margin-top: 0.5rem;">Mengembangkan desain aplikasi mobile dan
+                            web dengan prinsip UI/UX modern dan interaktif menggunakan Figma</menu>.</p>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-date">2024 - Sekarang</div>
                         <h3>Organisasi Kampus (HMIF UBL)</h3>
-                        <p class="text-secondary" style="margin-top: 0.5rem;">Aktif dalam kegiatan organisasi Himpunan Mahasiswa Informatika (HMIF) UBL sebagai anggota divisi Komunikasi & Informasi.</p>
+                        <p class="text-secondary" style="margin-top: 0.5rem;">Aktif dalam kegiatan organisasi Himpunan
+                            Mahasiswa Informatika (HMIF) UBL sebagai anggota divisi Komunikasi & Informasi.</p>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-date">Project</div>
                         <h3>E-Commerce Project</h3>
-                        <p class="text-secondary" style="margin-top: 0.5rem;">Mengembangkan fitur aplikasi Kopma Go dan website e-commerce dengan desain UI/UX yang modern dan responsif menggunakan loveable</p>
+                        <p class="text-secondary" style="margin-top: 0.5rem;">Mengembangkan fitur aplikasi Kopma Go dan
+                            website e-commerce dengan desain UI/UX yang modern dan responsif menggunakan loveable</p>
                     </div>
 
                     <div class="timeline-item">
                         <div class="timeline-date">2024 - Sekarang</div>
                         <h3>Designer Grafis</h3>
-                        <p class="text-secondary" style="margin-top: 0.5rem;">Membuat Pamflet dan poster berbasis aplikasi Canva, Figma, Adobe Illustrator, PicsArt, dan Photoshop.</p>
+                        <p class="text-secondary" style="margin-top: 0.5rem;">Membuat Pamflet dan poster berbasis
+                            aplikasi Canva, Figma, Adobe Illustrator, PicsArt, dan Photoshop.</p>
                     </div>
                 </div>
             </div>
@@ -1481,34 +1714,45 @@
         <section id="certificates">
             <h2 class="section-title">Koleksi Sertifikat</h2>
             <div class="card">
-                <p class="text-lead" style="margin-bottom: 2rem;">Berikut adalah beberapa sertifikasi profesional yang telah saya raih dalam bidang IT, Design, dan Pengembangan Diri.</p>
-                
+                <p class="text-lead" style="margin-bottom: 2rem;">Berikut adalah beberapa sertifikasi profesional yang
+                    telah saya raih dalam bidang IT, Design, dan Pengembangan Diri.</p>
+
                 <div class="gallery-grid">
                     <!-- Sertifikat 1 -->
                     <div class="card" style="padding: 1rem; background: rgb(8, 143, 161);">
-                        <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden; position: relative;">
-                            <img src="foto/ai.jpeg" alt="Sertifikat Dicoding" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-item"
+                            style="height: 180px; border-style: solid; overflow: hidden; position: relative;">
+                            <img src="foto/ai.jpeg" alt="Sertifikat Dicoding"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <h4 style="margin-top: 1rem; font-size: 0.9rem;">Dicoding - AI Praktis Untuk Produktivitas</h4>
                     </div>
                     <!-- Sertifikat 1 -->
                     <div class="card" style="padding: 1rem; background: rgb(8, 143, 161);">
-                        <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden; position: relative;">
-                            <img src="foto/ha.jpeg" alt="Sertifikat Dicoding" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-item"
+                            style="height: 180px; border-style: solid; overflow: hidden; position: relative;">
+                            <img src="foto/ha.jpeg" alt="Sertifikat Dicoding"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">Dicoding - Membangun Aplikasi Gen Al dengan Microsoft Azure</h4>
+                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">Dicoding - Membangun Aplikasi Gen Al dengan
+                            Microsoft Azure</h4>
                     </div>
                     <!-- Sertifikat 1 -->
                     <div class="card" style="padding: 1rem; background: rgb(8, 143, 161);">
-                        <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden; position: relative;">
-                            <img src="foto/y.jpeg" alt="Sertifikat Dicoding" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-item"
+                            style="height: 180px; border-style: solid; overflow: hidden; position: relative;">
+                            <img src="foto/y.jpeg" alt="Sertifikat Dicoding"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">Dicoding - Belajar Penerapan Data Science dengan Microsoft Fabric</h4>
+                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">Dicoding - Belajar Penerapan Data Science
+                            dengan Microsoft Fabric</h4>
                     </div>
                     <!-- Sertifikat 1 -->
                     <div class="card" style="padding: 1rem; background: rgb(8, 143, 161);">
-                        <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden; position: relative;">
-                            <img src="foto/h.jpeg" alt="Sertifikat Dicoding" style="width: 100%; height: 100%; object-fit: cover;">
+                        <div class="gallery-item"
+                            style="height: 180px; border-style: solid; overflow: hidden; position: relative;">
+                            <img src="foto/h.jpeg" alt="Sertifikat Dicoding"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
                         <h4 style="margin-top: 1rem; font-size: 0.9rem;">Dicoding -Belajar Dasar AI</h4>
                     </div>
@@ -1516,39 +1760,49 @@
                     <!-- Sertifikat 2 -->
                     <div class="card" style="padding: 1rem; background: rgba(1, 139, 116, 0.785);">
                         <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden;">
-                            <img src="foto/i.jpeg" alt="Sertifikat Apresiasi" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="foto/i.jpeg" alt="Sertifikat Apresiasi"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">Microsoft Elevate - "Melatih dan Mengelola Model Machine Learning di Microsoft Fabric"</h4>
+                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">Microsoft Elevate - "Melatih dan Mengelola
+                            Model Machine Learning di Microsoft Fabric"</h4>
                     </div>
                     <!-- Sertifikat 2 -->
                     <div class="card" style="padding: 1rem; background: rgba(1, 139, 116, 0.785);">
                         <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden;">
-                            <img src="foto/q.jpeg" alt="Sertifikat Apresiasi" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="foto/q.jpeg" alt="Sertifikat Apresiasi"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">Microsoft Elevate - "Merancang Percakapan Cerdas di Azure AI Foundry"</h4>
+                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">Microsoft Elevate - "Merancang Percakapan
+                            Cerdas di Azure AI Foundry"</h4>
                     </div>
                     <!-- Sertifikat 2 -->
                     <div class="card" style="padding: 1rem; background: rgba(1, 139, 116, 0.785);">
                         <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden;">
-                            <img src="foto/w.jpeg" alt="Sertifikat Apresiasi" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="foto/w.jpeg" alt="Sertifikat Apresiasi"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">Microsoft Elevate - "Mempersiapkan Data untuk Model AI di Microsoft Fabric"</h4>
+                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">Microsoft Elevate - "Mempersiapkan Data untuk
+                            Model AI di Microsoft Fabric"</h4>
                     </div>
 
                     <!-- Sertifikat 3 -->
                     <div class="card" style="padding: 1rem; background: rgb(75, 183, 246);">
                         <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden;">
-                            <img src="foto/ubl.jpeg" alt="Sertifikat UBL" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="foto/ubl.jpeg" alt="Sertifikat UBL"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">UBL Trainer - Precollege 2025 - Computational Thinking Information Technology Center Universitas Bandar Lampung</h4>
+                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">UBL Trainer - Precollege 2025 - Computational
+                            Thinking Information Technology Center Universitas Bandar Lampung</h4>
                     </div>
 
                     <!-- Sertifikat 4 -->
                     <div class="card" style="padding: 1rem; background: rgb(75, 183, 246);">
                         <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden;">
-                            <img src="foto/t.jpeg" alt="Sertifikat KEMNAKER" style="width: 100%; height: 100%; object-fit: cover;">
+                            <img src="foto/t.jpeg" alt="Sertifikat KEMNAKER"
+                                style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
-                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">KEMNAKER - Pembekalan 12+ Essential Skills Program Magang Nasional</h4>
+                        <h4 style="margin-top: 1rem; font-size: 0.9rem;">KEMNAKER - Pembekalan 12+ Essential Skills
+                            Program Magang Nasional</h4>
                     </div>
 
                     <!-- Sertifikat 5 -->
@@ -1565,15 +1819,16 @@
         <!-- SECTION: LEARNING PATH -->
         <section id="learning-path">
             <h2 class="section-title">Learning <span class="highlight">Path</span></h2>
-            
+
             <div style="margin-bottom: 2rem; display: flex; justify-content: flex-end;">
-                <button onclick="downloadTranscript()" class="btn" style="background-color: var(--accent-color); color: #fff; border: none; font-weight: 500; padding: 0.8rem 1.5rem; box-shadow: var(--shadow);">
+                <button onclick="downloadTranscript()" class="btn"
+                    style="background-color: var(--accent-color); color: #fff; border: none; font-weight: 500; padding: 0.8rem 1.5rem; box-shadow: var(--shadow);">
                     <i class="fas fa-file-pdf"></i> Download Transkrip Nilai Sementara
                 </button>
             </div>
 
             <div class="learning-path-container">
-                
+
                 <!-- 2024-2025/Ganjil -->
                 <div class="semester-block">
                     <div class="semester-header">
@@ -1669,7 +1924,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -1705,7 +1961,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -1718,7 +1975,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -1731,7 +1989,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -1744,7 +2003,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -1757,7 +2017,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 1 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -1985,7 +2246,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -1998,7 +2260,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2011,7 +2274,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 1 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2024,7 +2288,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2037,7 +2302,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2050,7 +2316,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2063,7 +2330,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2076,7 +2344,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2099,7 +2368,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2112,7 +2382,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2125,7 +2396,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2138,7 +2410,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 0 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2151,7 +2424,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2164,7 +2438,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2203,7 +2478,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2239,7 +2515,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2252,7 +2529,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2265,7 +2543,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2278,7 +2557,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2291,7 +2571,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2304,7 +2585,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2317,7 +2599,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2330,7 +2613,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2343,7 +2627,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2366,7 +2651,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 4 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2389,7 +2675,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2402,7 +2689,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2415,7 +2703,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2428,7 +2717,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 3 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2441,7 +2731,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 2 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                         <div class="course-card">
@@ -2467,7 +2758,8 @@
                             </div>
                             <div class="course-info-row">
                                 <div class="course-sks-val"><i class="fas fa-clock"></i> 4 SKS</div>
-                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span></div>
+                                <div class="course-grade">Nilai: <span class="badge-grade grade-none">Belum Ada</span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -2480,10 +2772,13 @@
         <section id="logbook">
             <div class="logbook-controls">
                 <div>
-                    <h2 class="section-title" style="margin-bottom: 0.5rem;">Logbook <span class="highlight">ARNOF DWI FERDIZA</span></h2>
-                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Catatan logbook kegiatan selama perkuliahan</p>
+                    <h2 class="section-title" style="margin-bottom: 0.5rem;">Logbook <span class="highlight">ARNOF DWI
+                            FERDIZA</span></h2>
+                    <p style="color: var(--text-secondary); font-size: 0.9rem;">Catatan logbook kegiatan selama
+                        perkuliahan</p>
                 </div>
-                <button onclick="openLogbookModal()" class="btn" style="background: var(--accent-color); color: white; border-color: var(--accent-color); font-weight: 600;">
+                <button onclick="openLogbookModal()" class="btn"
+                    style="background: var(--accent-color); color: white; border-color: var(--accent-color); font-weight: 600;">
                     <i class="fas fa-plus"></i> Tambah Data
                 </button>
             </div>
@@ -2516,19 +2811,24 @@
                 <form id="logbookForm">
                     <div class="form-group">
                         <label for="logActivity">Aktifitas</label>
-                        <textarea id="logActivity" class="form-control" placeholder="Apa yang Anda kerjakan?" required rows="3"></textarea>
+                        <textarea id="logActivity" class="form-control" placeholder="Apa yang Anda kerjakan?" required
+                            rows="3"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="logResult">Hasil</label>
-                        <textarea id="logResult" class="form-control" placeholder="Apa hasil dari aktifitas tersebut?" required rows="3"></textarea>
+                        <textarea id="logResult" class="form-control" placeholder="Apa hasil dari aktifitas tersebut?"
+                            required rows="3"></textarea>
                     </div>
                     <div class="form-group">
                         <label for="logObstacle">Kendala</label>
-                        <textarea id="logObstacle" class="form-control" placeholder="Apa kendala yang dihadapi? (Opsional)" rows="2"></textarea>
+                        <textarea id="logObstacle" class="form-control"
+                            placeholder="Apa kendala yang dihadapi? (Opsional)" rows="2"></textarea>
                     </div>
                     <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
                         <button type="button" onclick="closeLogbookModal()" class="btn" style="flex: 1;">Batal</button>
-                        <button type="submit" class="btn" style="flex: 1; background: var(--accent-color); color: white; border-color: var(--accent-color);">Simpan Data</button>
+                        <button type="submit" class="btn"
+                            style="flex: 1; background: var(--accent-color); color: white; border-color: var(--accent-color);">Simpan
+                            Data</button>
                     </div>
                 </form>
             </div>
@@ -2540,9 +2840,10 @@
                 <h2 class="section-title" style="margin-bottom: 0;">Projek <span class="highlight">Selesai</span></h2>
                 <button class="btn" onclick="openProjectModal()"><i class="fas fa-plus"></i> Tambah Projek</button>
             </div>
-            
+
             <div class="card">
-                <p class="text-lead" style="margin-bottom: 1.5rem;">Kumpulan projek yang telah saya selesaikan, mencakup pengembangan website, aplikasi, dan desain UI/UX.</p>
+                <p class="text-lead" style="margin-bottom: 1.5rem;">Kumpulan projek yang telah saya selesaikan, mencakup
+                    pengembangan website, aplikasi, dan desain UI/UX.</p>
                 <div class="gallery-grid" id="projects-container">
                     <!-- Data projek akan dimuat di sini -->
                 </div>
@@ -2558,19 +2859,24 @@
                     <form id="projectForm">
                         <div class="form-group">
                             <label for="projectTitle">Nama Projek</label>
-                            <input type="text" id="projectTitle" class="form-control" placeholder="Contoh: E-Commerce Website" required>
+                            <input type="text" id="projectTitle" class="form-control"
+                                placeholder="Contoh: E-Commerce Website" required>
                         </div>
                         <div class="form-group">
                             <label for="projectLink">Link Projek (URL)</label>
-                            <input type="url" id="projectLink" class="form-control" placeholder="https://github.com/..." required>
+                            <input type="url" id="projectLink" class="form-control" placeholder="https://github.com/..."
+                                required>
                         </div>
                         <div class="form-group">
                             <label for="projectImage">Pilih Gambar Projek</label>
                             <input type="file" id="projectImage" class="form-control" accept="image/*" required>
                         </div>
                         <div style="margin-top: 1.5rem; display: flex; gap: 1rem;">
-                            <button type="button" onclick="closeProjectModal()" class="btn" style="flex: 1;">Batal</button>
-                            <button type="submit" class="btn" style="flex: 1; background: var(--accent-color); color: white; border-color: var(--accent-color);">Simpan Projek</button>
+                            <button type="button" onclick="closeProjectModal()" class="btn"
+                                style="flex: 1;">Batal</button>
+                            <button type="submit" class="btn"
+                                style="flex: 1; background: var(--accent-color); color: white; border-color: var(--accent-color);">Simpan
+                                Projek</button>
                         </div>
                     </form>
                 </div>
@@ -2583,9 +2889,11 @@
                 <h2 class="section-title" style="margin-bottom: 0;">Blog & Galeri Kegiatan</h2>
                 <button class="btn" onclick="openUploadModal()"><i class="fas fa-plus"></i> Tambah Kegiatan</button>
             </div>
-            
+
             <div class="card">
-                <p class="text-lead" style="margin-bottom: 1.5rem;">Dokumentasi kegiatan kampus,Kegiatan Pengabdian Kepada Masyarakat Bersama Dosen, proyek robotika, Seminar Himpunan,Pengabdian Kepada Masyarakat dan organisasi.</p>
+                <p class="text-lead" style="margin-bottom: 1.5rem;">Dokumentasi kegiatan kampus,Kegiatan Pengabdian
+                    Kepada Masyarakat Bersama Dosen, proyek robotika, Seminar Himpunan,Pengabdian Kepada Masyarakat dan
+                    organisasi.</p>
                 <div class="gallery-grid" id="gallery-container">
                     <!-- Gallery items will be loaded here -->
                 </div>
@@ -2601,13 +2909,16 @@
                     <form id="uploadForm">
                         <div class="form-group">
                             <label>Judul Kegiatan</label>
-                            <input type="text" id="activityTitle" class="form-control" placeholder="Contoh: Lomba Robotika 2024" required>
+                            <input type="text" id="activityTitle" class="form-control"
+                                placeholder="Contoh: Lomba Robotika 2024" required>
                         </div>
                         <div class="form-group">
                             <label>Pilih Gambar</label>
                             <input type="file" id="activityImage" class="form-control" accept="image/*" required>
                         </div>
-                        <button type="submit" class="btn" style="width: 100%; justify-content: center; background: var(--accent-color); border: none;">Simpan Kegiatan</button>
+                        <button type="submit" class="btn"
+                            style="width: 100%; justify-content: center; background: var(--accent-color); border: none;">Simpan
+                            Kegiatan</button>
                     </form>
                 </div>
             </div>
@@ -2622,8 +2933,8 @@
                         <h3 style="margin-bottom: 0.5rem;">Peserta Beasiswa Progresif Alur AI Engineer</h3>
                         <p class="text-secondary">Coding Camp 2026</p>
                     </div>
-                    </div>
                 </div>
+            </div>
             </div>
         </section>
 
@@ -2634,7 +2945,8 @@
         <div class="cv-header">
             <div>
                 <h1 style="margin: 0; font-size: 22pt; letter-spacing: 1px;">ARNOF DWI FERDIZA</h1>
-                <p style="margin: 5px 0; color: #38bdf8; font-weight: 500; font-size: 11pt;">Informatics Student | UI/UX Designer | Web Developer</p>
+                <p style="margin: 5px 0; color: #38bdf8; font-weight: 500; font-size: 11pt;">Informatics Student | UI/UX
+                    Designer | Web Developer</p>
             </div>
             <div style="text-align: right; font-size: 8pt; line-height: 1.6;">
                 <p><i class="fas fa-map-marker-alt"></i> Way Kanan, Lampung</p>
@@ -2705,7 +3017,11 @@
             <div class="cv-main">
                 <div class="cv-section">
                     <div class="cv-section-title">Profile Summary</div>
-                    <p style="font-size: 9pt; line-height: 1.6;">Mahasiswa Informatika UBL angkatan 2024 yang berdedikasi tinggi dalam mengeksplorasi teknologi digital. Memiliki spesialisasi dalam UI/UX Design dan Web Development. Aktif mengasah kemampuan melalui berbagai organisasi kampus seperti HMIF UBL, Robotic UBL, serta bergabung di Pusat Studi Mekatronika & Otomasi. Memiliki visi untuk menciptakan solusi teknologi yang fungsional dan memiliki estetika visual yang kuat.</p>
+                    <p style="font-size: 9pt; line-height: 1.6;">Mahasiswa Informatika UBL angkatan 2024 yang
+                        berdedikasi tinggi dalam mengeksplorasi teknologi digital. Memiliki spesialisasi dalam UI/UX
+                        Design dan Web Development. Aktif mengasah kemampuan melalui berbagai organisasi kampus seperti
+                        HMIF UBL, Robotic UBL, serta bergabung di Pusat Studi Mekatronika & Otomasi. Memiliki visi untuk
+                        menciptakan solusi teknologi yang fungsional dan memiliki estetika visual yang kuat.</p>
                 </div>
 
                 <div class="cv-section">
@@ -2713,12 +3029,14 @@
                     <div class="cv-item">
                         <div class="date">2024 - Present</div>
                         <h4>Pusat Studi Mekatronika & Otomasi</h4>
-                        <p>Bertanggung jawab dalam pengerjaan proyek inovatif mekatronika dan kolaborasi riset sistem kontrol cerdas.</p>
+                        <p>Bertanggung jawab dalam pengerjaan proyek inovatif mekatronika dan kolaborasi riset sistem
+                            kontrol cerdas.</p>
                     </div>
                     <div class="cv-item">
                         <div class="date">2026 - 2027</div>
                         <h4>Wakadiv Kominfo / Kadiv Humas Robotic UBL</h4>
-                        <p>Mengelola strategi komunikasi digital, relasi publik, dan kampanye media untuk meningkatkan citra profesional tim.</p>
+                        <p>Mengelola strategi komunikasi digital, relasi publik, dan kampanye media untuk meningkatkan
+                            citra profesional tim.</p>
                     </div>
                     <div class="cv-item">
                         <div class="date">2024 - Present</div>
@@ -2733,7 +3051,8 @@
                     <div class="cv-item">
                         <div class="date">2024 - Present</div>
                         <h4>Freelance UI/UX & Graphic Designer</h4>
-                        <p>Mendesain antarmuka aplikasi mobile/web serta aset visual kreatif untuk berbagai klien dan proyek.</p>
+                        <p>Mendesain antarmuka aplikasi mobile/web serta aset visual kreatif untuk berbagai klien dan
+                            proyek.</p>
                     </div>
                 </div>
 
@@ -2751,7 +3070,8 @@
             </div>
         </div>
 
-        <div style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 7pt; color: #94a3b8; text-align: center;">
+        <div
+            style="margin-top: 30px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 7pt; color: #94a3b8; text-align: center;">
             Document officially generated by Arnof Dwi Ferdiza Portfolio System
         </div>
     </div>
@@ -2759,11 +3079,13 @@
     <!-- Transcript Template (Hidden) -->
     <div id="transcript-template">
         <div class="transcript-header">
-            <h1 style="margin: 0; font-size: 18pt; text-align: center; color: #0f172a; letter-spacing: 1px;">TRANSKRIP NILAI SEMENTARA</h1>
-            <p style="text-align: center; font-size: 10pt; margin: 5px 0; color: #475569;">Universitas Bandar Lampung - Program Studi Informatika</p>
+            <h1 style="margin: 0; font-size: 18pt; text-align: center; color: #0f172a; letter-spacing: 1px;">TRANSKRIP
+                NILAI SEMENTARA</h1>
+            <p style="text-align: center; font-size: 10pt; margin: 5px 0; color: #475569;">Universitas Bandar Lampung -
+                Program Studi Informatika</p>
             <hr style="margin-top: 15px; border: 1px solid #e2e8f0;">
         </div>
-        
+
         <div class="transcript-info" style="margin: 20px 30px; font-size: 10pt; color: #1e293b;">
             <table style="width: 100%; border-collapse: collapse; border: none;">
                 <tr>
@@ -2780,7 +3102,7 @@
                 </tr>
             </table>
         </div>
-        
+
         <div style="margin: 0 30px;">
             <table class="transcript-table">
                 <thead>
@@ -2794,95 +3116,498 @@
                 </thead>
                 <tbody>
                     <!-- Semester Ganjil -->
-                    <tr><td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 1 (Ganjil 2024-2025)</td></tr>
-                    <tr><td style="text-align: center;">1</td><td>UN108</td><td>Personal Development</td><td style="text-align: center;">1</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">2</td><td>FK107</td><td>Pengantar Desain Sistem</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">3</td><td>FK102</td><td>Matematika Dasar</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">4</td><td>FK101</td><td>Pengantar TI & Komunikasi</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">5</td><td>UN101</td><td>Pendidikan Agama Islam</td><td style="text-align: center;">2</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">6</td><td>UN-6102</td><td>Pancasila</td><td style="text-align: center;">2</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">7</td><td>UN-6105</td><td>English for General Communication</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">8</td><td>UN-6104</td><td>Innovation & Entrepreunership</td><td style="text-align: center;">2</td><td style="text-align: center;">A</td></tr>
+                    <tr>
+                        <td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 1 (Ganjil
+                            2024-2025)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">1</td>
+                        <td>UN108</td>
+                        <td>Personal Development</td>
+                        <td style="text-align: center;">1</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">2</td>
+                        <td>FK107</td>
+                        <td>Pengantar Desain Sistem</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">3</td>
+                        <td>FK102</td>
+                        <td>Matematika Dasar</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">4</td>
+                        <td>FK101</td>
+                        <td>Pengantar TI & Komunikasi</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">5</td>
+                        <td>UN101</td>
+                        <td>Pendidikan Agama Islam</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">6</td>
+                        <td>UN-6102</td>
+                        <td>Pancasila</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">7</td>
+                        <td>UN-6105</td>
+                        <td>English for General Communication</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">8</td>
+                        <td>UN-6104</td>
+                        <td>Innovation & Entrepreunership</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
                     <!-- Semester Genap -->
-                    <tr><td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 2 (Genap 2024-2025)</td></tr>
-                    <tr><td style="text-align: center;">9</td><td>FK-6205</td><td>Algoritma dan Struktur Data</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">10</td><td>UN-6202</td><td>Bahasa Indonesia</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">11</td><td>UN-6203</td><td>Kewarganegaraan</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">12</td><td>UN-6205</td><td>Analytical and Creative Thinking</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">13</td><td>FK-6206</td><td>Prak. Algoritma dan Struktur Data</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">14</td><td>UN305</td><td>Pendidikan Anti Korupsi</td><td style="text-align: center;">2</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">15</td><td>UN109</td><td>Olahraga, Seni & Budaya I</td><td style="text-align: center;">1</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">16</td><td>FK103</td><td>Pemrograman I</td><td style="text-align: center;">3</td><td style="text-align: center;">B</td></tr>
-                    <tr><td style="text-align: center;">17</td><td>FK105</td><td>Basis Data I</td><td style="text-align: center;">3</td><td style="text-align: center;">B</td></tr>
-                    <tr><td style="text-align: center;">18</td><td>FK104</td><td>Prak. Pemrograman I</td><td style="text-align: center;">1</td><td style="text-align: center;">AB</td></tr>
-                    <tr><td style="text-align: center;">19</td><td>FK106</td><td>Prak Basis Data I</td><td style="text-align: center;">1</td><td style="text-align: center;">B</td></tr>
+                    <tr>
+                        <td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 2 (Genap
+                            2024-2025)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">9</td>
+                        <td>FK-6205</td>
+                        <td>Algoritma dan Struktur Data</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">10</td>
+                        <td>UN-6202</td>
+                        <td>Bahasa Indonesia</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">11</td>
+                        <td>UN-6203</td>
+                        <td>Kewarganegaraan</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">12</td>
+                        <td>UN-6205</td>
+                        <td>Analytical and Creative Thinking</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">13</td>
+                        <td>FK-6206</td>
+                        <td>Prak. Algoritma dan Struktur Data</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">14</td>
+                        <td>UN305</td>
+                        <td>Pendidikan Anti Korupsi</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">15</td>
+                        <td>UN109</td>
+                        <td>Olahraga, Seni & Budaya I</td>
+                        <td style="text-align: center;">1</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">16</td>
+                        <td>FK103</td>
+                        <td>Pemrograman I</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">B</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">17</td>
+                        <td>FK105</td>
+                        <td>Basis Data I</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">B</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">18</td>
+                        <td>FK104</td>
+                        <td>Prak. Pemrograman I</td>
+                        <td style="text-align: center;">1</td>
+                        <td style="text-align: center;">AB</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">19</td>
+                        <td>FK106</td>
+                        <td>Prak Basis Data I</td>
+                        <td style="text-align: center;">1</td>
+                        <td style="text-align: center;">B</td>
+                    </tr>
                     <!-- Semester 3 -->
-                    <tr><td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 3 (Ganjil 2025-2026)</td></tr>
-                    <tr><td style="text-align: center;">20</td><td>FK202</td><td>Pemrograman II</td><td style="text-align: center;">3</td><td style="text-align: center;">AB</td></tr>
-                    <tr><td style="text-align: center;">21</td><td>FK206</td><td>Analisa Kebutuhan Sistem</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">22</td><td>FK-6306</td><td>Jaringan Komputer</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">23</td><td>IF-6301</td><td>Kecerdasan Buatan</td><td style="text-align: center;">3</td><td style="text-align: center;">AB</td></tr>
-                    <tr><td style="text-align: center;">24</td><td>FK204</td><td>Basis Data II</td><td style="text-align: center;">3</td><td style="text-align: center;">B</td></tr>
-                    <tr><td style="text-align: center;">25</td><td>FK205</td><td>Prak. Basis Data II</td><td style="text-align: center;">1</td><td style="text-align: center;">B</td></tr>
-                    <tr><td style="text-align: center;">26</td><td>FK203</td><td>Prak. Pemrograman II</td><td style="text-align: center;">1</td><td style="text-align: center;">AB</td></tr>
-                    <tr><td style="text-align: center;">27</td><td>UN-6301</td><td>Pilihan Industri 1</td><td style="text-align: center;">2</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">28</td><td>FK201</td><td>Matematika Lanjut</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
+                    <tr>
+                        <td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 3 (Ganjil
+                            2025-2026)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">20</td>
+                        <td>FK202</td>
+                        <td>Pemrograman II</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">AB</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">21</td>
+                        <td>FK206</td>
+                        <td>Analisa Kebutuhan Sistem</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">22</td>
+                        <td>FK-6306</td>
+                        <td>Jaringan Komputer</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">23</td>
+                        <td>IF-6301</td>
+                        <td>Kecerdasan Buatan</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">AB</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">24</td>
+                        <td>FK204</td>
+                        <td>Basis Data II</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">B</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">25</td>
+                        <td>FK205</td>
+                        <td>Prak. Basis Data II</td>
+                        <td style="text-align: center;">1</td>
+                        <td style="text-align: center;">B</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">26</td>
+                        <td>FK203</td>
+                        <td>Prak. Pemrograman II</td>
+                        <td style="text-align: center;">1</td>
+                        <td style="text-align: center;">AB</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">27</td>
+                        <td>UN-6301</td>
+                        <td>Pilihan Industri 1</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">28</td>
+                        <td>FK201</td>
+                        <td>Matematika Lanjut</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
                     <!-- Semester 4 -->
-                    <tr><td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 4 (Genap 2025-2026)</td></tr>
-                    <tr><td style="text-align: center;">29</td><td>UN-6302</td><td>Pilihan Industri 2</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">30</td><td>FK-6401</td><td>Rekayasa Perangkat Lunak</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">31</td><td>FK-6403</td><td>Prak. Pemrograman III</td><td style="text-align: center;">1</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">32</td><td>IF-6401</td><td>IoT & Cyber-Physical Systems</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">33</td><td>IF-6402</td><td>Computer Vision & Pengolahan Citra Digital</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">34</td><td>IF-6403</td><td>Sistem Cerdas dan Otomasi</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">35</td><td>FK-6402</td><td>Pemrograman III</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">36</td><td>FK-6404</td><td>Sistem Operasi</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
+                    <tr>
+                        <td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 4 (Genap
+                            2025-2026)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">29</td>
+                        <td>UN-6302</td>
+                        <td>Pilihan Industri 2</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">30</td>
+                        <td>FK-6401</td>
+                        <td>Rekayasa Perangkat Lunak</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">31</td>
+                        <td>FK-6403</td>
+                        <td>Prak. Pemrograman III</td>
+                        <td style="text-align: center;">1</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">32</td>
+                        <td>IF-6401</td>
+                        <td>IoT & Cyber-Physical Systems</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">33</td>
+                        <td>IF-6402</td>
+                        <td>Computer Vision & Pengolahan Citra Digital</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">34</td>
+                        <td>IF-6403</td>
+                        <td>Sistem Cerdas dan Otomasi</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">35</td>
+                        <td>FK-6402</td>
+                        <td>Pemrograman III</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">36</td>
+                        <td>FK-6404</td>
+                        <td>Sistem Operasi</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
                     <!-- Semester 5 -->
-                    <tr><td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 5 (Ganjil 2026-2027)</td></tr>
-                    <tr><td style="text-align: center;">37</td><td>IF-6503</td><td>Rekayasa Perangkat Lunak Lanjut</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">38</td><td>UN-6303</td><td>Pilihan Industri 3</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">39</td><td>UN-6501</td><td>Community & Industrial Service</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">40</td><td>UN-6502</td><td>Persiapan Pemagangan</td><td style="text-align: center;">0</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">41</td><td>IF-6604</td><td>Pilihan Profesi 1</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">42</td><td>FK-6502</td><td>Data Mining</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">43</td><td>FK-6501</td><td>Statistik</td><td style="text-align: center;">3</td><td style="text-align: center;">B</td></tr>
-                    <tr><td style="text-align: center;">44</td><td>FK-6503</td><td>Interaksi Manusia dan Komputer</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
-                    <tr><td style="text-align: center;">45</td><td>FK-6504</td><td>Sistem Terdistribusi</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">46</td><td>FK-6505</td><td>Kewirausahaan dan Teknologi</td><td style="text-align: center;">3</td><td style="text-align: center;">A</td></tr>
+                    <tr>
+                        <td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 5 (Ganjil
+                            2026-2027)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">37</td>
+                        <td>IF-6503</td>
+                        <td>Rekayasa Perangkat Lunak Lanjut</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">38</td>
+                        <td>UN-6303</td>
+                        <td>Pilihan Industri 3</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">39</td>
+                        <td>UN-6501</td>
+                        <td>Community & Industrial Service</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">40</td>
+                        <td>UN-6502</td>
+                        <td>Persiapan Pemagangan</td>
+                        <td style="text-align: center;">0</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">41</td>
+                        <td>IF-6604</td>
+                        <td>Pilihan Profesi 1</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">42</td>
+                        <td>FK-6502</td>
+                        <td>Data Mining</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">43</td>
+                        <td>FK-6501</td>
+                        <td>Statistik</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">B</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">44</td>
+                        <td>FK-6503</td>
+                        <td>Interaksi Manusia dan Komputer</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">45</td>
+                        <td>FK-6504</td>
+                        <td>Sistem Terdistribusi</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">46</td>
+                        <td>FK-6505</td>
+                        <td>Kewirausahaan dan Teknologi</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">A</td>
+                    </tr>
                     <!-- Semester 6 -->
-                    <tr><td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 6 (Genap 2026-2027)</td></tr>
-                    <tr><td style="text-align: center;">47</td><td>FK-6602</td><td>Etika Profesi TI</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">48</td><td>UN-6304</td><td>Pilihan Industri 4</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">49</td><td>IF-6405</td><td>Cloud, Edge, & Fog Computing</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">50</td><td>FK-6605</td><td>Metodologi Penelitian</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">51</td><td>FK-6604</td><td>Keamanan Siber</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">52</td><td>FK-6601</td><td>Pengujian dan Kualitas Sistem</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">53</td><td>IF-6605</td><td>Pilihan Profesi 2</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">54</td><td>IF-6601</td><td>Teori Bahasa Formal & Otomata</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">55</td><td>FK-6603</td><td>Manajemen Proyek</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
+                    <tr>
+                        <td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 6 (Genap
+                            2026-2027)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">47</td>
+                        <td>FK-6602</td>
+                        <td>Etika Profesi TI</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">48</td>
+                        <td>UN-6304</td>
+                        <td>Pilihan Industri 4</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">49</td>
+                        <td>IF-6405</td>
+                        <td>Cloud, Edge, & Fog Computing</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">50</td>
+                        <td>FK-6605</td>
+                        <td>Metodologi Penelitian</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">51</td>
+                        <td>FK-6604</td>
+                        <td>Keamanan Siber</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">52</td>
+                        <td>FK-6601</td>
+                        <td>Pengujian dan Kualitas Sistem</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">53</td>
+                        <td>IF-6605</td>
+                        <td>Pilihan Profesi 2</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">54</td>
+                        <td>IF-6601</td>
+                        <td>Teori Bahasa Formal & Otomata</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">55</td>
+                        <td>FK-6603</td>
+                        <td>Manajemen Proyek</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
                     <!-- Semester 7 -->
-                    <tr><td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 7 (Ganjil 2027-2028)</td></tr>
-                    <tr><td style="text-align: center;">56</td><td>UN-6701</td><td>Pemagangan</td><td style="text-align: center;">4</td><td style="text-align: center;">-</td></tr>
+                    <tr>
+                        <td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 7 (Ganjil
+                            2027-2028)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">56</td>
+                        <td>UN-6701</td>
+                        <td>Pemagangan</td>
+                        <td style="text-align: center;">4</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
                     <!-- Semester 8 -->
-                    <tr><td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 8 (Genap 2027-2028)</td></tr>
-                    <tr><td style="text-align: center;">57</td><td>UN-6305</td><td>Pilihan Industri 5</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">58</td><td>IF-6501</td><td>Graph Database & Knowledge Graph</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">59</td><td>IF-6502</td><td>Green Computing & Sustainable AI</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">60</td><td>IF-6404</td><td>Deep Learning</td><td style="text-align: center;">3</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">61</td><td>IF-6606</td><td>Pilihan Profesi 3</td><td style="text-align: center;">2</td><td style="text-align: center;">-</td></tr>
-                    <tr><td style="text-align: center;">62</td><td>IF-6302</td><td>Machine Learning</td><td style="text-align: center;">3</td><td style="text-align: center;">AB</td></tr>
-                    <tr><td style="text-align: center;">63</td><td>FK-6801</td><td>Tugas Akhir</td><td style="text-align: center;">4</td><td style="text-align: center;">-</td></tr>
+                    <tr>
+                        <td colspan="5" style="background-color: #f8fafc; font-weight: 600;">Semester 8 (Genap
+                            2027-2028)</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">57</td>
+                        <td>UN-6305</td>
+                        <td>Pilihan Industri 5</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">58</td>
+                        <td>IF-6501</td>
+                        <td>Graph Database & Knowledge Graph</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">59</td>
+                        <td>IF-6502</td>
+                        <td>Green Computing & Sustainable AI</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">60</td>
+                        <td>IF-6404</td>
+                        <td>Deep Learning</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">61</td>
+                        <td>IF-6606</td>
+                        <td>Pilihan Profesi 3</td>
+                        <td style="text-align: center;">2</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">62</td>
+                        <td>IF-6302</td>
+                        <td>Machine Learning</td>
+                        <td style="text-align: center;">3</td>
+                        <td style="text-align: center;">AB</td>
+                    </tr>
+                    <tr>
+                        <td style="text-align: center;">63</td>
+                        <td>FK-6801</td>
+                        <td>Tugas Akhir</td>
+                        <td style="text-align: center;">4</td>
+                        <td style="text-align: center;">-</td>
+                    </tr>
                 </tbody>
             </table>
         </div>
-        
+
         <div style="margin: 40px 30px 10px 30px; text-align: right; font-size: 10pt; color: #1e293b;">
             <p>Bandar Lampung, <span id="transcript-date"></span></p>
             <br><br><br>
             <p><strong>Arnof Dwi Ferdiza</strong></p>
         </div>
-        
-        <div style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 7pt; color: #94a3b8; text-align: center;">
+
+        <div
+            style="margin-top: 20px; border-top: 1px solid #e2e8f0; padding-top: 10px; font-size: 7pt; color: #94a3b8; text-align: center;">
             Document officially generated by Arnof Dwi Ferdiza Portfolio System
         </div>
     </div>
@@ -2895,16 +3620,16 @@
             // Convert to WIB (UTC+7)
             const utc = now.getTime() + (now.getTimezoneOffset() * 60000);
             const wib = new Date(utc + (3600000 * 7));
-            
+
             const hours = wib.getHours();
             const minutes = wib.getMinutes();
             const currentMinutes = hours * 60 + minutes;
-            
+
             const startMaintenance = 22 * 60 + 45; // 22:45
             const endMaintenance = 4 * 60;         // 04:00
-            
+
             const overlay = document.getElementById('maintenance-overlay');
-            
+
             // Maintenance window: from 22:45 to 23:59 OR 00:00 to 03:59
             if (currentMinutes >= startMaintenance || currentMinutes < endMaintenance) {
                 overlay.style.display = 'flex';
@@ -2924,59 +3649,59 @@
         // PDF Download Function
         function downloadCV() {
             const element = document.getElementById('cv-template');
-            element.style.display = 'block'; 
+            element.style.display = 'block';
 
             const opt = {
-                margin:       [10, 0, 10, 0],
-                filename:     'CV_Arnof_Dwi_Ferdiza.pdf',
-                image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { 
-                    scale: 3, 
-                    useCORS: true, 
+                margin: [10, 0, 10, 0],
+                filename: 'CV_Arnof_Dwi_Ferdiza.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: {
+                    scale: 3,
+                    useCORS: true,
                     scrollY: 0,
                     scrollX: 0,
                     windowWidth: document.documentElement.offsetWidth
                 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: 'css', avoid: 'tr' }
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: 'css', avoid: 'tr' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
-                element.style.display = 'none'; 
+                element.style.display = 'none';
             });
         }
 
         // PDF Download Function for Transcript
         function downloadTranscript() {
             const element = document.getElementById('transcript-template');
-            
+
             // Update current date
             const dateSpan = element.querySelector('#transcript-date');
-            if(dateSpan) {
+            if (dateSpan) {
                 const today = new Date();
                 const options = { year: 'numeric', month: 'long', day: 'numeric' };
                 dateSpan.textContent = today.toLocaleDateString('id-ID', options);
             }
 
-            element.style.display = 'block'; 
+            element.style.display = 'block';
 
             const opt = {
-                margin:       [10, 0, 10, 0],
-                filename:     'Transkrip_Nilai_Arnof_Dwi_Ferdiza.pdf',
-                image:        { type: 'jpeg', quality: 1 },
-                html2canvas:  { 
-                    scale: 3, 
-                    useCORS: true, 
+                margin: [10, 0, 10, 0],
+                filename: 'Transkrip_Nilai_Arnof_Dwi_Ferdiza.pdf',
+                image: { type: 'jpeg', quality: 1 },
+                html2canvas: {
+                    scale: 3,
+                    useCORS: true,
                     scrollY: 0,
                     scrollX: 0,
                     windowWidth: document.documentElement.offsetWidth
                 },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pagebreak:    { mode: 'css', avoid: 'tr' }
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
+                pagebreak: { mode: 'css', avoid: 'tr' }
             };
 
             html2pdf().set(opt).from(element).save().then(() => {
-                element.style.display = 'none'; 
+                element.style.display = 'none';
             });
         }
 
@@ -2984,10 +3709,10 @@
         function showSection(sectionId) {
             const loader = document.getElementById('loader');
             const sidebar = document.getElementById('sidebar');
-            
+
             // Show loader
             loader.style.display = 'flex';
-            
+
             setTimeout(() => {
                 // Hide all sections
                 const sections = document.querySelectorAll('section');
@@ -3045,7 +3770,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             console.log("Dashboard System Initialized...");
             console.log("Welcome, Arnof Dwi Ferdiza.");
-            
+
             // Theme Logic
             const themeCheckbox = document.getElementById('checkbox');
             const body = document.body;
@@ -3084,9 +3809,9 @@
 
         const projectForm = document.getElementById('projectForm');
         if (projectForm) {
-            projectForm.addEventListener('submit', function(e) {
+            projectForm.addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 const title = document.getElementById('projectTitle').value;
                 const link = document.getElementById('projectLink').value;
                 const fileInput = document.getElementById('projectImage');
@@ -3094,7 +3819,7 @@
 
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = function(event) {
+                    reader.onload = function (event) {
                         const imageData = event.target.result;
                         const newProject = {
                             id: Date.now(),
@@ -3122,7 +3847,7 @@
             if (!container) return;
 
             let projects = JSON.parse(localStorage.getItem('completedProjects'));
-            
+
             // Inisialisasi dengan projek default jika belum ada data atau data kosong
             if (!projects || projects.length === 0) {
                 projects = [
@@ -3195,7 +3920,7 @@
         }
 
         // Close logbook modal when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             const uploadModal = document.getElementById('uploadModal');
             const logbookModal = document.getElementById('logbookModal');
             const projectModal = document.getElementById('projectModal');
@@ -3212,15 +3937,15 @@
 
         const logbookForm = document.getElementById('logbookForm');
         if (logbookForm) {
-            logbookForm.addEventListener('submit', function(e) {
+            logbookForm.addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 const activity = document.getElementById('logActivity').value;
                 const result = document.getElementById('logResult').value;
                 const obstacle = document.getElementById('logObstacle').value || '-';
-                const timestamp = new Date().toLocaleString('id-ID', { 
-                    day: '2-digit', 
-                    month: 'short', 
+                const timestamp = new Date().toLocaleString('id-ID', {
+                    day: '2-digit',
+                    month: 'short',
                     year: 'numeric',
                     hour: '2-digit',
                     minute: '2-digit'
@@ -3250,7 +3975,7 @@
             if (!container) return;
 
             const logs = JSON.parse(localStorage.getItem('logbookEntries')) || [];
-            
+
             if (logs.length === 0) {
                 container.innerHTML = `
                     <tr>
@@ -3300,7 +4025,7 @@
         }
 
         // Close modal when clicking outside
-        window.onclick = function(event) {
+        window.onclick = function (event) {
             const modal = document.getElementById('uploadModal');
             if (event.target == modal) {
                 closeUploadModal();
@@ -3309,16 +4034,16 @@
 
         const uploadForm = document.getElementById('uploadForm');
         if (uploadForm) {
-            uploadForm.addEventListener('submit', function(e) {
+            uploadForm.addEventListener('submit', function (e) {
                 e.preventDefault();
-                
+
                 const title = document.getElementById('activityTitle').value;
                 const fileInput = document.getElementById('activityImage');
                 const file = fileInput.files[0];
 
                 if (file) {
                     const reader = new FileReader();
-                    reader.onload = function(event) {
+                    reader.onload = function (event) {
                         const imageData = event.target.result;
                         const newActivity = {
                             id: Date.now(),
@@ -3346,7 +4071,7 @@
             if (!container) return;
 
             let activities = JSON.parse(localStorage.getItem('galleryActivities')) || [];
-            
+
             // Add some default items if empty
             if (activities.length === 0) {
                 activities = [
@@ -3440,7 +4165,7 @@
             e.preventDefault();
             const nameInput = document.getElementById('visitorName').value.trim();
             const errorElement = document.getElementById('name-error');
-            
+
             // Regex to allow only letters, spaces, dots, and single quotes. Must be at least 2 characters.
             const isValidName = /^[a-zA-Z\s\.,']+$/.test(nameInput) && nameInput.length >= 2;
 
@@ -3455,16 +4180,16 @@
                 sessionStorage.setItem('visitorName', nameInput);
                 const greetingName = document.getElementById('user-greeting-name');
                 if (greetingName) greetingName.textContent = nameInput;
-                
+
                 // Hide overlay smoothly
                 const overlay = document.getElementById('welcome-overlay');
                 overlay.style.opacity = '0';
-                
+
                 setTimeout(() => {
                     overlay.style.display = 'none';
                     document.body.style.overflow = 'auto';
                     // Trigger the loading effect into the home section
-                    showSection('home'); 
+                    showSection('home');
                 }, 500);
             }
         }
@@ -3477,5 +4202,88 @@
             }
         }
     </script>
+
+    <!-- Google Translate Script -->
+    <script type="text/javascript">
+        // Restore active button based on current language
+        document.addEventListener('DOMContentLoaded', () => {
+            const googtrans = document.cookie.split('; ').find(row => row.startsWith('googtrans='));
+            if (googtrans) {
+                const lang = googtrans.split('=')[1].split('/').pop();
+                document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+                if (lang.includes('en')) {
+                    document.querySelectorAll('.lang-btn')[1].classList.add('active');
+                } else if (lang.includes('zh')) {
+                    document.querySelectorAll('.lang-btn')[2].classList.add('active');
+                } else if (lang.includes('ja')) {
+                    document.querySelectorAll('.lang-btn')[3].classList.add('active');
+                } else {
+                    document.querySelectorAll('.lang-btn')[0].classList.add('active');
+                }
+            }
+
+            // Tambahkan event listener untuk setiap tombol bahasa
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const langCode = this.getAttribute('data-lang');
+                    changeLanguage(langCode, this);
+                });
+            });
+        });
+
+        function changeLanguage(langCode, btnElement) {
+            // Update UI
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            if (btnElement) btnElement.classList.add('active');
+
+            // Coba ganti bahasa secara halus tanpa reload
+            function tryTranslate(retries) {
+                const selectElement = document.querySelector('.goog-te-combo');
+
+                // Pastikan select element sudah ada dan Opsi bahasanya sudah dimuat oleh Google
+                if (selectElement && selectElement.options.length > 0) {
+                    // Jika kembali ke asli (id), google menggunakan value kosong '' atau 'id'
+                    selectElement.value = (langCode === 'id') ? '' : langCode;
+
+                    try {
+                        selectElement.dispatchEvent(new Event('change', { bubbles: true }));
+                    } catch (err) {
+                        var evt = document.createEvent('HTMLEvents');
+                        evt.initEvent('change', true, true);
+                        selectElement.dispatchEvent(evt);
+                    }
+                } else {
+                    // Jika script google belum selesai memuat opsi, tunggu dan coba lagi
+                    if (retries > 0) {
+                        setTimeout(() => tryTranslate(retries - 1), 500);
+                    } else {
+                        // Jika gagal setelah 5 detik, paksa reload dengan cookie
+                        if (langCode === 'id') {
+                            document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+                            document.cookie = "googtrans=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=" + location.hostname + ";";
+                        } else {
+                            document.cookie = `googtrans=/id/${langCode}; path=/;`;
+                            document.cookie = `googtrans=/id/${langCode}; path=/; domain=${location.hostname};`;
+                        }
+                        location.reload();
+                    }
+                }
+            }
+
+            tryTranslate(10);
+        }
+
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({
+                pageLanguage: 'id',
+                includedLanguages: 'id,en,zh-CN,zh-TW,ja',
+                layout: google.translate.TranslateElement.InlineLayout.SIMPLE
+            }, 'google_translate_element');
+        }
+    </script>
+    <script type="text/javascript"
+        src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
 </body>
+
 </html>
