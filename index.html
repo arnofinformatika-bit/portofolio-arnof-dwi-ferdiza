@@ -1229,7 +1229,7 @@
         }
 
         /* Menyembunyikan SEMUA jenis banner Google Translate (Versi Lama & Baru) */
-        .goog-te-banner-frame.skiptranslate, 
+        .goog-te-banner-frame.skiptranslate,
         .goog-te-banner-frame,
         #goog-gt-tt,
         .goog-te-balloon-frame,
@@ -1253,6 +1253,115 @@
             border: none !important;
             box-shadow: none !important;
         }
+        /* Search Feature */
+        .top-header-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 1.5rem;
+            position: sticky;
+            top: 1rem;
+            z-index: 100;
+        }
+
+        .search-container {
+            display: flex;
+            align-items: center;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 20px;
+            padding: 0.3rem 0.8rem;
+            width: 250px;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .search-container:focus-within {
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.2);
+            width: 300px;
+        }
+
+        .search-container input {
+            border: none;
+            background: transparent;
+            color: var(--text-primary);
+            width: 100%;
+            padding: 0.5rem;
+            outline: none;
+            font-size: 0.9rem;
+        }
+
+        .search-container .search-btn {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 0.5rem;
+            transition: var(--transition);
+        }
+
+        .search-container .search-btn:hover {
+            color: var(--accent-color);
+        }
+
+        .search-results-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            margin-top: 8px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-height: 350px;
+            overflow-y: auto;
+            display: none;
+            z-index: 1000;
+        }
+
+        .search-result-item {
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+            cursor: pointer;
+            color: var(--text-primary);
+            transition: var(--transition);
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .search-result-item:last-child {
+            border-bottom: none;
+        }
+
+        .search-result-item:hover {
+            background: rgba(56, 189, 248, 0.08);
+            border-left: 3px solid var(--accent-color);
+            padding-left: 12px;
+        }
+
+        .search-result-item .section-name {
+            font-size: 0.7rem;
+            color: var(--accent-color);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .search-result-item .match-text {
+            font-size: 0.85rem;
+            line-height: 1.4;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            color: var(--text-secondary);
+        }
+
+        .search-result-item:hover .match-text {
+            color: var(--text-primary);
+        }
     </style>
 </head>
 
@@ -1263,8 +1372,9 @@
         style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #0f172a; z-index: 1000000; display: none; justify-content: center; align-items: center; flex-direction: column; color: white; text-align: center; padding: 2rem;">
         <i class="fas fa-tools" style="font-size: 5rem; color: #f59e0b; margin-bottom: 1.5rem;"></i>
         <h1 style="font-size: 2rem; margin-bottom: 0.5rem; color: #f59e0b;">Sistem Sedang Pemeliharaan</h1>
-        <p style="color: #94a3b8; font-size: 1rem; max-width: 400px; line-height: 1.6;">Server sedang dalam pemeliharaan rutin saat ini BRO!!. Harap coba lagi nanti. <br><br><strong
-                style="color: #38bdf8;">Sistem akan kembali normal pada pukul 05:00 WIB.</strong></p>
+        <p style="color: #94a3b8; font-size: 1rem; max-width: 400px; line-height: 1.6;">Server sedang dalam pemeliharaan
+            rutin saat ini BRO!!. Harap coba lagi nanti. <br><br><strong style="color: #38bdf8;">Sistem akan kembali
+                normal pada pukul 05:00 WIB.</strong></p>
     </div>
 
     <!-- Welcome Overlay -->
@@ -1376,6 +1486,15 @@
 
     <!-- Main Content Area -->
     <main class="main-content">
+
+        <!-- Header Actions (Search) -->
+        <div class="top-header-actions">
+            <div class="search-container" style="position: relative;">
+                <input type="text" id="global-search" placeholder="Cari portofolio (skill, projek...)" onkeyup="performSearch()" onfocus="performSearch()">
+                <button class="search-btn"><i class="fas fa-search"></i></button>
+                <div id="search-results" class="search-results-dropdown"></div>
+            </div>
+        </div>
 
         <!-- SECTION: BERANDA -->
         <section id="home" class="active">
@@ -1501,30 +1620,36 @@
                     <div>
                         <ul style="list-style: none; line-height: 2.5; color: var(--text-secondary);">
                             <li><i class="fas fa-calendar-alt" style="width: 25px; color: var(--accent-color);"></i>
-                                <strong>Tahun Lahir:</strong> 11 November 2005</li>
+                                <strong>Tahun Lahir:</strong> 11 November 2005
+                            </li>
                             <li><i class="fas fa-map-marker-alt" style="width: 25px; color: var(--accent-color);"></i>
                                 <strong>Domisili:</strong> <a
                                     href="https://www.google.com/maps/place/TUAN+NAGA+BERISANG/@-4.336419,104.7457001,17z/data=!3m1!4b1!4m6!3m5!1s0x2e38dd00445528c1:0x47fb06062007d3e0!8m2!3d-4.336419!4d104.748275!16s%2Fg%2F11m5qzntc4?entry=ttu"
                                     target="_blank"
                                     style="color: inherit; text-decoration: none; transition: var(--transition);"
                                     onmouseover="this.style.color='var(--accent-color)'"
-                                    onmouseout="this.style.color='inherit'">Gunung Waras, Way Kanan, Lampung</a></li>
+                                    onmouseout="this.style.color='inherit'">Gunung Waras, Way Kanan, Lampung</a>
+                            </li>
                             <li><i class="fas fa-envelope" style="width: 25px; color: var(--accent-color);"></i>
                                 <strong>Email:</strong> <a href="mailto:arnofdwiferdiza11@gmail.com"
                                     style="color: inherit; text-decoration: none; transition: var(--transition);"
                                     onmouseover="this.style.color='var(--accent-color)'"
-                                    onmouseout="this.style.color='inherit'">arnofdwiferdiza11@gmail.com</a></li>
+                                    onmouseout="this.style.color='inherit'">arnofdwiferdiza11@gmail.com</a>
+                            </li>
                         </ul>
                     </div>
                     <div>
                         <ul style="list-style: none; line-height: 2.5; color: var(--text-secondary);">
                             <li><i class="fas fa-graduation-cap" style="width: 25px; color: var(--accent-color);"></i>
-                                <strong>Pendidikan:</strong> S1 Informatika UBL</li>
+                                <strong>Pendidikan:</strong> S1 Informatika UBL
+                            </li>
                             <li><i class="fas fa-users" style="width: 25px; color: var(--accent-color);"></i>
                                 <strong>Organisasi & Pusat Studi:</strong> HMIF, Robotic UBL, & Pusat Studi Mekatronika
-                                & Otomasi</li>
+                                & Otomasi
+                            </li>
                             <li><i class="fas fa-heart" style="width: 25px; color: var(--accent-color);"></i>
-                                <strong>Hobi:</strong> Design & Coding</li>
+                                <strong>Hobi:</strong> Design & Coding
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -1659,7 +1784,7 @@
                     </div>
 
                     <div class="timeline-item">
-                        <div class="timeline-date">2024 - Sekarang</div>
+                        <div class="timeline-date">2024 - 2026</div>
                         <h3>Anggota Robotic UBL</h3>
                         <p class="text-secondary" style="margin-top: 0.5rem;">Berfokus pada pengembangan sistem kontrol
                             cerdas dan integrasi sensor pada berbagai jenis robot. Aktif dalam riset teknologi otomasi
@@ -3616,6 +3741,75 @@
     </div>
 
     <script>
+        // Global Search Function
+        function performSearch() {
+            const query = document.getElementById('global-search').value.toLowerCase().trim();
+            const resultsContainer = document.getElementById('search-results');
+            
+            if (query.length === 0) {
+                resultsContainer.style.display = 'none';
+                return;
+            }
+
+            // Find all potential items across all sections
+            const allItems = document.querySelectorAll('section .card:not(.welcome-banner), section .timeline-item, section .skill-tag, section .gallery-item, section .course-card, section .custom-table tbody tr');
+            
+            let resultsHTML = '';
+            let matchCount = 0;
+
+            allItems.forEach(el => {
+                const text = el.textContent.toLowerCase();
+                if (text.includes(query)) {
+                    matchCount++;
+                    // Find which section it belongs to
+                    const section = el.closest('section');
+                    const sectionId = section.id;
+                    
+                    // Get section name from sidebar
+                    const navLink = document.querySelector(`.nav-links a[onclick*="${sectionId}"]`);
+                    const sectionName = navLink ? navLink.textContent.trim() : sectionId.toUpperCase();
+                    
+                    // Extract snippet (removing extra newlines)
+                    let snippet = el.innerText.trim().replace(/\s+/g, ' ');
+                    if (snippet.length > 80) {
+                        snippet = snippet.substring(0, 80) + '...';
+                    }
+                    
+                    resultsHTML += `
+                        <div class="search-result-item" onclick="goToSearchResult('${sectionId}')">
+                            <div class="section-name"><i class="fas fa-folder-open" style="margin-right:5px;"></i>${sectionName}</div>
+                            <div class="match-text">${snippet}</div>
+                        </div>
+                    `;
+                }
+            });
+
+            if (matchCount === 0) {
+                resultsHTML = '<div style="padding: 15px; text-align: center; color: var(--text-secondary); font-size: 0.85rem;"><i class="fas fa-search" style="display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5;"></i>Tidak ada hasil ditemukan</div>';
+            }
+
+            resultsContainer.innerHTML = resultsHTML;
+            resultsContainer.style.display = 'block';
+        }
+
+        function goToSearchResult(sectionId) {
+            // Hide results
+            document.getElementById('search-results').style.display = 'none';
+            document.getElementById('global-search').value = '';
+            
+            // Navigate to section
+            showSection(sectionId);
+        }
+
+        // Hide search results when clicking outside
+        document.addEventListener('click', function(e) {
+            const searchContainer = document.querySelector('.search-container');
+            if (searchContainer && !searchContainer.contains(e.target)) {
+                const results = document.getElementById('search-results');
+                if (results) results.style.display = 'none';
+            }
+        });
+
         // Maintenance Check Function
         function checkMaintenance() {
             // Get current time
@@ -3726,6 +3920,16 @@
                 if (target) {
                     target.classList.add('active');
                 }
+
+                // Reset search bar state when switching sections
+                const searchInput = document.getElementById('global-search');
+                const searchResults = document.getElementById('search-results');
+                if (searchInput) searchInput.value = '';
+                if (searchResults) searchResults.style.display = 'none';
+
+                // Restore any elements that might have been hidden by previous local search code
+                const allItems = document.querySelectorAll('section .card, section .timeline-item, section .skill-tag, section .gallery-item, section .course-card, section .custom-table tbody tr');
+                allItems.forEach(el => el.style.display = '');
 
                 // Update navigation links
                 const navLinks = document.querySelectorAll('.nav-links li a');
