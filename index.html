@@ -3744,71 +3744,44 @@
         // Global Search Function
         function performSearch() {
             const query = document.getElementById('global-search').value.toLowerCase().trim();
-            const resultsContainer = document.getElementById('search-results');
-            
+            const searchResultsDropdown = document.getElementById('search-results');
+            if (searchResultsDropdown) searchResultsDropdown.style.display = 'none'; // Sembunyikan dropdown
+
+            const allSections = document.querySelectorAll('section');
+            const allItems = document.querySelectorAll('section .card:not(.welcome-banner), section .timeline-item, section .skill-tag, section .gallery-item, section .course-card, section .custom-table tbody tr');
+
             if (query.length === 0) {
-                resultsContainer.style.display = 'none';
+                // Restore sections to normal active state
+                allSections.forEach(sec => {
+                    sec.style.display = sec.classList.contains('active') ? 'block' : 'none';
+                });
+                // Show all items
+                allItems.forEach(el => el.style.display = '');
                 return;
             }
 
-            // Find all potential items across all sections
-            const allItems = document.querySelectorAll('section .card:not(.welcome-banner), section .timeline-item, section .skill-tag, section .gallery-item, section .course-card, section .custom-table tbody tr');
-            
-            let resultsHTML = '';
-            let matchCount = 0;
-
-            allItems.forEach(el => {
-                const text = el.textContent.toLowerCase();
-                if (text.includes(query)) {
-                    matchCount++;
-                    // Find which section it belongs to
-                    const section = el.closest('section');
-                    const sectionId = section.id;
-                    
-                    // Get section name from sidebar
-                    const navLink = document.querySelector(`.nav-links a[onclick*="${sectionId}"]`);
-                    const sectionName = navLink ? navLink.textContent.trim() : sectionId.toUpperCase();
-                    
-                    // Extract snippet (removing extra newlines)
-                    let snippet = el.innerText.trim().replace(/\s+/g, ' ');
-                    if (snippet.length > 80) {
-                        snippet = snippet.substring(0, 80) + '...';
+            // Perform in-page filtering across all sections
+            allSections.forEach(sec => {
+                let sectionHasMatch = false;
+                const itemsInSection = sec.querySelectorAll('.card:not(.welcome-banner), .timeline-item, .skill-tag, .gallery-item, .course-card, .custom-table tbody tr');
+                
+                itemsInSection.forEach(el => {
+                    const text = el.textContent.toLowerCase();
+                    if (text.includes(query)) {
+                        el.style.display = '';
+                        sectionHasMatch = true;
+                    } else {
+                        el.style.display = 'none';
                     }
-                    
-                    resultsHTML += `
-                        <div class="search-result-item" onclick="goToSearchResult('${sectionId}')">
-                            <div class="section-name"><i class="fas fa-folder-open" style="margin-right:5px;"></i>${sectionName}</div>
-                            <div class="match-text">${snippet}</div>
-                        </div>
-                    `;
+                });
+
+                if (sectionHasMatch) {
+                    sec.style.display = 'block';
+                } else {
+                    sec.style.display = 'none';
                 }
             });
-
-            if (matchCount === 0) {
-                resultsHTML = '<div style="padding: 15px; text-align: center; color: var(--text-secondary); font-size: 0.85rem;"><i class="fas fa-search" style="display: block; font-size: 1.5rem; margin-bottom: 10px; opacity: 0.5;"></i>Tidak ada hasil ditemukan</div>';
-            }
-
-            resultsContainer.innerHTML = resultsHTML;
-            resultsContainer.style.display = 'block';
         }
-
-        function goToSearchResult(sectionId) {
-            // Hide results
-            document.getElementById('search-results').style.display = 'none';
-            document.getElementById('global-search').value = '';
-            
-            // Navigate to section
-            showSection(sectionId);
-        }
-
-        // Hide search results when clicking outside
-        document.addEventListener('click', function(e) {
-            const searchContainer = document.querySelector('.search-container');
-            if (searchContainer && !searchContainer.contains(e.target)) {
-                const results = document.getElementById('search-results');
-                if (results) results.style.display = 'none';
-            }
-        });
 
         // Maintenance Check Function
         function checkMaintenance() {
