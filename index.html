@@ -1253,6 +1253,7 @@
             border: none !important;
             box-shadow: none !important;
         }
+
         /* Search Feature */
         .top-header-actions {
             display: flex;
@@ -1406,7 +1407,7 @@
     <!-- Loading Overlay -->
     <div id="loader">
         <div style="color: var(--accent-color); font-size: 1.2rem; font-weight: 600; letter-spacing: 2px;">INITIALIZING
-            SESSION...</div>
+            SABAR BROO LAGI LOADING!!!!!!...</div>
         <div class="loader-bar"></div>
     </div>
 
@@ -1490,7 +1491,8 @@
         <!-- Header Actions (Search) -->
         <div class="top-header-actions">
             <div class="search-container" style="position: relative;">
-                <input type="text" id="global-search" placeholder="Cari portofolio (skill, projek...)" onkeyup="performSearch()" onfocus="performSearch()">
+                <input type="text" id="global-search" placeholder="Cari portofolio (skill, projek...)"
+                    onkeyup="performSearch()" onfocus="performSearch()">
                 <button class="search-btn"><i class="fas fa-search"></i></button>
                 <div id="search-results" class="search-results-dropdown"></div>
             </div>
@@ -1511,7 +1513,8 @@
                 <div
                     style="font-size: 0.8rem; background: rgba(56, 189, 248, 0.1); padding: 0.4rem 1rem; border-radius: 20px; color: var(--accent-color); border: 1px solid rgba(56, 189, 248, 0.2);">
                     <i class="fas fa-circle"
-                        style="font-size: 0.6rem; margin-right: 5px; animation: pulse 2s infinite;"></i> Portofolio Arnof
+                        style="font-size: 0.6rem; margin-right: 5px; animation: pulse 2s infinite;"></i> Portofolio
+                    Arnof
                 </div>
             </div>
 
@@ -1525,7 +1528,7 @@
                         <i class="fas fa-tasks" style="color: var(--accent-color); font-size: 1.5rem;"></i>
                     </div>
                     <div>
-                        <div style="font-size: 1.5rem; font-weight: 700;">15+</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;"></div>
                         <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Projek
                             Selesai</div>
                     </div>
@@ -1537,7 +1540,7 @@
                         <i class="fas fa-certificate" style="color: #10b981; font-size: 1.5rem;"></i>
                     </div>
                     <div>
-                        <div style="font-size: 1.5rem; font-weight: 700;">1+</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;">10+</div>
                         <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">
                             Sertifikasi</div>
                     </div>
@@ -1546,12 +1549,12 @@
                     style="margin-bottom: 0; padding: 1.5rem; display: flex; align-items: center; gap: 1rem; border-left: 4px solid #f59e0b; cursor: pointer; transition: transform 0.2s ease;">
                     <div
                         style="background: rgba(245, 158, 11, 0.1); width: 50px; height: 50px; border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                        <i class="fas fa-briefcase" style="color: #f59e0b; font-size: 1.5rem;"></i>
+                        <i class="fas fa-code-branch" style="color: #f59e0b; font-size: 1.5rem;"></i>
                     </div>
                     <div>
-                        <div style="font-size: 1.5rem; font-weight: 700;">1+</div>
+                        <div style="font-size: 1.5rem; font-weight: 700;">5+</div>
                         <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">
-                            Tahun Pengalaman</div>
+                            Commits</div>
                     </div>
                 </div>
             </div>
@@ -1935,7 +1938,8 @@
 
                     <!-- Sertifikat Google -->
                     <div class="card" style="padding: 1rem; background: rgb(8, 143, 161);">
-                        <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden; position: relative;">
+                        <div class="gallery-item"
+                            style="height: 180px; border-style: solid; overflow: hidden; position: relative;">
                             <img src="foto/google.jpeg" alt="Sertifikat Google"
                                 style="width: 100%; height: 100%; object-fit: cover;">
                         </div>
@@ -3073,8 +3077,12 @@
                     <div style="border-left: 3px solid var(--accent-color); padding-left: 1rem; margin-bottom: 1rem;">
                         <h3 style="margin-bottom: 0.5rem;">Publikasi Jurnal Pengabdian Masyarakat</h3>
                         <p class="text-secondary">
-                            <a href="https://tapisberseri.ubl.ac.id/index.php/jpmtapisberseri/article/view/182" target="_blank" style="color: var(--accent-color); text-decoration: none;" onmouseover="this.style.textDecoration='underline'" onmouseout="this.style.textDecoration='none'">
-                                JPM Tapis Berseri UBL <i class="fas fa-external-link-alt" style="font-size: 0.85rem; margin-left: 4px;"></i>
+                            <a href="https://tapisberseri.ubl.ac.id/index.php/jpmtapisberseri/article/view/182"
+                                target="_blank" style="color: var(--accent-color); text-decoration: none;"
+                                onmouseover="this.style.textDecoration='underline'"
+                                onmouseout="this.style.textDecoration='none'">
+                                JPM Tapis Berseri UBL <i class="fas fa-external-link-alt"
+                                    style="font-size: 0.85rem; margin-left: 4px;"></i>
                             </a>
                         </p>
                     </div>
@@ -3780,7 +3788,7 @@
             allSections.forEach(sec => {
                 let sectionHasMatch = false;
                 const itemsInSection = sec.querySelectorAll('.card:not(.welcome-banner), .timeline-item, .skill-tag, .gallery-item, .course-card, .custom-table tbody tr');
-                
+
                 itemsInSection.forEach(el => {
                     const text = el.textContent.toLowerCase();
                     if (text.includes(query)) {
