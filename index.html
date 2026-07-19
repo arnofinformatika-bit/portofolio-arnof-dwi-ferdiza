@@ -1364,53 +1364,52 @@
             color: var(--text-primary);
         }
 
-        /* Status Bar */
-        .status-bar {
+        /* Tab Bar (Mobile) */
+        .tab-bar {
             position: fixed;
             bottom: 0;
-            left: 260px;
-            width: calc(100% - 260px);
+            left: 0;
+            width: 100%;
             background-color: var(--sidebar-bg);
             border-top: 1px solid var(--border-color);
-            padding: 0.5rem 1.5rem;
-            display: flex;
-            justify-content: space-between;
+            display: none;
+            justify-content: space-around;
             align-items: center;
-            font-size: 0.8rem;
-            color: var(--text-secondary);
-            z-index: 998;
-            transition: var(--transition);
+            padding: 0.6rem 0;
+            z-index: 1000;
             box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
         }
 
-        .status-bar-left, .status-bar-right {
+        .tab-item {
             display: flex;
+            flex-direction: column;
             align-items: center;
-            gap: 1.2rem;
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.7rem;
+            gap: 4px;
+            transition: var(--transition);
+            flex: 1;
+            padding: 0.2rem;
+            cursor: pointer;
         }
 
-        .status-indicator {
-            display: inline-block;
-            width: 8px;
-            height: 8px;
-            background-color: #22c55e;
-            border-radius: 50%;
-            box-shadow: 0 0 8px #22c55e;
-            animation: pulse 2s infinite;
+        .tab-item i {
+            font-size: 1.2rem;
+            margin-bottom: 2px;
         }
 
-        @keyframes pulse {
-            0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.7); }
-            70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(34, 197, 94, 0); }
-            100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
+        .tab-item:hover, .tab-item.active {
+            color: var(--accent-color);
+        }
+
+        .tab-item.active i {
+            transform: translateY(-2px);
         }
 
         @media (max-width: 768px) {
-            .status-bar {
-                left: 0;
-                width: 100%;
-                padding: 0.5rem 1rem;
-                font-size: 0.7rem;
+            .tab-bar {
+                display: flex;
             }
         }
     </style>
@@ -4435,29 +4434,38 @@
             }
         }
 
-        // Status Bar Time Update
-        function updateStatusBarTime() {
-            const timeEl = document.getElementById('status-time');
-            if (timeEl) {
-                const now = new Date();
-                timeEl.innerHTML = `<i class="far fa-clock"></i> ${now.toLocaleTimeString('id-ID')} WIB`;
-            }
+        // Tab Bar Active State Update
+        function updateActiveTab(element) {
+            if(!element) return;
+            const tabs = document.querySelectorAll('.tab-item');
+            tabs.forEach(tab => tab.classList.remove('active'));
+            element.classList.add('active');
         }
-        setInterval(updateStatusBarTime, 1000);
-        updateStatusBarTime();
     </script>
 
-    <!-- Status Bar -->
-    <div class="status-bar">
-        <div class="status-bar-left">
-            <span><i class="fas fa-terminal"></i> Ready</span>
-            <span style="display: flex; align-items: center; gap: 0.4rem;"><span class="status-indicator"></span> Online</span>
-        </div>
-        <div class="status-bar-right">
-            <span><i class="fas fa-code-branch"></i> main</span>
-            <span id="status-time"></span>
-        </div>
-    </div>
+    <!-- Tab Bar -->
+    <nav class="tab-bar">
+        <a href="#" class="tab-item active" onclick="showSection('home'); updateActiveTab(this)">
+            <i class="fas fa-home"></i>
+            <span>Beranda</span>
+        </a>
+        <a href="#" class="tab-item" onclick="showSection('projects'); updateActiveTab(this)">
+            <i class="fas fa-project-diagram"></i>
+            <span>Projek</span>
+        </a>
+        <a href="#" class="tab-item" onclick="showSection('skills'); updateActiveTab(this)">
+            <i class="fas fa-code"></i>
+            <span>Skill</span>
+        </a>
+        <a href="#" class="tab-item" onclick="showSection('about'); updateActiveTab(this)">
+            <i class="fas fa-user"></i>
+            <span>Profil</span>
+        </a>
+        <a href="#" class="tab-item" onclick="document.querySelector('.sidebar').classList.toggle('show'); if(document.querySelector('.sidebar-overlay')) document.querySelector('.sidebar-overlay').classList.toggle('show');">
+            <i class="fas fa-bars"></i>
+            <span>Lainnya</span>
+        </a>
+    </nav>
 
     <!-- Google Translate Script -->
     <script type="text/javascript">
