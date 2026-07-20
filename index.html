@@ -4201,6 +4201,12 @@
                     title: 'Game edukasi niko',
                     link: 'https://permainan-niko-by-arnof.vercel.app',
                     image: 'foto/PROJECT/game edukasi niko.jpeg'
+                },
+                {
+                    id: 'default-5',
+                    title: 'Sistem Absensi Kamera (Realtime)',
+                    link: 'https://absen-perlengkapan-fiks.vercel.app',
+                    image: 'foto/PROJECT/absensi kamera.jpeg'
                 }
             ];
 
@@ -4210,6 +4216,8 @@
                 localStorage.setItem('completedProjects', JSON.stringify(projects));
             } else {
                 let updated = false;
+                
+                // 1. Sync existing default projects (update image, link, title if changed)
                 projects.forEach(p => {
                     const defaultProj = defaultProjects.find(dp => dp.id === p.id);
                     if (defaultProj && (p.image !== defaultProj.image || p.link !== defaultProj.link || p.title !== defaultProj.title)) {
@@ -4219,6 +4227,15 @@
                         updated = true;
                     }
                 });
+                
+                // 2. Add any newly introduced default projects that are missing from local storage
+                defaultProjects.forEach(dp => {
+                    if (!projects.find(p => p.id === dp.id)) {
+                        projects.push(dp);
+                        updated = true;
+                    }
+                });
+
                 if (updated) {
                     localStorage.setItem('completedProjects', JSON.stringify(projects));
                 }
