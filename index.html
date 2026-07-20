@@ -4153,35 +4153,51 @@
 
             let projects = JSON.parse(localStorage.getItem('completedProjects'));
 
-            // Inisialisasi dengan projek default jika belum ada data atau data kosong
+            const defaultProjects = [
+                {
+                    id: 'default-1',
+                    title: 'Diet Sehat Yuk',
+                    link: 'https://diet-sehat-yuks-741694573454.asia-southeast1.run.app',
+                    image: 'foto/PROJECT/diet sehat yuk.png'
+                },
+                {
+                    id: 'default-2',
+                    title: 'Rekap Keuangan',
+                    link: 'https://rekap-keuangan-five.vercel.app',
+                    image: 'foto/PROJECT/rekap keuangan.jpeg'
+                },
+                {
+                    id: 'default-3',
+                    title: 'Deteksi pencegah kantuk sopir menggunakan yolo',
+                    link: 'https://huggingface.co/spaces/Arnof24/deteksi-kantuk-yolo',
+                    image: 'foto/PROJECT/deteksi kantuk yolo.jpeg'
+                },
+                {
+                    id: 'default-4',
+                    title: 'Game edukasi niko',
+                    link: 'https://permainan-niko-by-arnof.vercel.app',
+                    image: 'foto/PROJECT/game edukasi niko.jpeg'
+                }
+            ];
+
+            // Inisialisasi atau sinkronisasi dengan projek default
             if (!projects || projects.length === 0 || (projects.length === 1 && projects[0].title === 'Diet Sehat Yuk')) {
-                projects = [
-                    {
-                        id: 'default-1',
-                        title: 'Diet Sehat Yuk',
-                        link: 'https://diet-sehat-yuks-741694573454.asia-southeast1.run.app',
-                        image: 'foto/PROJECT/diet sehat yuk.png'
-                    },
-                    {
-                        id: 'default-2',
-                        title: 'Rekap Keuangan',
-                        link: 'https://rekap-keuangan-five.vercel.app',
-                        image: 'foto/PROJECT/rekap keuangan.jpeg'
-                    },
-                    {
-                        id: 'default-3',
-                        title: 'Deteksi pencegah kantuk sopir menggunakan yolo',
-                        link: 'https://huggingface.co/spaces/Arnof24/deteksi-kantuk-yolo',
-                        image: 'foto/PROJECT/deteksi kantuk yolo.jpeg'
-                    },
-                    {
-                        id: 'default-4',
-                        title: 'Game edukasi niko',
-                        link: 'https://permainan-niko-by-arnof.vercel.app',
-                        image: 'foto/PROJECT/game edukasi niko.jpeg'
-                    }
-                ];
+                projects = [...defaultProjects];
                 localStorage.setItem('completedProjects', JSON.stringify(projects));
+            } else {
+                let updated = false;
+                projects.forEach(p => {
+                    const defaultProj = defaultProjects.find(dp => dp.id === p.id);
+                    if (defaultProj && (p.image !== defaultProj.image || p.link !== defaultProj.link || p.title !== defaultProj.title)) {
+                        p.image = defaultProj.image;
+                        p.link = defaultProj.link;
+                        p.title = defaultProj.title;
+                        updated = true;
+                    }
+                });
+                if (updated) {
+                    localStorage.setItem('completedProjects', JSON.stringify(projects));
+                }
             }
 
             if (projects.length === 0) {
