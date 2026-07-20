@@ -1466,6 +1466,30 @@
                 display: flex;
             }
         }
+        .cert-view-btn {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            opacity: 0;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+        .cert-view-btn:hover {
+            background: var(--accent-color);
+            transform: translate(-50%, -50%) scale(1.1);
+        }
     </style>
 </head>
 
@@ -4258,11 +4282,23 @@
             document.getElementById('logbookForm').reset();
         }
 
-        // Close logbook modal when clicking outside
+        // Image Viewer Functions
+        function openImageViewer(src) {
+            const modal = document.getElementById('imageViewerModal');
+            const img = document.getElementById('viewerImage');
+            img.src = src;
+            modal.style.display = 'flex';
+        }
+        function closeImageViewer() {
+            document.getElementById('imageViewerModal').style.display = 'none';
+        }
+
+        // Close modal when clicking outside
         window.onclick = function (event) {
             const uploadModal = document.getElementById('uploadModal');
             const logbookModal = document.getElementById('logbookModal');
             const projectModal = document.getElementById('projectModal');
+            const imageViewerModal = document.getElementById('imageViewerModal');
             if (event.target == uploadModal) {
                 closeUploadModal();
             }
@@ -4271,6 +4307,9 @@
             }
             if (event.target == projectModal) {
                 closeProjectModal();
+            }
+            if (event.target == imageViewerModal) {
+                closeImageViewer();
             }
         }
 
@@ -4363,13 +4402,7 @@
             document.getElementById('uploadModal').style.display = 'none';
         }
 
-        // Close modal when clicking outside
-        window.onclick = function (event) {
-            const modal = document.getElementById('uploadModal');
-            if (event.target == modal) {
-                closeUploadModal();
-            }
-        }
+        // (Removed redundant window.onclick)
 
         const uploadForm = document.getElementById('uploadForm');
         if (uploadForm) {
@@ -4656,6 +4689,33 @@
     </script>
     <script type="text/javascript"
         src="https://translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
+    <!-- Image Viewer Modal -->
+    <div id="imageViewerModal" class="modal" style="z-index: 9999; display: none;">
+        <div style="position: relative; max-width: 90%; max-height: 90vh;">
+            <button onclick="closeImageViewer()" style="position: absolute; top: -40px; right: 0; background: transparent; border: none; color: white; font-size: 2rem; cursor: pointer; z-index: 10000;">&times;</button>
+            <img id="viewerImage" src="" style="max-width: 100%; max-height: 90vh; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const certificateItems = document.querySelectorAll('#certificates .gallery-item');
+            certificateItems.forEach(item => {
+                const img = item.querySelector('img');
+                if (img) {
+                    item.style.position = 'relative';
+                    const btn = document.createElement('button');
+                    btn.className = 'cert-view-btn';
+                    btn.innerHTML = '<i class="fas fa-eye"></i>';
+                    btn.onclick = () => openImageViewer(img.src);
+                    item.appendChild(btn);
+                    item.addEventListener('mouseenter', () => btn.style.opacity = '1');
+                    item.addEventListener('mouseleave', () => btn.style.opacity = '0');
+                }
+            });
+        });
+    </script>
 </body>
 
 </html>
