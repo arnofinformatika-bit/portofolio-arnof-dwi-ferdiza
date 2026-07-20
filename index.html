@@ -4154,7 +4154,7 @@
             let projects = JSON.parse(localStorage.getItem('completedProjects'));
 
             // Inisialisasi dengan projek default jika belum ada data atau data kosong
-            if (!projects || projects.length === 0) {
+            if (!projects || projects.length === 0 || (projects.length === 1 && projects[0].title === 'Diet Sehat Yuk')) {
                 projects = [
                     {
                         id: 'default-1',
