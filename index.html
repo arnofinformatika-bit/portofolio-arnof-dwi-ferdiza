@@ -584,7 +584,7 @@
             color: white;
             font-size: 1.2rem;
             text-decoration: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
             transition: transform 0.2s ease;
         }
 
@@ -593,10 +593,21 @@
             color: white;
         }
 
-        .fab-wa { background-color: #25D366; }
-        .fab-tiktok { background-color: #000000; }
-        .fab-ig { background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%); }
-        .fab-gmail { background-color: #D44638; }
+        .fab-wa {
+            background-color: #25D366;
+        }
+
+        .fab-tiktok {
+            background-color: #000000;
+        }
+
+        .fab-ig {
+            background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
+        }
+
+        .fab-gmail {
+            background-color: #D44638;
+        }
 
         .fab-toggle {
             width: 55px;
@@ -1419,7 +1430,7 @@
             align-items: center;
             padding: 0.6rem 0;
             z-index: 1000;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
         }
 
         .tab-item {
@@ -1441,7 +1452,8 @@
             margin-bottom: 2px;
         }
 
-        .tab-item:hover, .tab-item.active {
+        .tab-item:hover,
+        .tab-item.active {
             color: var(--accent-color);
         }
 
@@ -1555,7 +1567,7 @@
         <div
             style="margin-top: 1rem; text-align: center; font-size: 0.7rem; color: var(--text-secondary); opacity: 0.7;">
             <div>&copy; 2026 Arnof Dwi Ferdiza</div>
-            <div>V.2.2.6 | Portofolio Arnof Dwi Ferdiza</div>
+            <div>V.2.2.8 | Portofolio Arnof Dwi Ferdiza</div>
         </div>
     </nav>
 
@@ -1585,7 +1597,8 @@
                 <i class="fab fa-tiktok"></i>
             </a>
             <!-- WhatsApp -->
-            <a href="https://wa.me/6285896611944?text=hallo%20dengan%20Kak%20arnof%3F%3F%20saya%20lihat%20di%20cv%20anda%20bagus%20sekali%20apakah%20anda%20berminat%20berkontribusi%20dengan%20perusahaan%20saya" target="_blank" class="fab-item fab-wa" title="WhatsApp">
+            <a href="https://wa.me/6285896611944?text=hallo%20dengan%20Kak%20arnof%3F%3F%20saya%20lihat%20di%20cv%20anda%20bagus%20sekali%20apakah%20anda%20berminat%20berkontribusi%20dengan%20perusahaan%20saya"
+                target="_blank" class="fab-item fab-wa" title="WhatsApp">
                 <i class="fab fa-whatsapp"></i>
             </a>
         </div>
@@ -1618,7 +1631,7 @@
             </div>
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-                <h1 class="section-title" style="margin-bottom: 0;">System <span class="highlight">Overview</span></h1>
+                <h1 class="section-title" style="margin-bottom: 0;">Beranda<span class="highlight">Portofolio</span></h1>
                 <div
                     style="font-size: 0.8rem; background: rgba(56, 189, 248, 0.1); padding: 0.4rem 1rem; border-radius: 20px; color: var(--accent-color); border: 1px solid rgba(56, 189, 248, 0.2);">
                     <i class="fas fa-circle"
@@ -4496,7 +4509,7 @@
 
         // Tab Bar Active State Update
         function updateActiveTab(element) {
-            if(!element) return;
+            if (!element) return;
             const tabs = document.querySelectorAll('.tab-item');
             tabs.forEach(tab => tab.classList.remove('active'));
             element.classList.add('active');
@@ -4521,7 +4534,8 @@
             <i class="fas fa-user"></i>
             <span>Profil</span>
         </a>
-        <a href="#" class="tab-item" onclick="document.querySelector('.sidebar').classList.toggle('show'); if(document.querySelector('.sidebar-overlay')) document.querySelector('.sidebar-overlay').classList.toggle('show');">
+        <a href="#" class="tab-item"
+            onclick="document.querySelector('.sidebar').classList.toggle('show'); if(document.querySelector('.sidebar-overlay')) document.querySelector('.sidebar-overlay').classList.toggle('show');">
             <i class="fas fa-bars"></i>
             <span>Lainnya</span>
         </a>
