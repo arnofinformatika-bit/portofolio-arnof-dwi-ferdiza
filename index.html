@@ -4165,6 +4165,39 @@
                 ];
                 localStorage.setItem('completedProjects', JSON.stringify(projects));
             }
+            if (!projects || projects.length === 0) {
+                projects = [
+                    {
+                        id: 'default-1',
+                        title: 'Rekap Keuangan',
+                        link: 'https://rekap-keuangan-five.vercel.app',
+                        image: 'foto/PROJECT/rekap keuangan.png'
+                    }
+                ];
+                localStorage.setItem('completedProjects', JSON.stringify(projects));
+            }
+            if (!projects || projects.length === 0) {
+                projects = [
+                    {
+                        id: 'default-1',
+                        title: 'Deteksi pencegah kantuk sopir menggunakan yolo',
+                        link: 'https://huggingface.co/spaces/Arnof24/deteksi-kantuk-yolo',
+                        image: 'foto/PROJECT/deteksi kantuk yolo.jpeg'
+                    }
+                ];
+                localStorage.setItem('completedProjects', JSON.stringify(projects));
+            }
+            if (!projects || projects.length === 0) {
+                projects = [
+                    {
+                        id: 'default-1',
+                        title: 'Diet Sehat Yuk',
+                        link: 'https://diet-sehat-yuks-741694573454.asia-southeast1.run.app',
+                        image: 'foto/PROJECT/diet sehat yuk.png'
+                    }
+                ];
+                localStorage.setItem('completedProjects', JSON.stringify(projects));
+            }
 
             if (projects.length === 0) {
                 container.innerHTML = `
