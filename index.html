@@ -194,13 +194,7 @@
 
         <!-- SECTION: BERANDA -->
         <section id="home" class="active">
-            <div class="welcome-banner card"
-                style="background: linear-gradient(135deg, rgba(56, 189, 248, 0.05) 0%, transparent 100%); border-left: 4px solid var(--accent-color); margin-bottom: 2rem; padding: 1.5rem;">
-                <h2 style="font-size: 1.6rem; margin-bottom: 0.5rem; display: flex; align-items: center; gap: 10px;">
-                    Selamat Datang, <span id="user-greeting-name" class="highlight">Tamu</span>! 👋</h2>
-                <p style="color: var(--text-secondary); font-size: 0.95rem;">Selamat menjelajahi portofolio saya. Semoga
-                    Anda menemukan informasi yang bermanfaat dan menginspirasi.</p>
-            </div>
+
 
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
                 <h1 class="section-title" style="margin-bottom: 0;">Beranda<span class="highlight"></span></h1>
@@ -2764,7 +2758,7 @@
                 localStorage.setItem('completedProjects', JSON.stringify(projects));
             } else {
                 let updated = false;
-                
+
                 // 1. Sync existing default projects (update image, link, title if changed)
                 projects.forEach(p => {
                     const defaultProj = defaultProjects.find(dp => dp.id === p.id);
@@ -2775,7 +2769,7 @@
                         updated = true;
                     }
                 });
-                
+
                 // 2. Add any newly introduced default projects that are missing from local storage
                 defaultProjects.forEach(dp => {
                     if (!projects.find(p => p.id === dp.id)) {
@@ -3094,12 +3088,29 @@
                 overlay.style.display = 'none';
                 document.body.style.overflow = 'auto';
                 if (greetingName) greetingName.textContent = savedName;
+                showAdToast();
             } else {
                 // Otherwise show the overlay
                 overlay.style.display = 'flex';
                 document.body.style.overflow = 'hidden';
             }
         });
+
+        function showAdToast() {
+            const toast = document.getElementById('ad-toaster');
+            if (toast) {
+                setTimeout(() => {
+                    toast.classList.add('show');
+                }, 1200);
+            }
+        }
+
+        function closeAdToast() {
+            const toast = document.getElementById('ad-toaster');
+            if (toast) {
+                toast.classList.remove('show');
+            }
+        }
 
         function submitWelcomeForm(e) {
             e.preventDefault();
@@ -3130,6 +3141,7 @@
                     document.body.style.overflow = 'auto';
                     // Trigger the loading effect into the home section
                     showSection('home');
+                    showAdToast();
                 }, 500);
             }
         }
@@ -3261,11 +3273,26 @@
     <!-- Image Viewer Modal -->
     <div id="imageViewerModal" class="modal" style="z-index: 9999; display: none;">
         <div style="position: relative; max-width: 90%; max-height: 90vh;">
-            <button onclick="closeImageViewer()" style="position: absolute; top: -40px; right: 0; background: transparent; border: none; color: white; font-size: 2rem; cursor: pointer; z-index: 10000;">&times;</button>
-            <img id="viewerImage" src="" style="max-width: 100%; max-height: 90vh; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
+            <button onclick="closeImageViewer()"
+                style="position: absolute; top: -40px; right: 0; background: transparent; border: none; color: white; font-size: 2rem; cursor: pointer; z-index: 10000;">&times;</button>
+            <img id="viewerImage" src=""
+                style="max-width: 100%; max-height: 90vh; border-radius: 8px; box-shadow: 0 4px 20px rgba(0,0,0,0.5);">
         </div>
     </div>
-    
+
+    <!-- Toaster Pop-up Ads -->
+    <div id="ad-toaster" class="ad-toaster">
+        <button class="ad-toaster-close" onclick="closeAdToast()" aria-label="Close ads">&times;</button>
+        <div class="ad-toaster-icon-wrapper">
+            <i class="fas fa-bullhorn"></i>
+        </div>
+        <div class="ad-toaster-content">
+            <h4 class="ad-toaster-title">Portofilio arnof</h4>
+            <p class="ad-toaster-desc">Selamat datang di Website Portofolio Arnof Dwi Ferdiza Semoga menginspirasi anda
+            </p>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const certificateItems = document.querySelectorAll('#certificates .gallery-item');
