@@ -78,29 +78,24 @@ body {
 .liquid-blob {
     position: absolute;
     border-radius: 50%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    filter: blur(8px);
-    mix-blend-mode: normal;
-    opacity: 0.3;
+    filter: blur(120px);
+    mix-blend-mode: screen;
+    opacity: 0.45;
     animation: float-around 25s infinite ease-in-out alternate;
     transition: filter 0.8s ease, opacity 0.8s ease;
-    border: 2px solid rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 30px rgba(6, 182, 212, 0.2);
 }
 
 body.light-mode .liquid-blob {
-    mix-blend-mode: normal;
-    opacity: 0.2;
-    filter: blur(8px);
+    mix-blend-mode: multiply;
+    opacity: 0.22;
+    filter: blur(100px);
 }
 
 .blob-1 {
     width: 45vw;
     height: 45vw;
     max-width: 600px;
-    background: linear-gradient(135deg, rgba(6, 182, 212, 0.5), rgba(6, 182, 212, 0.1)), url('arnof.jpg') center/cover no-repeat;
+    background: radial-gradient(circle, rgba(6, 182, 212, 0.7) 0%, rgba(6, 182, 212, 0) 70%);
     top: -10%;
     left: -10%;
     animation-duration: 22s;
@@ -110,7 +105,7 @@ body.light-mode .liquid-blob {
     width: 50vw;
     height: 50vw;
     max-width: 700px;
-    background: linear-gradient(135deg, rgba(168, 85, 247, 0.5), rgba(168, 85, 247, 0.1)), url('arnof.jpg') center/cover no-repeat;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.6) 0%, rgba(168, 85, 247, 0) 70%);
     bottom: -15%;
     right: -10%;
     animation-delay: -5s;
@@ -121,7 +116,7 @@ body.light-mode .liquid-blob {
     width: 35vw;
     height: 35vw;
     max-width: 500px;
-    background: linear-gradient(135deg, rgba(236, 72, 153, 0.5), rgba(236, 72, 153, 0.1)), url('arnof.jpg') center/cover no-repeat;
+    background: radial-gradient(circle, rgba(236, 72, 153, 0.5) 0%, rgba(236, 72, 153, 0) 70%);
     top: 45%;
     left: 55%;
     animation-delay: -10s;
@@ -132,7 +127,7 @@ body.light-mode .liquid-blob {
     width: 38vw;
     height: 38vw;
     max-width: 550px;
-    background: linear-gradient(135deg, rgba(251, 191, 36, 0.45), rgba(251, 191, 36, 0.1)), url('arnof.jpg') center/cover no-repeat;
+    background: radial-gradient(circle, rgba(251, 191, 36, 0.45) 0%, rgba(251, 191, 36, 0) 70%);
     bottom: 35%;
     left: 10%;
     animation-delay: -15s;
