@@ -2009,6 +2009,10 @@ body.light-mode .search-result-item:hover {
     .tab-bar {
         display: flex !important;
     }
+    /* Move FAB up so it doesn't overlap tab bar */
+    .fab-container {
+        bottom: 100px !important; 
+    }
 }
 
 /* Base Tab Bar Style - Elegant Glassmorphism */
@@ -2041,7 +2045,9 @@ body.light-mode .search-result-item:hover {
     scrollbar-width: none;  
     
     align-items: center;
+    justify-content: space-between;
     gap: 8px;
+    height: 75px; /* Fixed height to accommodate animations inside */
 }
 
 body.light-mode .tab-bar {
@@ -2064,7 +2070,7 @@ body.light-mode .tab-bar {
     text-decoration: none;
     color: var(--text-secondary);
     min-width: 65px;
-    height: 55px;
+    height: 100%;
     border-radius: 20px;
     transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
     flex-shrink: 0;
@@ -2089,15 +2095,14 @@ body.light-mode .tab-bar {
     bottom: 2px;
 }
 
-/* Active State (Bubble Effect) */
+/* Active State (Bubble Effect inside container) */
 .tab-item.active {
     color: var(--bg-color); /* Contrast icon color */
-    transform: translateY(-5px);
 }
 
 .tab-item.active i {
-    transform: translateY(-12px);
-    font-size: 1.6rem;
+    transform: translateY(-8px);
+    font-size: 1.4rem;
     color: #fff; /* Ensure icon is visible on gold */
 }
 
@@ -2107,7 +2112,7 @@ body.light-mode .tab-item.active i {
 
 .tab-item.active span {
     opacity: 1;
-    transform: translateY(0);
+    transform: translateY(-2px);
     color: var(--accent-color);
 }
 
@@ -2129,6 +2134,6 @@ body.light-mode .tab-item.active i {
 }
 
 .tab-item.active::before {
-    transform: translate(-50%, -85%) scale(1);
+    transform: translate(-50%, -65%) scale(1);
     opacity: 1;
 }
