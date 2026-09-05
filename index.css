@@ -8,40 +8,40 @@
 
 /* Variables Definition */
 :root {
-    /* Color Palette - Dark Mode (Default) */
-    --bg-color: #080b11;
-    --bg-gradient: linear-gradient(135deg, #090e1a 0%, #05070f 100%);
-    --sidebar-bg: rgba(13, 20, 38, 0.45);
-    --card-bg: rgba(20, 30, 54, 0.35);
-    --text-primary: #ffffff;
-    --text-secondary: #94a3b8;
-    --accent-color: #06b6d4;      /* Glowing Cyan */
-    --accent-hover: #0891b2;
-    --accent-gradient: linear-gradient(135deg, #38bdf8 0%, #a855f7 100%);
-    --border-color: rgba(255, 255, 255, 0.08);
-    --glass-border: rgba(255, 255, 255, 0.08);
-    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
-    --glass-glow: 0 0 15px rgba(6, 182, 212, 0.15);
+    /* Color Palette - Elegant Dark Mode (Premium) */
+    --bg-color: #0d0d0d;
+    --bg-gradient: linear-gradient(135deg, #121212 0%, #0a0a0a 100%);
+    --sidebar-bg: rgba(18, 18, 18, 0.7);
+    --card-bg: rgba(25, 25, 25, 0.6);
+    --text-primary: #f8f9fa;
+    --text-secondary: #a0a0a0;
+    --accent-color: #d4af37;      /* Luxurious Gold */
+    --accent-hover: #e5c158;
+    --accent-gradient: linear-gradient(135deg, #d4af37 0%, #f3e5ab 100%);
+    --border-color: rgba(212, 175, 55, 0.2);
+    --glass-border: rgba(255, 255, 255, 0.05);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.5);
+    --glass-glow: 0 0 15px rgba(212, 175, 55, 0.15);
     --transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.2);
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
 }
 
 body.light-mode {
-    /* Color Palette - Light Mode */
-    --bg-color: #f1f5f9;
-    --bg-gradient: linear-gradient(135deg, #eef2f6 0%, #e2e8f0 100%);
-    --sidebar-bg: rgba(219, 234, 254, 0.5);
-    --card-bg: rgba(255, 255, 255, 0.45);
-    --text-primary: #0f172a;
-    --text-secondary: #475569;
-    --accent-color: #0284c7;      /* Sky Blue */
-    --accent-hover: #0369a1;
-    --accent-gradient: linear-gradient(135deg, #0284c7 0%, #7c3aed 100%);
-    --border-color: rgba(255, 255, 255, 0.4);
-    --glass-border: rgba(255, 255, 255, 0.45);
-    --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.06);
-    --glass-glow: 0 0 15px rgba(2, 132, 199, 0.1);
-    --shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.05);
+    /* Color Palette - Elegant Light Mode */
+    --bg-color: #faf9f6;
+    --bg-gradient: linear-gradient(135deg, #ffffff 0%, #f0f0f0 100%);
+    --sidebar-bg: rgba(255, 255, 255, 0.8);
+    --card-bg: rgba(255, 255, 255, 0.7);
+    --text-primary: #1a1a1a;
+    --text-secondary: #555555;
+    --accent-color: #b8860b;      /* Dark Goldenrod */
+    --accent-hover: #996515;
+    --accent-gradient: linear-gradient(135deg, #b8860b 0%, #d4af37 100%);
+    --border-color: rgba(184, 134, 11, 0.2);
+    --glass-border: rgba(0, 0, 0, 0.05);
+    --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
+    --glass-glow: 0 0 15px rgba(184, 134, 11, 0.1);
+    --shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.05);
 }
 
 /* Reset & Base Styles */
@@ -1988,4 +1988,147 @@ body.light-mode .search-result-item:hover {
     .ad-toaster-desc {
         font-size: 0.85rem;
     }
+}
+
+/* ==========================================================================
+   ELEGANT iPHONE-STYLE TAB BAR
+   ========================================================================== */
+
+/* Hide sidebar and toggle on mobile, show tab bar */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+    }
+    .menu-toggle {
+        display: none !important;
+    }
+    .main-content {
+        margin-left: 0;
+        padding-bottom: 90px; /* Space for tab bar */
+    }
+    .tab-bar {
+        display: flex !important;
+    }
+}
+
+/* Base Tab Bar Style - Elegant Glassmorphism */
+.tab-bar {
+    display: none; /* Hidden by default on desktop */
+    position: fixed;
+    bottom: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 92%;
+    max-width: 600px;
+    background: rgba(20, 20, 20, 0.7);
+    backdrop-filter: blur(25px) saturate(200%);
+    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    border: 1px solid rgba(212, 175, 55, 0.3);
+    border-radius: 40px;
+    padding: 10px 15px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    z-index: 9999;
+    
+    /* Scrollable "digeret-geret" */
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap;
+    
+    /* Hide scrollbar for elegant look */
+    -ms-overflow-style: none;  
+    scrollbar-width: none;  
+    
+    align-items: center;
+    gap: 8px;
+}
+
+body.light-mode .tab-bar {
+    background: rgba(255, 255, 255, 0.85);
+    border: 1px solid rgba(184, 134, 11, 0.3);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+.tab-bar::-webkit-scrollbar {
+    display: none;
+}
+
+/* Tab Items */
+.tab-item {
+    position: relative;
+    display: inline-flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--text-secondary);
+    min-width: 65px;
+    height: 55px;
+    border-radius: 20px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    flex-shrink: 0;
+    z-index: 2;
+}
+
+.tab-item i {
+    font-size: 1.4rem;
+    margin-bottom: 4px;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: relative;
+    z-index: 2;
+}
+
+.tab-item span {
+    font-size: 0.65rem;
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    position: absolute;
+    bottom: 2px;
+}
+
+/* Active State (Bubble Effect) */
+.tab-item.active {
+    color: var(--bg-color); /* Contrast icon color */
+    transform: translateY(-5px);
+}
+
+.tab-item.active i {
+    transform: translateY(-12px);
+    font-size: 1.6rem;
+    color: #fff; /* Ensure icon is visible on gold */
+}
+
+body.light-mode .tab-item.active i {
+    color: #fff;
+}
+
+.tab-item.active span {
+    opacity: 1;
+    transform: translateY(0);
+    color: var(--accent-color);
+}
+
+/* The Bubble / Glowing Orb behind active icon */
+.tab-item::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    width: 45px;
+    height: 45px;
+    background: var(--accent-gradient);
+    border-radius: 50%;
+    z-index: 0;
+    opacity: 0;
+    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+}
+
+.tab-item.active::before {
+    transform: translate(-50%, -85%) scale(1);
+    opacity: 1;
 }
