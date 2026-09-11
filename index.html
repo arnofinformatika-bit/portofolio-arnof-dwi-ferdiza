@@ -24,7 +24,14 @@
     <meta property="og:description"
         content="Jelajahi portofolio, proyek, dan pengalaman Arnof Dwi Ferdiza di bidang Informatika dan Web Development.">
     <meta property="og:image" content="https://arnofdwiferdiza.vercel.app/arnof.jpg">
-    <meta property="og:type" content="website">
+    <meta property="og:image:type" content="image/jpeg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="1200">
+    <meta property="og:image:alt" content="Foto Profil Arnof Dwi Ferdiza">
+    <meta property="og:url" content="https://arnofdwiferdiza.vercel.app/">
+    <meta property="og:type" content="profile">
+    <meta property="og:profile:first_name" content="Arnof">
+    <meta property="og:profile:last_name" content="Dwi Ferdiza">
     <meta property="og:site_name" content="Portofolio Arnof Dwi Ferdiza">
 
     <!-- Twitter Meta Tags -->
@@ -44,6 +51,60 @@
 
     <!-- Custom CSS (Liquid Glass Theme) -->
     <link rel="stylesheet" href="index.css">
+
+    <!-- JSON-LD Structured Data: Person Schema (untuk Google Search thumbnail) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": "Arnof Dwi Ferdiza",
+      "url": "https://arnofdwiferdiza.vercel.app/",
+      "image": {
+        "@type": "ImageObject",
+        "url": "https://arnofdwiferdiza.vercel.app/arnof.jpg",
+        "width": 1200,
+        "height": 1200
+      },
+      "description": "Mahasiswa Informatika 2024 Universitas Bandar Lampung (UBL). Memiliki keahlian di bidang Web Development, UI/UX Design, dan Software Development.",
+      "jobTitle": "Mahasiswa Informatika | Web Developer | UI/UX Designer",
+      "alumniOf": {
+        "@type": "CollegeOrUniversity",
+        "name": "Universitas Bandar Lampung",
+        "url": "https://ubl.ac.id"
+      },
+      "address": {
+        "@type": "PostalAddress",
+        "addressLocality": "Bandar Lampung",
+        "addressRegion": "Lampung",
+        "addressCountry": "ID"
+      },
+      "email": "arnofdwiferdiza11@gmail.com",
+      "sameAs": [
+        "https://instagram.com/yay_ferdiza",
+        "https://tiktok.com/@nof.dwifer",
+        "https://arnofdwiferdiza.vercel.app/"
+      ],
+      "knowsAbout": ["Web Development", "UI/UX Design", "JavaScript", "HTML", "CSS", "Software Development"]
+    }
+    </script>
+
+    <!-- JSON-LD: WebSite Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Portofolio Arnof Dwi Ferdiza",
+      "url": "https://arnofdwiferdiza.vercel.app/",
+      "description": "Portofolio resmi Arnof Dwi Ferdiza, Mahasiswa Informatika di Universitas Bandar Lampung.",
+      "author": {
+        "@type": "Person",
+        "name": "Arnof Dwi Ferdiza",
+        "image": "https://arnofdwiferdiza.vercel.app/arnof.jpg"
+      },
+      "image": "https://arnofdwiferdiza.vercel.app/arnof.jpg",
+      "inLanguage": "id"
+    }
+    </script>
 </head>
 
 <body>
