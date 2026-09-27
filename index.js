@@ -16,6 +16,11 @@ app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+// Serve admin.html for /admin path
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'admin.html'));
+})
+
 app.listen(port, () => {
   console.log(`Server is running at http://localhost:${port}`);
 });

@@ -198,7 +198,10 @@
             <li><a href="#" onclick="showSection('logbook')"><i class="fas fa-book"></i> Logbook</a></li>
             <li><a href="#" onclick="showSection('gallery')"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
             <li><a href="#" onclick="showSection('achievements')"><i class="fas fa-trophy"></i> Pencapaian</a></li>
-            <li style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
+            <li id="adminNavLi" style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; display: none;">
+                <a href="admin.html" target="_blank" style="color: var(--accent-color); font-weight: 500;"><i class="fas fa-user-shield"></i> Panel Admin</a>
+            </li>
+            <li>
                 <a href="#" onclick="logoutVisitor()" style="color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Keluar
                     / Ganti Nama</a>
             </li>
@@ -289,7 +292,7 @@
                         <i class="fas fa-tasks" style="color: var(--accent-color); font-size: 1.5rem;"></i>
                     </div>
                     <div>
-                        <div style="font-size: 1.5rem; font-weight: 700;"></div>
+                        <div id="stat-projects-num" style="font-size: 1.5rem; font-weight: 700;">6+</div>
                         <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">Projek
                             Selesai</div>
                     </div>
@@ -301,7 +304,7 @@
                         <i class="fas fa-certificate" style="color: #10b981; font-size: 1.5rem;"></i>
                     </div>
                     <div>
-                        <div style="font-size: 1.5rem; font-weight: 700;">10+</div>
+                        <div id="stat-certs-num" style="font-size: 1.5rem; font-weight: 700;">10+</div>
                         <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">
                             Sertifikasi</div>
                     </div>
@@ -313,7 +316,7 @@
                         <i class="fas fa-code-branch" style="color: #f59e0b; font-size: 1.5rem;"></i>
                     </div>
                     <div>
-                        <div style="font-size: 1.5rem; font-weight: 700;">5+</div>
+                        <div id="stat-exp-num" style="font-size: 1.5rem; font-weight: 700;">5+</div>
                         <div style="font-size: 0.75rem; color: var(--text-secondary); text-transform: uppercase;">
                             Pengalaman</div>
                     </div>
@@ -2789,165 +2792,162 @@
 
         const projectForm = document.getElementById('projectForm');
         if (projectForm) {
-            projectForm.addEventListener('submit', function (e) {
+            projectForm.addEventListener('submit', async function (e) {
                 e.preventDefault();
-
                 const title = document.getElementById('projectTitle').value;
                 const link = document.getElementById('projectLink').value;
                 const fileInput = document.getElementById('projectImage');
                 const file = fileInput.files[0];
 
                 if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (event) {
-                        const imageData = event.target.result;
-                        const newProject = {
-                            id: Date.now(),
-                            title: title,
-                            link: link,
-                            image: imageData
-                        };
+                    try {
+                        // 1. Unggah Gambar ke Firebase Storage
+                        const storageRef = window.ref(window.storage, 'projects_images/' + Date.now() + '_' + file.name);
+                        const uploadTask = window.uploadBytesResumable(storageRef, file);
 
-                        // Save to localStorage
-                        let projects = JSON.parse(localStorage.getItem('completedProjects')) || [];
-                        projects.unshift(newProject);
-                        localStorage.setItem('completedProjects', JSON.stringify(projects));
+                        uploadTask.on('state_changed', 
+                            (snapshot) => {
+                                // Anda bisa menambahkan animasi loading di sini
+                                console.log("Sedang mengunggah foto...");
+                            }, 
+                            (error) => {
+                                console.error("Gagal mengunggah foto:", error);
+                                alert("Gagal mengunggah foto.");
+                            }, 
+                            async () => {
+                                // 2. Dapatkan Link URL foto yang berhasil diunggah
+                                const downloadURL = await window.getDownloadURL(uploadTask.snapshot.ref);
 
-                        // Reload and close
-                        loadProjects();
-                        closeProjectModal();
-                    };
-                    reader.readAsDataURL(file);
+                                // 3. Simpan data (teks + URL gambar) ke Firestore
+                                await window.addDoc(window.collection(window.db, "projects"), {
+                                    title: title,
+                                    link: link,
+                                    image: downloadURL, // Menyimpan URL gambar, bukan Base64
+                                    createdAt: Date.now()
+                                });
+
+                                alert("Projek berhasil ditambahkan ke Database!");
+                                closeProjectModal();
+                                loadProjects(); // Segarkan tampilan
+                            }
+                        );
+                    } catch (error) {
+                        console.error("Gagal menyimpan data:", error);
+                    }
                 }
             });
         }
 
-        function loadProjects() {
+        async function loadProjects() {
             const container = document.getElementById('projects-container');
             if (!container) return;
 
-            let projects = JSON.parse(localStorage.getItem('completedProjects'));
+            let projects = [];
+            try {
+                const c = localStorage.getItem('arnof_projects_cache');
+                if (c) projects = JSON.parse(c);
+            } catch(e){}
 
             const defaultProjects = [
-                {
-                    id: 'default-1',
-                    title: 'Diet Sehat Yuk',
-                    link: 'https://diet-sehat-yuks-741694573454.asia-southeast1.run.app',
-                    image: 'foto/PROJECT/diet sehat yuk.png'
+                { 
+                    id: 'proj_def_1', 
+                    title: 'Diet Sehat Yuk', 
+                    link: 'https://diet-sehat-yuks-741694573454.asia-southeast1.run.app/', 
+                    image: 'foto/PROJECT/diet sehat yuk.png',
+                    desc: 'Aplikasi panduan nutrisi dan pola hidup sehat berbasis web.'
                 },
-                {
-                    id: 'default-2',
-                    title: 'Rekap Keuangan',
-                    link: 'https://rekap-keuangan-five.vercel.app',
-                    image: 'foto/PROJECT/rekap keuangan.jpeg'
+                { 
+                    id: 'proj_def_2', 
+                    title: 'Rekap Keuangan', 
+                    link: 'https://rekap-keuangan-five.vercel.app/', 
+                    image: 'foto/PROJECT/rekap keuangan.jpeg',
+                    desc: 'Sistem rekapitulasi dan manajemen pencatatan keuangan harian.'
                 },
-                {
-                    id: 'default-3',
-                    title: 'Deteksi pencegah kantuk sopir menggunakan yolo',
-                    link: 'https://huggingface.co/spaces/Arnof24/deteksi-kantuk-yolo',
-                    image: 'foto/PROJECT/deteksi kantuk yolo.jpeg'
+                { 
+                    id: 'proj_def_3', 
+                    title: 'Deteksi Pencegah Kantuk Sopir (YOLO)', 
+                    link: 'https://huggingface.co/spaces/Arnof24/deteksi-kantuk-yolo', 
+                    image: 'foto/PROJECT/deteksi kantuk yolo.jpeg',
+                    desc: 'Sistem AI deteksi wajah realtime untuk mencegah pengemudi mengantuk.'
                 },
-                {
-                    id: 'default-4',
-                    title: 'Game edukasi niko',
-                    link: 'https://permainan-niko-by-arnof.vercel.app',
-                    image: 'foto/PROJECT/game edukasi niko.jpeg'
+                { 
+                    id: 'proj_def_4', 
+                    title: 'Game Edukasi Niko', 
+                    link: 'https://permainan-niko-by-arnof.vercel.app/', 
+                    image: 'foto/PROJECT/game edukasi niko.jpeg',
+                    desc: 'Game interaktif berbasis web sebagai media pembelajaran edukatif.'
                 },
-                {
-                    id: 'default-5',
-                    title: 'Sistem Absensi Kamera (Realtime)',
-                    link: 'https://absen-perlengkapan-fiks.vercel.app',
-                    image: 'foto/PROJECT/absensi kamera.jpeg'
+                { 
+                    id: 'proj_def_5', 
+                    title: 'Sistem Absensi Kamera (Realtime)', 
+                    link: 'https://absen-perlengkapan-fiks.vercel.app/', 
+                    image: 'foto/PROJECT/absensi kamera.jpeg',
+                    desc: 'Sistem absensi dan monitoring perlengkapan otomatis via kamera realtime.'
                 },
-                {
-                    id: 'default-6',
-                    title: 'Sistem Informasi UKM ROBOTIC UBL OPEN RECRUITMENT',
-                    link: 'https://ukm.robotic.ubl.web.id',
-                    image: 'foto/PROJECT/website UKM ROBOTIC UBL.jpeg'
+                { 
+                    id: 'proj_def_6', 
+                    title: 'Sistem Informasi UKM ROBOTIC UBL', 
+                    link: 'https://ukm.robotic.ubl.web.id/', 
+                    image: 'foto/PROJECT/website UKM ROBOTIC UBL.jpeg',
+                    desc: 'Website resmi sistem informasi dan pendaftaran UKM ROBOTIC UBL.'
                 }
             ];
 
-            // Inisialisasi atau sinkronisasi dengan projek default
-            if (!projects || projects.length === 0 || (projects.length === 1 && projects[0].title === 'Diet Sehat Yuk')) {
-                projects = [...defaultProjects];
-                localStorage.setItem('completedProjects', JSON.stringify(projects));
-            } else {
-                let updated = false;
-
-                // 1. Sync existing default projects (update image, link, title if changed)
+            let combined = [...defaultProjects];
+            if (Array.isArray(projects) && projects.length > 0) {
                 projects.forEach(p => {
-                    const defaultProj = defaultProjects.find(dp => dp.id === p.id);
-                    if (defaultProj && (p.image !== defaultProj.image || p.link !== defaultProj.link || p.title !== defaultProj.title)) {
-                        p.image = defaultProj.image;
-                        p.link = defaultProj.link;
-                        p.title = defaultProj.title;
-                        updated = true;
+                    if (p && p.title) {
+                        const exists = combined.some(item => String(item.id) === String(p.id) || item.title === p.title);
+                        if (!exists) combined.push(p);
                     }
                 });
-
-                // 2. Add any newly introduced default projects that are missing from local storage
-                defaultProjects.forEach(dp => {
-                    if (!projects.find(p => p.id === dp.id)) {
-                        projects.push(dp);
-                        updated = true;
-                    }
-                });
-
-                if (updated) {
-                    localStorage.setItem('completedProjects', JSON.stringify(projects));
-                }
-            }
-
-            if (projects.length === 0) {
-                container.innerHTML = `
-                    <div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-secondary);">
-                        <i class="fas fa-project-diagram fa-3x" style="margin-bottom: 1rem; opacity: 0.3;"></i>
-                        <p>Belum ada projek yang diunggah. Klik "Tambah Projek" untuk memulai.</p>
-                    </div>
-                `;
-                return;
             }
 
             container.innerHTML = '';
-            projects.forEach(project => {
+            combined.forEach(project => {
                 const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.style.height = '280px';
-                item.style.flexDirection = 'column';
-                item.style.position = 'relative';
-                item.style.overflow = 'hidden';
-                item.style.border = '1px solid var(--border-color)';
+                item.className = 'card';
+                item.style.padding = '1.2rem';
                 item.style.background = 'var(--card-bg)';
+                item.style.display = 'flex';
+                item.style.flexDirection = 'column';
+                item.style.justifyContent = 'space-between';
+                item.style.minHeight = '360px';
+                
+                const descText = project.desc ? `<p class="text-secondary" style="font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.4; opacity: 0.85;">${project.desc}</p>` : '';
 
                 item.innerHTML = `
-                    <div style="position: relative; width: 100%; height: 180px;" onmouseenter="this.querySelector('.cert-view-btn').style.opacity='1'" onmouseleave="this.querySelector('.cert-view-btn').style.opacity='0'">
-                        <img src="${project.image}" alt="${project.title}" style="height: 100%; width: 100%; object-fit: cover;">
-                        <button class="cert-view-btn" onclick="openImageViewer('${project.image}')"><i class="fas fa-eye"></i></button>
-                    </div>
-                    <div style="padding: 1rem; width: 100%; display: flex; flex-direction: column; gap: 0.5rem; flex: 1;">
-                        <h4 style="font-size: 0.95rem; color: var(--text-primary); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${project.title}</h4>
-                        <div style="margin-top: auto; display: flex; justify-content: space-between; align-items: center;">
-                            <a href="${project.link}" target="_blank" class="btn" style="padding: 0.4rem 0.8rem; font-size: 0.75rem; background: rgba(56, 189, 248, 0.1); color: var(--accent-color); border-color: rgba(56, 189, 248, 0.2);">
-                                <i class="fas fa-external-link-alt"></i> Lihat Projek
-                            </a>
+                    <div style="display: flex; flex-direction: column; flex-grow: 1;">
+                        <div class="gallery-item" style="height: 170px; overflow: hidden; position: relative; border-radius: 10px; margin-bottom: 0.8rem;">
+                            <img src="${project.image}" alt="${project.title}" style="height: 100%; width: 100%; object-fit: cover;">
                         </div>
+                        <h3 style="font-size: 1rem; color: #fff; line-height: 1.3; font-weight: 600;">${project.title}</h3>
+                        ${descText}
                     </div>
-                    <button class="delete-btn" onclick="deleteProject(${project.id})" style="display: flex; background: rgba(239, 68, 68, 0.9);" title="Hapus Projek">
-                        <i class="fas fa-trash"></i>
-                    </button>
+                    <div style="margin-top: 1.2rem; width: 100%;">
+                        <a href="${project.link || '#'}" target="_blank" class="btn" style="display: flex; width: 100%; font-size: 0.88rem; background: var(--accent-color); color: #fff; text-align: center; align-items: center; justify-content: center; gap: 8px; padding: 0.75rem 1rem; border-radius: 10px; font-weight: 600; text-decoration: none; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.2s ease;">
+                            <i class="fas fa-external-link-alt"></i> Lihat Projek
+                        </a>
+                    </div>
                 `;
                 container.appendChild(item);
             });
         }
 
-        function deleteProject(id) {
-            if (confirm('Hapus projek ini?')) {
-                let projects = JSON.parse(localStorage.getItem('completedProjects')) || [];
-                projects = projects.filter(p => p.id !== id);
-                localStorage.setItem('completedProjects', JSON.stringify(projects));
-                loadProjects();
+        // Fungsi Hapus Projek menggunakan Firestore
+        async function deleteProject(id) {
+            if (confirm('Hapus projek ini dari database?')) {
+                try {
+                    await window.deleteDoc(window.doc(window.db, "projects", id));
+                    loadProjects(); // Muat ulang setelah dihapus
+                } catch (error) {
+                    console.error("Gagal menghapus: ", error);
+                }
             }
         }
+
+        window.loadProjects = loadProjects;
+        window.deleteProject = deleteProject;
 
         // Logbook Functions
         function openLogbookModal() {
@@ -3095,15 +3095,31 @@
                     reader.onload = function (event) {
                         const imageData = event.target.result;
                         const newActivity = {
-                            id: Date.now(),
+                            id: 'gal_' + Date.now(),
                             title: title,
-                            image: imageData
+                            image: imageData,
+                            createdAt: Date.now()
                         };
 
-                        // Save to localStorage
-                        let activities = JSON.parse(localStorage.getItem('galleryActivities')) || [];
-                        activities.push(newActivity);
-                        localStorage.setItem('galleryActivities', JSON.stringify(activities));
+                        // Save to cache (arnof_gallery_cache & galleryActivities)
+                        let cached = [];
+                        try {
+                            cached = JSON.parse(localStorage.getItem('arnof_gallery_cache') || '[]');
+                        } catch(e){}
+                        cached.push(newActivity);
+                        try {
+                            localStorage.setItem('arnof_gallery_cache', JSON.stringify(cached));
+                            localStorage.setItem('galleryActivities', JSON.stringify(cached));
+                        } catch(e){}
+
+                        // Save to Firebase RTDB if ready
+                        if (window.rtdb && window.push && window.dbRef) {
+                            window.push(window.dbRef(window.rtdb, "gallery"), {
+                                title: title,
+                                image: imageData,
+                                createdAt: Date.now()
+                            }).catch(err => console.warn("Firebase gal push note:", err.message));
+                        }
 
                         // Reload gallery and close modal
                         loadGallery();
@@ -3115,37 +3131,54 @@
             });
         }
 
+        const defaultGalleryActivities = [
+            { id: 'def_1', title: 'Kegiatan 1', image: 'foto/kegiatan/q.jpeg' },
+            { id: 'def_2', title: 'Kegiatan 2', image: 'foto/kegiatan/w.jpeg' },
+            { id: 'def_3', title: 'Kegiatan 3', image: 'foto/kegiatan/e.jpeg' },
+            { id: 'def_4', title: 'Kegiatan 4', image: 'foto/kegiatan/r.jpeg' },
+            { id: 'def_5', title: 'Kegiatan 5', image: 'foto/kegiatan/t.jpeg' },
+            { id: 'def_6', title: 'Kegiatan 6', image: 'foto/kegiatan/y.jpeg' },
+            { id: 'def_7', title: 'Kegiatan 7', image: 'foto/kegiatan/a.jpeg' },
+            { id: 'def_8', title: 'Kegiatan 8', image: 'foto/kegiatan/d.jpeg' },
+            { id: 'def_9', title: 'Kegiatan 9', image: 'foto/kegiatan/f.jpeg' },
+            { id: 'def_10', title: 'Kegiatan 10', image: 'foto/kegiatan/h.jpeg' },
+            { id: 'def_11', title: 'Kegiatan 11', image: 'foto/kegiatan/i.jpeg' },
+            { id: 'def_12', title: 'Kegiatan 12', image: 'foto/kegiatan/o.jpeg' },
+            { id: 'def_13', title: 'Kegiatan 13', image: 'foto/kegiatan/p.jpeg' },
+            { id: 'def_14', title: 'Kegiatan 14', image: 'foto/kegiatan/s.jpeg' },
+            { id: 'def_15', title: 'Kegiatan 15', image: 'foto/kegiatan/u.jpeg' },
+            { id: 'def_16', title: 'Kegiatan 16 Seminar 2026', image: 'foto/kegiatan/kegiatan seminar 2026.jpeg' },
+            { id: 'def_17', title: 'Kegiatan 17 Seminar Teknologi 2026', image: 'foto/kegiatan/kegiatan seminar teknologi 2026.jpeg' },
+            { id: 'def_18', title: 'Kegiatan 18 Seminar Umum', image: 'foto/kegiatan/kegiatan seminar.jpeg' },
+            { id: 'def_19', title: 'Kegiatan 19 Sosialisasi mesin iris pisang pada mitra..', image: 'foto/kegiatan/KEGIATAN 19.jpeg' },
+            { id: 'def_20', title: 'Kegiatan 20 Evaluasi pelaksanaan dan keberlanjutan program', image: 'foto/kegiatan/KEGIATAN 20.jpeg' }
+        ];
+
         function loadGallery() {
             const container = document.getElementById('gallery-container');
             if (!container) return;
 
-            let activities = JSON.parse(localStorage.getItem('galleryActivities')) || [];
+            let customItems = [];
+            try {
+                const c1 = localStorage.getItem('arnof_gallery_cache');
+                if (c1) customItems = JSON.parse(c1);
+                else {
+                    const c2 = localStorage.getItem('galleryActivities');
+                    if (c2) customItems = JSON.parse(c2);
+                }
+            } catch(e){}
 
-            // Add some default items if empty
-            if (activities.length === 0) {
-                activities = [
-                    { id: 1, title: 'Kegiatan 1', image: 'foto/kegiatan/q.jpeg' },
-                    { id: 2, title: 'Kegiatan 2', image: 'foto/kegiatan/w.jpeg' },
-                    { id: 3, title: 'Kegiatan 3', image: 'foto/kegiatan/e.jpeg' },
-                    { id: 4, title: 'Kegiatan 4', image: 'foto/kegiatan/r.jpeg' },
-                    { id: 5, title: 'Kegiatan 5', image: 'foto/kegiatan/t.jpeg' },
-                    { id: 6, title: 'Kegiatan 6', image: 'foto/kegiatan/y.jpeg' },
-                    { id: 7, title: 'Kegiatan 7', image: 'foto/kegiatan/a.jpeg' },
-                    { id: 8, title: 'Kegiatan 8', image: 'foto/kegiatan/d.jpeg' },
-                    { id: 9, title: 'Kegiatan 9', image: 'foto/kegiatan/f.jpeg' },
-                    { id: 10, title: 'Kegiatan 10', image: 'foto/kegiatan/h.jpeg' },
-                    { id: 11, title: 'Kegiatan 11', image: 'foto/kegiatan/i.jpeg' },
-                    { id: 12, title: 'Kegiatan 12', image: 'foto/kegiatan/o.jpeg' },
-                    { id: 13, title: 'Kegiatan 13', image: 'foto/kegiatan/p.jpeg' },
-                    { id: 14, title: 'Kegiatan 14', image: 'foto/kegiatan/s.jpeg' },
-                    { id: 15, title: 'Kegiatan 15', image: 'foto/kegiatan/u.jpeg' },
-                    { id: 16, title: 'Kegiatan 16 Seminar 2026', image: 'foto/kegiatan/kegiatan seminar 2026.jpeg' },
-                    { id: 17, title: 'Kegiatan 17 Seminar Teknologi 2026', image: 'foto/kegiatan/kegiatan seminar teknologi 2026.jpeg' },
-                    { id: 18, title: 'Kegiatan 18 Seminar Umum', image: 'foto/kegiatan/kegiatan seminar.jpeg' },
-                    { id: 19, title: 'Kegiatan 19 Sosialisasi mesin iris pisang pada mitra..', image: 'foto/kegiatan/KEGIATAN 19.jpeg' },
-                    { id: 20, title: 'Kegiatan 20 Evaluasi pelaksanaan dan keberlanjutan program', image: 'foto/kegiatan/KEGIATAN 20.jpeg' }
-                    
-                ];
+            // Merge default activities + custom uploaded activities
+            let activities = [...defaultGalleryActivities];
+            if (Array.isArray(customItems)) {
+                customItems.forEach(item => {
+                    if (item && item.image) {
+                        const exists = activities.some(a => a.id === item.id || (a.title === item.title && a.image === item.image));
+                        if (!exists) {
+                            activities.push(item);
+                        }
+                    }
+                });
             }
 
             container.innerHTML = '';
@@ -3156,32 +3189,43 @@
                 item.style.overflow = 'hidden';
                 item.style.flexDirection = 'column';
 
-                if (activity.isPlaceholder) {
-                    item.innerHTML = `
-                        <i class="fas fa-camera fa-2x"></i>
-                        <span style="margin-top: 10px; font-size: 0.8rem;">${activity.title}</span>
-                    `;
-                } else {
-                    // Check if image exists or is base64
-                    const imgSrc = activity.image;
-                    item.innerHTML = `
-                        <img src="${imgSrc}" alt="${activity.title}">
-                        <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); padding: 5px 10px; font-size: 0.75rem; color: white;">
-                            ${activity.title}
-                        </div>
-                        <button class="download-btn" onclick="downloadImage('${imgSrc}', '${activity.title}')" title="Unduh Gambar"><i class="fas fa-download"></i></button>
-                        <button class="delete-btn" onclick="deleteActivity(${activity.id})" title="Hapus"><i class="fas fa-trash"></i></button>
-                    `;
-                }
+                const imgSrc = activity.image;
+                const actId = String(activity.id || '');
+                item.innerHTML = `
+                    <img src="${imgSrc}" alt="${activity.title}">
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(0,0,0,0.7); padding: 5px 10px; font-size: 0.75rem; color: white;">
+                        ${activity.title}
+                    </div>
+                    <button class="download-btn" onclick="downloadImage('${imgSrc}', '${activity.title}')" title="Unduh Gambar"><i class="fas fa-download"></i></button>
+                    <button class="delete-btn" onclick="deleteActivity('${actId}')" title="Hapus"><i class="fas fa-trash"></i></button>
+                `;
                 container.appendChild(item);
             });
         }
+        window.loadGallery = loadGallery;
 
         function deleteActivity(id) {
-            if (confirm('Hapus kegiatan ini?')) {
-                let activities = JSON.parse(localStorage.getItem('galleryActivities')) || [];
-                activities = activities.filter(a => a.id !== id);
-                localStorage.setItem('galleryActivities', JSON.stringify(activities));
+            const isAdmin = sessionStorage.getItem('arnof_auth') === 'true';
+            if (!isAdmin) {
+                if (typeof showAdminToast === 'function') {
+                    showAdminToast('🔒 Akses Ditolak: Hanya Admin yang dapat menghapus foto ini.');
+                }
+                alert('🔒 Akses Ditolak!\n\nHanya Admin yang dapat menghapus foto galeri kegiatan.\nSilakan masuk ke Panel Admin untuk mengelola/menghapus foto.');
+                return;
+            }
+
+            if (confirm('Hapus kegiatan ini dari database?')) {
+                try {
+                    let cached = JSON.parse(localStorage.getItem('arnof_gallery_cache') || '[]');
+                    cached = cached.filter(a => String(a.id) !== String(id));
+                    localStorage.setItem('arnof_gallery_cache', JSON.stringify(cached));
+                    localStorage.setItem('galleryActivities', JSON.stringify(cached));
+                } catch(e){}
+
+                if (window.rtdb && window.remove && window.dbRef && id && !id.startsWith('def_')) {
+                    window.remove(window.dbRef(window.rtdb, `gallery/${id}`)).catch(e => console.warn(e));
+                }
+
                 loadGallery();
             }
         }
@@ -3428,6 +3472,430 @@
                 }
             });
         });
+
+        // Shortcut rahasia untuk memunculkan / menyembunyikan Panel Admin (Ctrl + Shift + A atau Ctrl + A)
+        document.addEventListener('keydown', function(e) {
+            const isCtrl = e.ctrlKey || e.metaKey;
+            const isKeyA = e.key && e.key.toLowerCase() === 'a';
+
+            if (isCtrl && isKeyA) {
+                // Jangan cegah Select All jika pengguna sedang fokus mengetik di input, textarea, atau elemen editable
+                const targetTag = e.target.tagName ? e.target.tagName.toLowerCase() : '';
+                if (targetTag === 'input' || targetTag === 'textarea' || e.target.isContentEditable) {
+                    return;
+                }
+
+                // Jalankan toggle jika menekan Ctrl+Shift+A atau Ctrl+A di area dokumen biasa
+                e.preventDefault();
+                const adminLi = document.getElementById('adminNavLi');
+                if (adminLi) {
+                    const isHidden = adminLi.style.display === 'none' || adminLi.style.display === '';
+                    if (isHidden) {
+                        adminLi.style.display = 'block';
+                        showAdminToast('🔓 Panel Admin ditampilkan!');
+                        
+                        // Buka sidebar secara otomatis jika sedang tertutup (tampilan mobile)
+                        const sidebar = document.querySelector('.sidebar');
+                        if (sidebar && !sidebar.classList.contains('active')) {
+                            sidebar.classList.add('active');
+                        }
+                    } else {
+                        adminLi.style.display = 'none';
+                        showAdminToast('🔒 Panel Admin disembunyikan!');
+                    }
+                }
+            }
+        });
+
+        // Sensor Goyang HP (Shake Gesture) untuk Membuka Panel Admin di Perangkat Mobile
+        (function initShakeToAdmin() {
+            let lastX = null, lastY = null, lastZ = null;
+            let lastTime = new Date().getTime();
+            const SHAKE_THRESHOLD = 15;
+
+            function handleMotion(e) {
+                const current = e.accelerationIncludingGravity;
+                if (!current || current.x === null) return;
+
+                const currentTime = new Date().getTime();
+                const diffTime = currentTime - lastTime;
+
+                if (diffTime > 100) {
+                    if (lastX !== null && lastY !== null && lastZ !== null) {
+                        const deltaX = Math.abs(current.x - lastX);
+                        const deltaY = Math.abs(current.y - lastY);
+                        const deltaZ = Math.abs(current.z - lastZ);
+
+                        if ((deltaX + deltaY + deltaZ) > SHAKE_THRESHOLD) {
+                            const adminLi = document.getElementById('adminNavLi');
+                            if (adminLi) {
+                                adminLi.style.display = 'block';
+                            }
+                            const sidebar = document.querySelector('.sidebar');
+                            if (sidebar && !sidebar.classList.contains('active')) {
+                                sidebar.classList.add('active');
+                            }
+                            if (typeof showAdminToast === 'function') {
+                                showAdminToast('📱 Goyangan HP Terdeteksi! Membuka Panel Admin...');
+                            }
+                            setTimeout(() => {
+                                window.open('admin.html', '_blank');
+                            }, 700);
+                        }
+                    }
+                    lastX = current.x;
+                    lastY = current.y;
+                    lastZ = current.z;
+                    lastTime = currentTime;
+                }
+            }
+
+            if (window.DeviceMotionEvent) {
+                if (typeof DeviceMotionEvent.requestPermission === 'function') {
+                    document.addEventListener('touchstart', function reqPermission() {
+                        DeviceMotionEvent.requestPermission().then(permission => {
+                            if (permission === 'granted') {
+                                window.addEventListener('devicemotion', handleMotion, false);
+                            }
+                        }).catch(console.error);
+                    }, { once: true });
+                } else {
+                    window.addEventListener('devicemotion', handleMotion, false);
+                }
+            }
+        })();
+
+        // Fungsi Toast Notification Sederhana & Elegan untuk Status Panel Admin
+        function showAdminToast(message) {
+            let toast = document.getElementById('admin-toast-notification');
+            if (!toast) {
+                toast = document.createElement('div');
+                toast.id = 'admin-toast-notification';
+                toast.style.cssText = `
+                    position: fixed;
+                    bottom: 25px;
+                    right: 25px;
+                    background: linear-gradient(135deg, rgba(212, 175, 55, 0.95), rgba(184, 134, 11, 0.95));
+                    color: #0d0d0d;
+                    padding: 12px 20px;
+                    border-radius: 10px;
+                    font-weight: 600;
+                    font-size: 0.88rem;
+                    box-shadow: 0 8px 25px rgba(0,0,0,0.5), 0 0 15px rgba(212, 175, 55, 0.4);
+                    z-index: 99999;
+                    display: flex;
+                    align-items: center;
+                    gap: 10px;
+                    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+                    transform: translateY(100px);
+                    opacity: 0;
+                    pointer-events: none;
+                `;
+                document.body.appendChild(toast);
+            }
+            toast.innerHTML = `<i class="fas fa-shield-alt"></i> ${message}`;
+            toast.style.transform = 'translateY(0)';
+            toast.style.opacity = '1';
+
+            clearTimeout(window.adminToastTimeout);
+            window.adminToastTimeout = setTimeout(() => {
+                toast.style.transform = 'translateY(100px)';
+                toast.style.opacity = '0';
+            }, 2500);
+        }
+    </script>
+
+    <!-- Modul Firebase & Analytics -->
+    <script type="module">
+      // Import fungsi Firebase dari CDN
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+      import { getAnalytics } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-analytics.js";
+      import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+      import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
+      import { getDatabase, ref as dbRef, get } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+      // Konfigurasi Firebase Web App
+      const firebaseConfig = {
+        apiKey: "AIzaSyD-jea6EVDJIZ8eZSO6TzLGpks9oO15rDE",
+        authDomain: "portofolio-ec21c.firebaseapp.com",
+        databaseURL: "https://portofolio-ec21c-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "portofolio-ec21c",
+        storageBucket: "portofolio-ec21c.firebasestorage.app",
+        messagingSenderId: "1086819994971",
+        appId: "1:1086819994971:web:df376ea6662b666e961e7e",
+        measurementId: "G-4SM1SF4G3J"
+      };
+
+      // Inisialisasi Aplikasi Firebase
+      const app = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(app);
+      
+      // Daftarkan ke window agar bisa diakses oleh skrip fungsi global
+      window.app = app;
+      window.analytics = analytics;
+      window.db = getFirestore(app);
+      window.storage = getStorage(app);
+      window.rtdb = getDatabase(app, firebaseConfig.databaseURL);
+      window.dbRef = dbRef;
+      window.getRtdb = get;
+      window.collection = collection;
+      window.addDoc = addDoc;
+      window.getDocs = getDocs;
+      window.deleteDoc = deleteDoc;
+      window.doc = doc;
+      window.ref = ref;
+      window.uploadBytesResumable = uploadBytesResumable;
+      window.getDownloadURL = getDownloadURL;
+
+      // Panggil loadProjects setelah Firebase selesai dimuat
+      if (typeof window.loadProjects === 'function') {
+        window.loadProjects();
+      }
+
+      // Sinkronisasi otomatis konten dari Realtime Database (Gratis 100% + Cache Instan)
+      async function syncFirebaseContent() {
+        async function getList(path) {
+          let list = [];
+          try {
+            const cached = localStorage.getItem(`arnof_${path}_cache`);
+            if (cached) list = JSON.parse(cached);
+          } catch(e) {}
+
+          try {
+            const snap = await window.getRtdb(window.dbRef(window.rtdb, path));
+            if (snap.exists()) {
+              const val = snap.val();
+              const serverList = [];
+              Object.keys(val).forEach(k => serverList.push(val[k]));
+              if (serverList.length > 0) {
+                list = serverList;
+                try { localStorage.setItem(`arnof_${path}_cache`, JSON.stringify(serverList)); } catch(e){}
+              }
+            }
+          } catch(e) {}
+          return list;
+        }
+
+        try {
+          // 1. Home Profile & Stats
+          let h = null;
+          try {
+            const hSnap = await window.getRtdb(window.dbRef(window.rtdb, "portfolio_content/home"));
+            if (hSnap.exists()) h = hSnap.val();
+          } catch(e) {}
+          if (!h) {
+            try {
+              const fH = await getDoc(doc(window.db, "portfolio_content", "home"));
+              if (fH.exists()) h = fH.data();
+            } catch(e) {}
+          }
+          if (h) {
+            const statCards = document.querySelectorAll('#home .card');
+            statCards.forEach(c => {
+              const text = c.innerText || '';
+              if (text.includes('PROJEK SELESAI') && h.projects) {
+                const num = c.querySelector('div[style*="font-size: 2rem"], div[style*="font-weight: 700"]');
+                if (num) num.innerText = h.projects;
+              }
+              if (text.includes('SERTIFIKASI') && h.certs) {
+                const num = c.querySelector('div[style*="font-size: 2rem"], div[style*="font-weight: 700"]');
+                if (num) num.innerText = h.certs;
+              }
+              if (text.includes('PENGALAMAN') && h.exp) {
+                const num = c.querySelector('div[style*="font-size: 2rem"], div[style*="font-weight: 700"]');
+                if (num) num.innerText = h.exp;
+              }
+            });
+            const homeCard = document.querySelector('#home .card');
+            if (homeCard) {
+              const pTags = homeCard.querySelectorAll('p.text-lead');
+              if (pTags[0] && h.bio1) pTags[0].innerHTML = h.bio1;
+              if (pTags[1] && h.bio2) pTags[1].innerHTML = h.bio2;
+            }
+          }
+
+          // 2. About Me
+          let a = null;
+          try {
+            const aSnap = await window.getRtdb(window.dbRef(window.rtdb, "portfolio_content/about"));
+            if (aSnap.exists()) a = aSnap.val();
+          } catch(e) {}
+          if (!a) {
+            try {
+              const fA = await getDoc(doc(window.db, "portfolio_content", "about"));
+              if (fA.exists()) a = fA.data();
+            } catch(e) {}
+          }
+          if (a) {
+            const aboutCard = document.querySelector('#about .card');
+            if (aboutCard && a.bio) {
+              const bioP = aboutCard.querySelector('p.text-lead');
+              if (bioP) bioP.innerHTML = a.bio;
+            }
+          }
+
+          // 3. Education
+          const eduItems = await getList("education");
+          if (eduItems.length > 0) {
+            const eduTimeline = document.querySelector('#education .timeline');
+            if (eduTimeline) {
+              eduItems.forEach(item => {
+                const existing = Array.from(eduTimeline.querySelectorAll('h3')).some(h => h.innerText.trim() === (item.school || '').trim());
+                if (!existing) {
+                  const el = document.createElement('div');
+                  el.className = 'timeline-item';
+                  el.innerHTML = `
+                    <div class="timeline-date">${item.period || ''}</div>
+                    <h3>${item.school}</h3>
+                    <p class="text-secondary">${item.major || ''}</p>
+                  `;
+                  eduTimeline.prepend(el);
+                }
+              });
+            }
+          }
+
+          // 4. Experience
+          const expItems = await getList("experience");
+          if (expItems.length > 0) {
+            const expTimeline = document.querySelector('#experience .timeline');
+            if (expTimeline) {
+              expItems.forEach(item => {
+                const existing = Array.from(expTimeline.querySelectorAll('h3')).some(h => h.innerText.trim().includes((item.role || '').trim()));
+                if (!existing) {
+                  const el = document.createElement('div');
+                  el.className = 'timeline-item';
+                  el.innerHTML = `
+                    <div class="timeline-date">${item.period || ''}</div>
+                    <h3>${item.role} - <span style="font-size: 0.95rem; color: var(--accent-color);">${item.org || ''}</span></h3>
+                    <p class="text-secondary" style="margin-top: 0.5rem;">${item.desc || ''}</p>
+                  `;
+                  expTimeline.prepend(el);
+                }
+              });
+            }
+          }
+
+          // 5. Certificates
+          const certItems = await getList("certificates");
+          if (certItems.length > 0) {
+            const certContainer = document.querySelector('#certificates .gallery-grid');
+            if (certContainer) {
+              certItems.forEach(item => {
+                const existing = Array.from(certContainer.querySelectorAll('h4')).some(h => h.innerText.trim().toLowerCase() === (item.title || '').trim().toLowerCase());
+                if (!existing) {
+                  const el = document.createElement('div');
+                  el.className = 'card';
+                  el.style.padding = '1rem';
+                  el.style.background = 'rgba(8, 143, 161, 0.8)';
+                  el.innerHTML = `
+                    <div class="gallery-item" style="height: 180px; overflow: hidden; position: relative; border: 1px solid var(--border-color);">
+                      <img src="${item.image}" alt="${item.title}" style="width: 100%; height: 100%; object-fit: cover;">
+                    </div>
+                    <h4 style="margin-top: 1rem; font-size: 0.9rem; color: #fff;">${item.title}</h4>
+                    <small style="color: var(--accent-color);">${item.issuer || ''}</small>
+                  `;
+                  const lastCard = certContainer.lastElementChild;
+                  if (lastCard && lastCard.innerText.includes("Sertifikat Lainnya")) {
+                    certContainer.insertBefore(el, lastCard);
+                  } else {
+                    certContainer.appendChild(el);
+                  }
+                }
+              });
+            }
+          }
+
+          // 6. Gallery (Realtime Database - Gratis 100%)
+          const galItems = await getList("gallery");
+          if (galItems.length > 0) {
+            try {
+              localStorage.setItem('arnof_gallery_cache', JSON.stringify(galItems));
+            } catch(e){}
+            if (typeof window.loadGallery === 'function') {
+              window.loadGallery();
+            }
+          }
+
+          // 7. Logbook
+          const logItems = await getList("logbook");
+          if (logItems.length > 0) {
+            const logContainer = document.getElementById('logbook-container') || document.querySelector('#logbook tbody');
+            if (logContainer) {
+              logItems.forEach(item => {
+                const dateStr = item.createdAt ? new Date(item.createdAt).toLocaleDateString('id-ID') : '-';
+                const existing = Array.from(logContainer.querySelectorAll('td')).some(td => td.innerText.trim() === (item.activity || '').trim());
+                if (!existing) {
+                  const tr = document.createElement('tr');
+                  tr.innerHTML = `
+                    <td>${item.activity}</td>
+                    <td>${item.result || '-'}</td>
+                    <td>${item.obstacle || '-'}</td>
+                    <td>${dateStr}</td>
+                    <td><span class="badge badge-wajib" style="background: rgba(16,185,129,0.2); color: #10b981;">Tersimpan</span></td>
+                  `;
+                  logContainer.prepend(tr);
+                }
+              });
+            }
+          }
+
+          // 8. Achievements
+          const achItems = await getList("achievements");
+          if (achItems.length > 0) {
+            const achContainer = document.querySelector('#achievements .card .grid-2') || document.querySelector('#achievements .card');
+            if (achContainer) {
+              achItems.forEach(item => {
+                const existing = Array.from(achContainer.querySelectorAll('h3, h4')).some(h => h.innerText.trim().toLowerCase() === (item.title || '').trim().toLowerCase());
+                if (!existing) {
+                  const el = document.createElement('div');
+                  el.style.borderLeft = '3px solid var(--accent-color)';
+                  el.style.paddingLeft = '1rem';
+                  el.style.marginBottom = '1rem';
+                  el.innerHTML = `
+                    <h3 style="margin-bottom: 0.5rem; color: #fff;">${item.title}</h3>
+                    <p class="text-secondary" style="font-size: 0.85rem;">${item.year || ''} &bull; ${item.desc || ''}</p>
+                  `;
+                  achContainer.appendChild(el);
+                }
+              });
+            }
+          }
+
+          // 9. Projects
+          const projItems = await getList("projects");
+          if (projItems.length > 0) {
+            try {
+              localStorage.setItem('arnof_projects_cache', JSON.stringify(projItems));
+            } catch(e){}
+            if (typeof window.loadProjects === 'function') {
+              window.loadProjects();
+            }
+          }
+
+          // 10. Skills
+          const skillItems = await getList("skills");
+          if (skillItems.length > 0) {
+            skillItems.forEach(item => {
+              const skillTagsContainers = document.querySelectorAll('#skills .skill-tags');
+              if (skillTagsContainers.length > 0) {
+                const targetBox = skillTagsContainers[0];
+                const existing = Array.from(document.querySelectorAll('#skills .skill-tag')).some(t => t.innerText.trim().toLowerCase().includes((item.name || '').trim().toLowerCase()));
+                if (!existing) {
+                  const tag = document.createElement('span');
+                  tag.className = 'skill-tag';
+                  tag.innerHTML = `<i class="fas fa-check-circle"></i> ${item.name}`;
+                  targetBox.appendChild(tag);
+                }
+              }
+            });
+          }
+        } catch (err) {
+          console.log("Firebase sync note:", err.message);
+        }
+      }
+
+      syncFirebaseContent();
     </script>
 </body>
 
