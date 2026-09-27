@@ -3161,48 +3161,54 @@
             uploadForm.addEventListener('submit', function (e) {
                 e.preventDefault();
 
-                const title = document.getElementById('activityTitle').value;
+                const title = document.getElementById('activityTitle').value.trim();
                 const fileInput = document.getElementById('activityImage');
                 const file = fileInput.files[0];
 
-                if (file) {
-                    const reader = new FileReader();
-                    reader.onload = function (event) {
-                        const imageData = event.target.result;
-                        const newActivity = {
-                            id: 'gal_' + Date.now(),
-                            title: title,
-                            image: imageData,
-                            createdAt: Date.now()
-                        };
+                if (!title || !file) return alert('Pilih foto dan isi judul kegiatan!');
 
-                        // Save to cache (arnof_gallery_cache & galleryActivities)
-                        let cached = [];
-                        try {
-                            cached = JSON.parse(localStorage.getItem('arnof_gallery_cache') || '[]');
-                        } catch(e){}
-                        cached.push(newActivity);
-                        try {
-                            localStorage.setItem('arnof_gallery_cache', JSON.stringify(cached));
-                            localStorage.setItem('galleryActivities', JSON.stringify(cached));
-                        } catch(e){}
+                const reader = new FileReader();
+                reader.onload = function (event) {
+                    const imageData = event.target.result;
+                    
+                    let galId = 'gal_' + Date.now();
+                    if (window.rtdb && window.push && window.dbRef) {
+                        const newRef = window.push(window.dbRef(window.rtdb, "gallery"));
+                        if (newRef && newRef.key) galId = newRef.key;
+                    }
 
-                        // Save to Firebase RTDB if ready
-                        if (window.rtdb && window.push && window.dbRef) {
-                            window.push(window.dbRef(window.rtdb, "gallery"), {
-                                title: title,
-                                image: imageData,
-                                createdAt: Date.now()
-                            }).catch(err => console.warn("Firebase gal push note:", err.message));
-                        }
-
-                        // Reload gallery and close modal
-                        loadGallery();
-                        closeUploadModal();
-                        uploadForm.reset();
+                    const newActivity = {
+                        id: galId,
+                        title: title,
+                        image: imageData,
+                        createdAt: Date.now()
                     };
-                    reader.readAsDataURL(file);
-                }
+
+                    // Save to local cache
+                    let cached = [];
+                    try {
+                        cached = JSON.parse(localStorage.getItem('arnof_gallery_cache') || '[]');
+                    } catch(e){}
+                    cached.unshift(newActivity);
+                    try {
+                        localStorage.setItem('arnof_gallery_cache', JSON.stringify(cached));
+                        localStorage.setItem('galleryActivities', JSON.stringify(cached));
+                    } catch(e){}
+
+                    // Save to Firebase Realtime Database & Firestore
+                    if (window.rtdb && window.setRtdb && window.dbRef) {
+                        window.setRtdb(window.dbRef(window.rtdb, `gallery/${galId}`), newActivity).catch(err => console.warn("Firebase gal note:", err.message));
+                    }
+                    if (window.db && window.setDoc && window.doc) {
+                        window.setDoc(window.doc(window.db, "gallery", galId), newActivity).catch(err => console.warn("Firestore gal note:", err.message));
+                    }
+
+                    // Reload gallery and close modal
+                    loadGallery();
+                    closeUploadModal();
+                    uploadForm.reset();
+                };
+                reader.readAsDataURL(file);
             });
         }
 
@@ -3233,6 +3239,12 @@
             const container = document.getElementById('gallery-container');
             if (!container) return;
 
+            let deletedIds = [];
+            try {
+                const d = localStorage.getItem('arnof_deleted_gallery');
+                if (d) deletedIds = JSON.parse(d);
+            } catch(e){}
+
             let customItems = [];
             try {
                 const c1 = localStorage.getItem('arnof_gallery_cache');
@@ -3244,11 +3256,11 @@
             } catch(e){}
 
             // Merge default activities + custom uploaded activities
-            let activities = [...defaultGalleryActivities];
+            let activities = defaultGalleryActivities.filter(a => !deletedIds.includes(String(a.id)));
             if (Array.isArray(customItems)) {
                 customItems.forEach(item => {
-                    if (item && item.image) {
-                        const exists = activities.some(a => a.id === item.id || (a.title === item.title && a.image === item.image));
+                    if (item && item.image && !deletedIds.includes(String(item.id))) {
+                        const exists = activities.some(a => String(a.id) === String(item.id) || (a.title === item.title && a.image === item.image));
                         if (!exists) {
                             activities.push(item);
                         }
@@ -3297,8 +3309,25 @@
                     localStorage.setItem('galleryActivities', JSON.stringify(cached));
                 } catch(e){}
 
-                if (window.rtdb && window.remove && window.dbRef && id && !id.startsWith('def_')) {
-                    window.remove(window.dbRef(window.rtdb, `gallery/${id}`)).catch(e => console.warn(e));
+                try {
+                    let deleted = JSON.parse(localStorage.getItem('arnof_deleted_gallery') || '[]');
+                    if (!deleted.includes(String(id))) {
+                        deleted.push(String(id));
+                        localStorage.setItem('arnof_deleted_gallery', JSON.stringify(deleted));
+                    }
+                } catch(e){}
+
+                if (window.rtdb && id) {
+                    if (window.remove && window.dbRef && !id.startsWith('def_')) {
+                        window.remove(window.dbRef(window.rtdb, `gallery/${id}`)).catch(e => console.warn(e));
+                    }
+                    if (window.setRtdb && window.dbRef) {
+                        window.setRtdb(window.dbRef(window.rtdb, `deleted_gallery/${id}`), true).catch(e => console.warn(e));
+                    }
+                }
+
+                if (window.db && window.deleteDoc && window.doc && id && !id.startsWith('def_')) {
+                    window.deleteDoc(window.doc(window.db, "gallery", id)).catch(e => console.warn(e));
                 }
 
                 loadGallery();
@@ -3967,7 +3996,72 @@
 
       syncFirebaseContent();
 
-      // Realtime Database Listeners for Instant Live Sync (Certificates Addition & Deletion)
+      // Helper override matkul & grade
+      function applyCourseOverrides(overridesMap) {
+        if (!overridesMap) return;
+        const cards = document.querySelectorAll('#learning-path .course-card');
+        cards.forEach(card => {
+          const codeEl = card.querySelector('.course-code');
+          if (!codeEl) return;
+          const code = codeEl.innerText.trim();
+          const ov = overridesMap[code];
+          if (ov) {
+            if (ov.status) {
+              const statusBadge = card.querySelector('.course-status-badge');
+              if (statusBadge) {
+                statusBadge.innerText = ov.status;
+                statusBadge.className = 'course-status-badge ' + (
+                  ov.status === 'Sudah Ambil' ? 'status-sudah' :
+                  ov.status === 'Sedang Ambil' ? 'status-sedang' : 'status-belum'
+                );
+              }
+            }
+            if (ov.grade !== undefined) {
+              const gradeBox = card.querySelector('.course-grade');
+              if (gradeBox) {
+                const isNone = (ov.grade === '-' || ov.grade === 'Belum Ada');
+                const gradeClass = isNone ? 'grade-none' : 'grade-' + String(ov.grade).toLowerCase();
+                const gradeLabel = isNone ? 'Belum Ada' : ov.grade;
+                gradeBox.innerHTML = `Nilai: <span class="badge-grade ${gradeClass}">${gradeLabel}</span>`;
+              }
+            }
+          }
+        });
+      }
+
+      function renderCustomCourses(customList) {
+        if (!Array.isArray(customList) || customList.length === 0) return;
+        customList.forEach(cr => {
+          if (!cr || !cr.code) return;
+          const existing = Array.from(document.querySelectorAll('#learning-path .course-code')).some(el => el.innerText.trim() === cr.code);
+          if (!existing) {
+            const card = document.createElement('div');
+            card.className = 'course-card';
+            const statusClass = cr.status === 'Sudah Ambil' ? 'status-sudah' : cr.status === 'Sedang Ambil' ? 'status-sedang' : 'status-belum';
+            const isNone = (!cr.grade || cr.grade === '-' || cr.grade === 'Belum Ada');
+            const gradeClass = isNone ? 'grade-none' : 'grade-' + String(cr.grade).toLowerCase();
+            const gradeLabel = isNone ? 'Belum Ada' : cr.grade;
+            
+            card.innerHTML = `
+              <div class="course-status-badge ${statusClass}">${cr.status || 'Sudah Ambil'}</div>
+              <div class="course-code">${cr.code}</div>
+              <div class="course-name">${cr.name}</div>
+              <div class="course-type-container">
+                <span class="badge badge-wajib">Kustom</span>
+                <span class="badge badge-category">${cr.semester || 'Semester 1'}</span>
+              </div>
+              <div class="course-info-row">
+                <div class="course-sks-val"><i class="fas fa-clock"></i> ${cr.sks || '3 SKS'}</div>
+                <div class="course-grade">Nilai: <span class="badge-grade ${gradeClass}">${gradeLabel}</span></div>
+              </div>
+            `;
+            const grid = document.querySelector('#learning-path .courses-grid');
+            if (grid) grid.appendChild(card);
+          }
+        });
+      }
+
+      // Realtime Database Listeners for Instant Live Sync (Certificates & Learning Path)
       if (window.rtdb && window.onValue && window.dbRef) {
         try {
           window.onValue(window.dbRef(window.rtdb, "certificates"), (snapshot) => {
@@ -3991,6 +4085,22 @@
             }
             if (typeof window.loadCertificates === 'function') {
               window.loadCertificates();
+            }
+          });
+
+          // Listener Realtime Override Status & Nilai Matkul
+          window.onValue(window.dbRef(window.rtdb, "learning_path_overrides"), (snapshot) => {
+            if (snapshot.exists()) {
+              applyCourseOverrides(snapshot.val());
+            }
+          });
+
+          // Listener Realtime Matkul Kustom Baru
+          window.onValue(window.dbRef(window.rtdb, "learning_path"), (snapshot) => {
+            if (snapshot.exists()) {
+              const val = snapshot.val();
+              const customList = Object.keys(val).map(k => ({ id: k, ...val[k] }));
+              renderCustomCourses(customList);
             }
           });
         } catch(e) {}
