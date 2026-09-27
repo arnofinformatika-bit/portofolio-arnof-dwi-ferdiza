@@ -960,6 +960,27 @@
                             localStorage.setItem('galleryActivities', JSON.stringify(gCache));
                         } catch(e){}
                     }
+                    if (nodeName === 'certificates') {
+                        try {
+                            let cCache = JSON.parse(localStorage.getItem('arnof_certificates_cache') || '[]');
+                            cCache = cCache.filter(item => String(item.id) !== String(id));
+                            localStorage.setItem('arnof_certificates_cache', JSON.stringify(cCache));
+                        } catch(e){}
+
+                        try {
+                            let deleted = JSON.parse(localStorage.getItem('arnof_deleted_certificates') || '[]');
+                            if (!deleted.includes(String(id))) {
+                                deleted.push(String(id));
+                                localStorage.setItem('arnof_deleted_certificates', JSON.stringify(deleted));
+                            }
+                        } catch(e){}
+
+                        try {
+                            if (rtdb && id) {
+                                set(dbRef(rtdb, `deleted_certificates/${id}`), true).catch(e => console.warn(e));
+                            }
+                        } catch(e){}
+                    }
 
                     // 2. Hapus elemen DOM langsung (Optimistic Remove)
                     const domEl = document.getElementById(`card_gal_${id}`) || document.getElementById(`card_proj_${id}`) || document.getElementById(`card_cert_${id}`);
@@ -1322,17 +1343,60 @@
             }
         }
 
+        const defaultCertificates = [
+            { id: 'cert_def_1', title: 'Dicoding - AI Praktis Untuk Produktivitas', issuer: 'Dicoding Indonesia', image: 'foto/ai.jpeg' },
+            { id: 'cert_def_2', title: 'Dicoding - Membangun Aplikasi Gen AI dengan Microsoft Azure', issuer: 'Dicoding Indonesia', image: 'foto/ha.jpeg' },
+            { id: 'cert_def_3', title: 'Dicoding - Belajar Penerapan Data Science dengan Microsoft Fabric', issuer: 'Dicoding Indonesia', image: 'foto/y.jpeg' },
+            { id: 'cert_def_4', title: 'Dicoding - Belajar Dasar AI', issuer: 'Dicoding Indonesia', image: 'foto/h.jpeg' },
+            { id: 'cert_def_5', title: 'Microsoft Elevate - "Melatih dan Mengelola Model Machine Learning di Microsoft Fabric"', issuer: 'Microsoft Elevate', image: 'foto/i.jpeg' },
+            { id: 'cert_def_6', title: 'Microsoft Elevate - "Merancang Percakapan Cerdas di Azure AI Foundry"', issuer: 'Microsoft Elevate', image: 'foto/q.jpeg' },
+            { id: 'cert_def_7', title: 'Microsoft Elevate - "Mempersiapkan Data untuk Model AI di Microsoft Fabric"', issuer: 'Microsoft Elevate', image: 'foto/w.jpeg' },
+            { id: 'cert_def_8', title: 'UBL Trainer - Precollege 2025 - Computational Thinking Information Technology Center Universitas Bandar Lampung', issuer: 'Universitas Bandar Lampung', image: 'foto/ubl.jpeg' },
+            { id: 'cert_def_9', title: 'KEMNAKER - Pembekalan 12+ Essential Skills Program Magang Nasional', issuer: 'KEMNAKER', image: 'foto/t.jpeg' },
+            { id: 'cert_def_10', title: 'Sertifikat Vibe Coding 2026 Google', issuer: 'Google', image: 'foto/google.jpeg' }
+        ];
+
         async function loadCertData() {
             const container = document.getElementById("adminCertList");
             try {
+                let deletedIds = [];
+                try {
+                    const d = localStorage.getItem('arnof_deleted_certificates');
+                    if (d) deletedIds = JSON.parse(d);
+                } catch(e){}
+
+                try {
+                    const delSnap = await get(dbRef(rtdb, "deleted_certificates"));
+                    if (delSnap.exists()) {
+                        deletedIds = Object.keys(delSnap.val());
+                        localStorage.setItem('arnof_deleted_certificates', JSON.stringify(deletedIds));
+                    }
+                } catch(e){}
+
                 const items = await fetchRtdbOrFirestore("certificates");
-                if (items.length === 0 && container.children.length === 0) { container.innerHTML = "<p style='color:#888;'>Belum ada sertifikat.</p>"; return; }
-                if (items.length > 0) {
-                    container.innerHTML = "";
-                    items.forEach(c => renderCertCard(c, false));
+
+                let combined = defaultCertificates.filter(c => !deletedIds.includes(String(c.id)));
+                if (Array.isArray(items)) {
+                    items.forEach(c => {
+                        if (c && c.title && !deletedIds.includes(String(c.id))) {
+                            const exists = combined.some(item => String(item.id) === String(c.id) || item.title === c.title);
+                            if (!exists) combined.push(c);
+                        }
+                    });
                 }
-            } catch (err) { if(container.children.length === 0) container.innerHTML = `<p style="color:red;">${err.message}</p>`; }
+
+                if (combined.length === 0) {
+                    container.innerHTML = "<p style='color:#888;'>Belum ada sertifikat.</p>";
+                    return;
+                }
+
+                container.innerHTML = "";
+                combined.forEach(c => renderCertCard(c, false));
+            } catch (err) {
+                if(container.children.length === 0) container.innerHTML = `<p style="color:red;">${err.message}</p>`;
+            }
         }
+        window.loadCertData = loadCertData;
 
         window.submitAddCert = async function(e) {
             e.preventDefault();
@@ -1346,8 +1410,12 @@
             btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memproses...";
             try {
                 const { dataUrl } = await compressImage(file, 600, 600, 0.6);
-                const tempId = "tmp_" + Date.now();
+                
+                const newRef = push(dbRef(rtdb, "certificates"));
+                const certId = newRef.key;
+                
                 const certPayload = {
+                    id: certId,
                     title: title,
                     issuer: issuer,
                     image: dataUrl,
@@ -1355,24 +1423,26 @@
                 };
 
                 // OPTIMISTIC UI: RENDER SEKETIKA
-                renderCertCard({ id: tempId, ...certPayload }, true);
+                renderCertCard(certPayload, true);
 
                 // Cache lokal
                 let cached = getLocalCache("certificates");
-                cached.unshift({ id: tempId, ...certPayload });
+                cached.unshift(certPayload);
                 saveLocalCache("certificates", cached);
 
                 document.getElementById("formAddCert").reset();
                 document.getElementById("certImgPreview").style.display = 'none';
                 document.getElementById("certImgPlaceholder").style.display = 'block';
 
-                showToast("✨ Sertifikat berhasil ditambahkan!", "success");
+                showToast("✨ Sertifikat berhasil ditambahkan ke Firebase!", "success");
 
-                push(dbRef(rtdb, "certificates"), certPayload).catch(err => console.warn("Background cert rtdb note:", err.message));
-                addDoc(collection(db, "certificates"), certPayload).catch(err => console.warn("Background cert firestore note:", err.message));
+                // Simpan ke Realtime Database dan Firestore dengan ID yang sama
+                await set(newRef, certPayload).catch(err => console.warn("Background cert rtdb note:", err.message));
+                await setDoc(doc(db, "certificates", certId), certPayload).catch(err => console.warn("Background cert firestore note:", err.message));
 
-            } catch (err) { showToast(err.message, "error"); }
-            finally {
+            } catch (err) { 
+                showToast(err.message, "error"); 
+            } finally {
                 btn.disabled = false;
                 btn.innerHTML = "<i class='fas fa-cloud-upload-alt'></i> Upload & Simpan Sertifikat";
             }
