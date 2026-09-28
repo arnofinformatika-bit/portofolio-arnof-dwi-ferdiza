@@ -585,10 +585,55 @@ body.light-mode .card:hover {
     object-fit: cover;
     border-radius: 16px;
     transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    image-rendering: high-quality;
+    image-rendering: -webkit-optimize-contrast;
+    backface-visibility: hidden;
+    transform: translateZ(0);
 }
 
 .gallery-item:hover img {
     transform: scale(1.08);
+}
+
+/* Capsule Filter Buttons */
+.gallery-capsule-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    align-items: center;
+}
+
+.capsule-btn {
+    padding: 10px 22px;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #cbd5e1;
+    font-size: 0.88rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.capsule-btn:hover {
+    background: rgba(6, 182, 212, 0.18);
+    border-color: var(--accent-color);
+    color: #ffffff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(6, 182, 212, 0.25);
+}
+
+.capsule-btn.active {
+    background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 100%);
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: 0 4px 18px rgba(6, 182, 212, 0.4);
 }
 
 /* Upload Gallery UI */
