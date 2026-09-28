@@ -828,23 +828,37 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3 style="margin-bottom: 1rem; color: var(--accent-color);"><i class="fas fa-camera"></i> Tambah Foto Kegiatan</h3>
+                <h3 style="margin-bottom: 1rem; color: var(--accent-color);"><i class="fas fa-camera"></i> Tambah Foto Kegiatan HMIF / Kampus</h3>
                 <form id="formAddGallery" onsubmit="submitAddGallery(event)">
                     <div class="form-grid-2">
                         <div class="form-group">
                             <label>Judul / Keterangan Kegiatan *</label>
-                            <input type="text" id="galleryTitle" class="form-input" placeholder="Contoh: Seminar Teknologi UBL 2026" required>
+                            <input type="text" id="galleryTitle" class="form-input" placeholder="Contoh: Rapat Kerja HMIF / Seminar 2026" required>
                         </div>
                         <div class="form-group">
-                            <label>Pilih Foto Kegiatan *</label>
-                            <input type="file" id="galleryFile" accept="image/*" style="display: none;" onchange="previewImg(event, 'galleryImgPreview')">
-                            <div class="img-preview-box" onclick="document.getElementById('galleryFile').click()">
-                                <img id="galleryImgPreview">
-                                <span id="galleryImgPlaceholder" style="color: #888; font-size: 0.85rem;"><i class="fas fa-upload"></i> Klik untuk memilih foto</span>
+                            <label>Periode Kepengurusan / Kategori *</label>
+                            <select id="galleryPeriod" class="form-input" style="background: rgba(20,20,20,0.8); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 10px; border-radius: 8px;">
+                                <option value="2025/2026">HMIF KEPENGURUSAN 2025/2026</option>
+                                <option value="2026/2027" selected>HMIF KEPENGURUSAN 2026/2027</option>
+                                <option value="hmif">HMIF Kegiatan (Umum)</option>
+                                <option value="general">Dokumentasi Umum / Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>Pilih Foto Kegiatan (Bisa Pilih Banyak Foto Sekaligus - HD Quality) *</label>
+                            <input type="file" id="galleryFile" accept="image/*" multiple style="display: none;" onchange="previewImg(event, 'galleryImgPreview')">
+                            <div class="img-preview-box" onclick="document.getElementById('galleryFile').click()" style="cursor: pointer; border: 2px dashed var(--accent-color); padding: 1.5rem; text-align: center; border-radius: 12px; background: rgba(0,0,0,0.2);">
+                                <img id="galleryImgPreview" style="max-height: 160px; margin: 0 auto; display: none; border-radius: 8px; margin-bottom: 8px;">
+                                <span id="galleryImgPlaceholder" style="color: #94a3b8; font-size: 0.9rem;">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size: 1.8rem; color: var(--accent-color); margin-bottom: 6px; display: block;"></i>
+                                    Klik di sini untuk memilih foto (Bisa pilih 1 atau beberapa foto sekaligus)
+                                </span>
                             </div>
                         </div>
                     </div>
-                    <button type="submit" id="btnSubmitGallery" class="btn-gold"><i class="fas fa-cloud-upload-alt"></i> Upload ke Galeri</button>
+                    <button type="submit" id="btnSubmitGallery" class="btn-gold" style="margin-top: 1rem; width: 100%; justify-content: center; display: inline-flex; align-items: center; gap: 8px;">
+                        <i class="fas fa-cloud-upload-alt"></i> Upload Ke Galeri Firebase (HD)
+                    </button>
                 </form>
             </div>
 
@@ -1966,12 +1980,21 @@
             const existing = document.getElementById(`card_gal_${g.id}`);
             if (existing) existing.remove();
 
+            const isHMIF = (g.period && g.period.length > 0) || (g.category && g.category === 'hmif') || (g.title && g.title.toUpperCase().includes('HMIF'));
+            const badgeText = g.period ? 'HMIF ' + g.period : (isHMIF ? 'KEGIATAN HMIF' : 'DOKUMENTASI');
+            const badgeBg = isHMIF ? '#06b6d4' : '#3b82f6';
+
             const card = document.createElement("div");
             card.className = "admin-item-card";
-            card.style.cssText = "background: rgba(20,20,20,0.8); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column;";
+            card.style.cssText = "background: rgba(20,20,20,0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; position: relative;";
             card.id = `card_gal_${g.id}`;
             card.innerHTML = `
-                <img src="${g.image}" style="width: 100%; height: 140px; object-fit: cover;">
+                <div style="position: relative; width: 100%; height: 140px; overflow: hidden;">
+                    <img src="${g.image}" style="width: 100%; height: 100%; object-fit: cover;">
+                    <span style="position: absolute; top: 8px; left: 8px; background: ${badgeBg}; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.5);">
+                        ${badgeText}
+                    </span>
+                </div>
                 <div style="padding: 0.8rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 0.5rem;">
                     <h5 style="font-size: 0.85rem; color: #fff; line-height: 1.3;">${g.title}</h5>
                     <button class="btn-action-del" onclick="deleteItem('gallery', '${g.id}', 'loadGalleryData')" style="width: 100%; justify-content: center;"><i class="fas fa-trash"></i> Hapus</button>
@@ -2033,72 +2056,85 @@
             e.preventDefault();
             const btn = document.getElementById("btnSubmitGallery");
             const fileInput = document.getElementById("galleryFile");
-            const file = fileInput.files[0];
+            const files = Array.from(fileInput.files);
             const titleInput = document.getElementById("galleryTitle");
-            const title = titleInput.value.trim();
+            const baseTitle = titleInput.value.trim();
+            const periodSelect = document.getElementById("galleryPeriod");
+            const period = periodSelect ? periodSelect.value : "2026/2027";
 
-            if (!file) return showToast("Pilih foto terlebih dahulu!", "error");
-            if (!title) return showToast("Judul foto tidak boleh kosong!", "error");
+            if (!files || files.length === 0) return showToast("Pilih setidaknya 1 foto terlebih dahulu!", "error");
+            if (!baseTitle) return showToast("Judul foto tidak boleh kosong!", "error");
 
             btn.disabled = true;
-            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memproses...";
+            btn.innerHTML = `<i class='fas fa-spinner fa-spin'></i> Memproses ${files.length} Foto...`;
 
             try {
-                // 1. Kompresi gambar HD (1920x1920, quality 0.90)
-                const { dataUrl } = await compressImage(file, 1920, 1920, 0.90);
-                const newRef = push(dbRef(rtdb, "gallery"));
-                const galId = newRef.key;
+                let successCount = 0;
+                for (let i = 0; i < files.length; i++) {
+                    const file = files[i];
+                    const photoTitle = files.length > 1 ? `${baseTitle} (${i + 1})` : baseTitle;
 
-                const galPayload = {
-                    id: galId,
-                    title: title,
-                    image: dataUrl,
-                    createdAt: Date.now()
-                };
+                    // 1. Kompresi gambar HD (2560x2560, quality 0.95)
+                    const { dataUrl } = await compressImage(file, 2560, 2560, 0.95);
+                    let galId = 'gal_' + Date.now() + '_' + i;
 
-                // 2. Simpan ke Cache Lokal seketika
-                const cached = getLocalCache("gallery");
-                cached.unshift(galPayload);
-                saveLocalCache("gallery", cached);
-                try { localStorage.setItem('galleryActivities', JSON.stringify(cached)); } catch(e){}
+                    if (rtdb && push && dbRef) {
+                        const newRef = push(dbRef(rtdb, "gallery"));
+                        if (newRef && newRef.key) galId = newRef.key;
+                    }
 
-                // 3. OPTIMISTIC UI: LANGSUNG MASUK KE LIST SEKETIKA
-                renderGalleryCard(galPayload, true);
+                    const isHMIFCategory = (period === '2025/2026' || period === '2026/2027' || period === 'hmif');
+                    const galPayload = {
+                        id: galId,
+                        title: photoTitle,
+                        period: period,
+                        category: isHMIFCategory ? 'hmif' : 'general',
+                        image: dataUrl,
+                        createdAt: Date.now() + i
+                    };
 
-                // 4. Reset form & preview seketika
+                    // 2. Simpan ke Cache Lokal seketika
+                    const cached = getLocalCache("gallery");
+                    cached.unshift(galPayload);
+                    saveLocalCache("gallery", cached);
+                    try { localStorage.setItem('galleryActivities', JSON.stringify(cached)); } catch(e){}
+
+                    // 3. OPTIMISTIC UI: LANGSUNG MASUK KE LIST SEKETIKA
+                    renderGalleryCard(galPayload, true);
+
+                    // 4. Simpan ke Realtime Database & Firestore
+                    try {
+                        if (rtdb && set && dbRef) {
+                            await set(dbRef(rtdb, `gallery/${galId}`), galPayload);
+                        }
+                    } catch(rErr) {
+                        console.error("RTDB Save Error:", rErr);
+                    }
+
+                    try {
+                        if (db && setDoc && doc) {
+                            await setDoc(doc(db, "gallery", galId), galPayload);
+                        }
+                    } catch(fErr) {
+                        console.error("Firestore Save Error:", fErr);
+                    }
+
+                    successCount++;
+                }
+
+                // Reset form & preview seketika
                 document.getElementById("formAddGallery").reset();
                 document.getElementById("galleryImgPreview").style.display = 'none';
                 document.getElementById("galleryImgPlaceholder").style.display = 'block';
 
-                // 5. Simpan ke Realtime Database & Firestore
-                let rtdbSuccess = false;
-                try {
-                    await set(newRef, galPayload);
-                    rtdbSuccess = true;
-                } catch(rErr) {
-                    console.error("RTDB Save Error:", rErr);
-                    showToast("RTDB Error: " + rErr.message, "error");
-                }
-
-                try {
-                    await setDoc(doc(db, "gallery", galId), galPayload);
-                } catch(fErr) {
-                    console.error("Firestore Save Error:", fErr);
-                }
-
-                if (rtdbSuccess) {
-                    showToast("✨ Foto galeri berhasil tersimpan di Realtime Database!", "success");
-                } else {
-                    showToast("✨ Foto galeri tersimpan secara lokal!", "success");
-                }
-
+                showToast(`✨ ${successCount} foto galeri HMIF berhasil tersimpan ke Firebase!`, "success");
                 loadGalleryData();
 
             } catch (err) {
                 showToast("Gagal menyimpan foto: " + err.message, "error");
             } finally {
                 btn.disabled = false;
-                btn.innerHTML = "<i class='fas fa-cloud-upload-alt'></i> Upload ke Galeri";
+                btn.innerHTML = "<i class='fas fa-cloud-upload-alt'></i> Upload Ke Galeri Firebase (HD)";
             }
         };
 

@@ -1821,10 +1821,13 @@
                 <!-- Capsule Filter Buttons -->
                 <div class="gallery-capsule-container">
                     <button class="capsule-btn active" data-period="all" onclick="filterGallery('all', this)">
-                        <i class="fas fa-th-large"></i> Semua Kegiatan
+                        <i class="fas fa-th-large"></i> Semua Foto
+                    </button>
+                    <button class="capsule-btn" data-period="hmif" onclick="filterGallery('hmif', this)">
+                        <i class="fas fa-users"></i> Semua Kegiatan HMIF
                     </button>
                     <button class="capsule-btn" data-period="2025/2026" onclick="filterGallery('2025/2026', this)">
-                        <i class="fas fa-users"></i> HMIF KEPENGURUSAN 2025/2026
+                        <i class="fas fa-calendar-alt"></i> HMIF KEPENGURUSAN 2025/2026
                     </button>
                     <button class="capsule-btn" data-period="2026/2027" onclick="filterGallery('2026/2027', this)">
                         <i class="fas fa-user-shield"></i> HMIF KEPENGURUSAN 2026/2027
@@ -3193,8 +3196,8 @@
 
         // (Removed redundant window.onclick)
 
-        // Helper Kompresi Gambar HD Otomatis
-        function compressImageHD(file, maxWidth = 1920, maxHeight = 1920, quality = 0.90) {
+        // Helper Kompresi Gambar HD Otomatis (Super HD Resolution & Quality)
+        function compressImageHD(file, maxWidth = 2560, maxHeight = 2560, quality = 0.95) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -3222,7 +3225,7 @@
                         const canvas = document.createElement('canvas');
                         canvas.width = width;
                         canvas.height = height;
-                        const ctx = canvas.getContext('2d');
+                        const ctx = canvas.getContext('2d', { alpha: false });
                         ctx.imageSmoothingEnabled = true;
                         ctx.imageSmoothingQuality = 'high';
                         ctx.drawImage(img, 0, 0, width, height);
@@ -3242,13 +3245,15 @@
                 e.preventDefault();
 
                 const title = document.getElementById('activityTitle').value.trim();
+                const periodSelect = document.getElementById('activityPeriod');
+                const period = periodSelect ? periodSelect.value : '2026/2027';
                 const fileInput = document.getElementById('activityImage');
                 const file = fileInput.files[0];
 
                 if (!title || !file) return alert('Pilih foto dan isi judul kegiatan!');
 
                 try {
-                    const imageData = await compressImageHD(file, 1920, 1920, 0.90);
+                    const imageData = await compressImageHD(file, 2560, 2560, 0.95);
 
                     let galId = 'gal_' + Date.now();
                     if (window.rtdb && window.push && window.dbRef) {
@@ -3259,6 +3264,7 @@
                     const newActivity = {
                         id: galId,
                         title: title,
+                        period: period,
                         image: imageData,
                         createdAt: Date.now()
                     };
@@ -3315,6 +3321,31 @@
             { id: 'def_20', title: 'Kegiatan 20 Evaluasi pelaksanaan dan keberlanjutan program', image: 'foto/kegiatan/KEGIATAN 20.jpeg' }
         ];
 
+        let currentGalleryFilter = 'all';
+
+        function filterGallery(period, btnElement) {
+            currentGalleryFilter = period;
+            const buttons = document.querySelectorAll('.capsule-btn');
+            buttons.forEach(b => b.classList.remove('active'));
+            if (btnElement) {
+                btnElement.classList.add('active');
+            } else {
+                const targetBtn = document.querySelector(`.capsule-btn[data-period="${period}"]`);
+                if (targetBtn) targetBtn.classList.add('active');
+            }
+            loadGallery();
+        }
+        window.filterGallery = filterGallery;
+
+        function showAllHMIFKegiatan() {
+            const section = document.getElementById('gallery');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth' });
+            }
+            filterGallery('hmif');
+        }
+        window.showAllHMIFKegiatan = showAllHMIFKegiatan;
+
         function loadGallery() {
             const container = document.getElementById('gallery-container');
             if (!container) return;
@@ -3357,21 +3388,59 @@
                 }
             });
 
+            // Filter by selected capsule filter
+            let filteredActivities = activities;
+            if (currentGalleryFilter === 'hmif') {
+                filteredActivities = activities.filter(a => {
+                    return (a.period && a.period.length > 0) || (a.category && a.category === 'hmif') || (a.title && a.title.toUpperCase().includes('HMIF'));
+                });
+            } else if (currentGalleryFilter !== 'all') {
+                filteredActivities = activities.filter(a => {
+                    const p = a.period || '';
+                    return p === currentGalleryFilter || p.includes(currentGalleryFilter);
+                });
+            }
+
             container.innerHTML = '';
-            activities.forEach(activity => {
+
+            if (filteredActivities.length === 0) {
+                let filterLabel = 'ini';
+                if (currentGalleryFilter === 'hmif') filterLabel = 'Kegiatan HMIF';
+                else if (currentGalleryFilter === '2025/2026') filterLabel = 'HMIF KEPENGURUSAN 2025/2026';
+                else if (currentGalleryFilter === '2026/2027') filterLabel = 'HMIF KEPENGURUSAN 2026/2027';
+
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1rem; color: var(--text-secondary); background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.1);">
+                        <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent-color); opacity: 0.7;"></i>
+                        <h4 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.1rem;">Belum Ada Foto Kegiatan (${filterLabel})</h4>
+                        <p style="font-size: 0.9rem; color: #94a3b8; max-width: 500px; margin: 0 auto;">Menunggu Admin memasukkan foto-foto kegiatan HMIF untuk kategori ini...</p>
+                    </div>
+                `;
+                return;
+            }
+
+            filteredActivities.forEach(activity => {
                 const item = document.createElement('div');
                 item.className = 'gallery-item';
                 item.style.position = 'relative';
                 item.style.overflow = 'hidden';
                 item.style.flexDirection = 'column';
-                item.style.borderRadius = '12px';
+                item.style.borderRadius = '16px';
                 item.style.cursor = 'pointer';
 
                 const imgSrc = activity.image;
                 const actId = String(activity.id || '');
+
+                const isHMIF = (activity.period && activity.period.length > 0) || (activity.category && activity.category === 'hmif') || (activity.title && activity.title.toUpperCase().includes('HMIF'));
+                const badgeText = activity.period ? 'HMIF ' + activity.period : (isHMIF ? 'KEGIATAN HMIF' : 'DOKUMENTASI');
+                const badgeBg = isHMIF ? 'rgba(6, 182, 212, 0.85)' : 'rgba(59, 130, 246, 0.85)';
+
                 item.innerHTML = `
-                    <img src="${imgSrc}" alt="${activity.title}" onclick="openImageViewer('${imgSrc}')" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.3s ease; image-rendering: -webkit-optimize-contrast;">
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.4) 70%, transparent 100%); padding: 12px 10px 8px 10px; font-size: 0.85rem; color: #ffffff; font-weight: 500; text-shadow: 0 1px 3px rgba(0,0,0,0.8); pointer-events: none;">
+                    <img src="${imgSrc}" alt="${activity.title}" onclick="openImageViewer('${imgSrc}')" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); image-rendering: high-quality; backface-visibility: hidden; transform: translateZ(0);">
+                    <div style="position: absolute; top: 10px; left: 10px; background: ${badgeBg}; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-size: 0.72rem; color: #ffffff; font-weight: 700; padding: 4px 10px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); letter-spacing: 0.3px;">
+                        <i class="${isHMIF ? 'fas fa-users' : 'fas fa-camera'}" style="margin-right: 4px; font-size: 0.65rem;"></i>${badgeText}
+                    </div>
+                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(8,11,17,0.92) 0%, rgba(8,11,17,0.5) 70%, transparent 100%); padding: 16px 12px 10px 12px; font-size: 0.88rem; color: #ffffff; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.8); pointer-events: none; line-height: 1.35;">
                         ${activity.title}
                     </div>
                     <button class="download-btn" onclick="event.stopPropagation(); downloadImage('${imgSrc}', '${activity.title}')" title="Unduh Gambar"><i class="fas fa-download"></i></button>
@@ -4090,6 +4159,62 @@
 
         syncFirebaseContent();
 
+        // Synchronize Learning Path Updates to Transcript Table
+        function updateTranscriptFromFirebase(overridesMap, customList) {
+            const transcriptTbody = document.querySelector('#transcript-template .transcript-table tbody');
+            if (!transcriptTbody) return;
+
+            // 1. Update grades for existing courses in transcript table
+            if (overridesMap) {
+                const rows = transcriptTbody.querySelectorAll('tr');
+                rows.forEach(tr => {
+                    const tds = tr.querySelectorAll('td');
+                    if (tds.length >= 5) {
+                        const codeText = tds[1].innerText.trim();
+                        const ov = overridesMap[codeText];
+                        if (ov && ov.grade !== undefined) {
+                            tds[4].innerText = (ov.grade === 'Belum Ada' || !ov.grade) ? '-' : ov.grade;
+                        }
+                    }
+                });
+            }
+
+            // 2. Add custom courses from learning_path to transcript table
+            if (Array.isArray(customList)) {
+                customList.forEach(cr => {
+                    if (!cr || !cr.code) return;
+                    const rows = transcriptTbody.querySelectorAll('tr');
+                    let existingRow = null;
+                    rows.forEach(tr => {
+                        const tds = tr.querySelectorAll('td');
+                        if (tds.length >= 5 && tds[1].innerText.trim() === cr.code) {
+                            existingRow = tr;
+                        }
+                    });
+
+                    const cleanGrade = (!cr.grade || cr.grade === 'Belum Ada') ? '-' : cr.grade;
+
+                    if (existingRow) {
+                        const tds = existingRow.querySelectorAll('td');
+                        tds[2].innerText = cr.name;
+                        tds[3].innerText = (cr.sks ? String(cr.sks).replace(/[^0-9]/g, '') : '3');
+                        tds[4].innerText = cleanGrade;
+                    } else {
+                        const newTr = document.createElement('tr');
+                        const dataRowCount = transcriptTbody.querySelectorAll('tr:not([colspan])').length + 1;
+                        newTr.innerHTML = `
+                            <td style="text-align: center;">${dataRowCount}</td>
+                            <td>${cr.code}</td>
+                            <td>${cr.name}</td>
+                            <td style="text-align: center;">${cr.sks ? String(cr.sks).replace(/[^0-9]/g, '') : 3}</td>
+                            <td style="text-align: center;">${cleanGrade}</td>
+                        `;
+                        transcriptTbody.appendChild(newTr);
+                    }
+                });
+            }
+        }
+
         // Helper override matkul & grade
         function applyCourseOverrides(overridesMap) {
             if (!overridesMap) return;
@@ -4121,6 +4246,8 @@
                     }
                 }
             });
+
+            updateTranscriptFromFirebase(overridesMap, null);
         }
 
         function renderCustomCourses(customList) {
@@ -4153,6 +4280,8 @@
                     if (grid) grid.appendChild(card);
                 }
             });
+
+            updateTranscriptFromFirebase(null, customList);
         }
 
         // Realtime Database Listeners for Instant Live Sync (Certificates, Gallery & Learning Path)
