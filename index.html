@@ -3196,8 +3196,8 @@
 
         // (Removed redundant window.onclick)
 
-        // Helper Kompresi Gambar HD Otomatis (Optimal 1080p HD Resolution & Fast Loading)
-        function compressImageHD(file, maxWidth = 1920, maxHeight = 1920, quality = 0.85) {
+        // Helper Kompresi Gambar HD Otomatis (Optimal 1200p HD Resolution & Fast Firebase Sync)
+        function compressImageHD(file, maxWidth = 1200, maxHeight = 1200, quality = 0.80) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -3253,7 +3253,7 @@
                 if (!title || !file) return alert('Pilih foto dan isi judul kegiatan!');
 
                 try {
-                    const imageData = await compressImageHD(file, 1920, 1920, 0.85);
+                    const imageData = await compressImageHD(file, 1200, 1200, 0.80);
 
                     let galId = 'gal_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
                     if (window.rtdb && window.push && window.dbRef) {
@@ -3281,6 +3281,9 @@
                         localStorage.setItem('arnof_gallery_cache', JSON.stringify(cached));
                         localStorage.setItem('galleryActivities', JSON.stringify(cached));
                     } catch (e) { }
+
+                    if (!Array.isArray(window.arnof_live_gallery)) window.arnof_live_gallery = [];
+                    window.arnof_live_gallery.unshift(newActivity);
 
                     // Save to Firebase Realtime Database & Firestore
                     if (window.rtdb && window.setRtdb && window.dbRef) {
@@ -3359,18 +3362,34 @@
             } catch (e) { }
 
             let customItems = [];
-            // Prioritize in-memory live array from Firebase RTDB
-            if (Array.isArray(window.arnof_live_gallery) && window.arnof_live_gallery.length > 0) {
-                customItems = window.arnof_live_gallery;
-            } else {
-                try {
-                    const c1 = localStorage.getItem('arnof_gallery_cache');
-                    if (c1) customItems = JSON.parse(c1);
-                    else {
-                        const c2 = localStorage.getItem('galleryActivities');
-                        if (c2) customItems = JSON.parse(c2);
+
+            // 1. Read local cache first
+            try {
+                const c1 = localStorage.getItem('arnof_gallery_cache');
+                if (c1) {
+                    const parsed = JSON.parse(c1);
+                    if (Array.isArray(parsed)) customItems = parsed;
+                } else {
+                    const c2 = localStorage.getItem('galleryActivities');
+                    if (c2) {
+                        const parsed = JSON.parse(c2);
+                        if (Array.isArray(parsed)) customItems = parsed;
                     }
-                } catch (e) { }
+                }
+            } catch (e) { }
+
+            // 2. Merge with Firebase live server items (Never wipe local items)
+            if (Array.isArray(window.arnof_live_gallery)) {
+                window.arnof_live_gallery.forEach(sItem => {
+                    if (sItem && sItem.id && sItem.image) {
+                        const idx = customItems.findIndex(ci => String(ci.id) === String(sItem.id));
+                        if (idx >= 0) {
+                            customItems[idx] = { ...customItems[idx], ...sItem };
+                        } else {
+                            customItems.unshift(sItem);
+                        }
+                    }
+                });
             }
 
             // Merge custom uploaded activities AT THE TOP + default activities
@@ -4078,6 +4097,7 @@
                 // 6. Gallery (Realtime Database - Gratis 100%)
                 const galItems = await getList("gallery");
                 if (galItems.length > 0) {
+                    window.arnof_live_gallery = galItems;
                     try {
                         localStorage.setItem('arnof_gallery_cache', JSON.stringify(galItems));
                     } catch (e) { }
