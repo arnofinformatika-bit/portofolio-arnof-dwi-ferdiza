@@ -3196,8 +3196,8 @@
 
         // (Removed redundant window.onclick)
 
-        // Helper Kompresi Gambar HD Otomatis (Super HD Resolution & Quality)
-        function compressImageHD(file, maxWidth = 2560, maxHeight = 2560, quality = 0.95) {
+        // Helper Kompresi Gambar HD Otomatis (Optimal 1080p HD Resolution & Fast Loading)
+        function compressImageHD(file, maxWidth = 1920, maxHeight = 1920, quality = 0.85) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -3253,18 +3253,20 @@
                 if (!title || !file) return alert('Pilih foto dan isi judul kegiatan!');
 
                 try {
-                    const imageData = await compressImageHD(file, 2560, 2560, 0.95);
+                    const imageData = await compressImageHD(file, 1920, 1920, 0.85);
 
-                    let galId = 'gal_' + Date.now();
+                    let galId = 'gal_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
                     if (window.rtdb && window.push && window.dbRef) {
                         const newRef = window.push(window.dbRef(window.rtdb, "gallery"));
                         if (newRef && newRef.key) galId = newRef.key;
                     }
 
+                    const isHMIFCategory = (period === '2025/2026' || period === '2026/2027' || period === 'hmif');
                     const newActivity = {
                         id: galId,
                         title: title,
                         period: period,
+                        category: isHMIFCategory ? 'hmif' : 'general',
                         image: imageData,
                         createdAt: Date.now()
                     };
@@ -3357,21 +3359,26 @@
             } catch (e) { }
 
             let customItems = [];
-            try {
-                const c1 = localStorage.getItem('arnof_gallery_cache');
-                if (c1) customItems = JSON.parse(c1);
-                else {
-                    const c2 = localStorage.getItem('galleryActivities');
-                    if (c2) customItems = JSON.parse(c2);
-                }
-            } catch (e) { }
+            // Prioritize in-memory live array from Firebase RTDB
+            if (Array.isArray(window.arnof_live_gallery) && window.arnof_live_gallery.length > 0) {
+                customItems = window.arnof_live_gallery;
+            } else {
+                try {
+                    const c1 = localStorage.getItem('arnof_gallery_cache');
+                    if (c1) customItems = JSON.parse(c1);
+                    else {
+                        const c2 = localStorage.getItem('galleryActivities');
+                        if (c2) customItems = JSON.parse(c2);
+                    }
+                } catch (e) { }
+            }
 
             // Merge custom uploaded activities AT THE TOP + default activities
             let activities = [];
             if (Array.isArray(customItems)) {
                 customItems.forEach(item => {
                     if (item && item.image && !deletedIds.includes(String(item.id))) {
-                        const exists = activities.some(a => String(a.id) === String(item.id) || (a.title === item.title && a.image === item.image));
+                        const exists = activities.some(a => String(a.id) === String(item.id));
                         if (!exists) {
                             activities.push(item);
                         }
@@ -3381,7 +3388,7 @@
 
             defaultGalleryActivities.forEach(item => {
                 if (!deletedIds.includes(String(item.id))) {
-                    const exists = activities.some(a => String(a.id) === String(item.id) || (a.title === item.title && a.image === item.image));
+                    const exists = activities.some(a => String(a.id) === String(item.id));
                     if (!exists) {
                         activities.push(item);
                     }
@@ -4316,11 +4323,15 @@
                     if (snapshot.exists()) {
                         const val = snapshot.val();
                         const serverList = Object.keys(val).map(k => ({ id: k, ...val[k] }));
+                        window.arnof_live_gallery = serverList;
                         try {
                             localStorage.setItem('arnof_gallery_cache', JSON.stringify(serverList));
                             localStorage.setItem('galleryActivities', JSON.stringify(serverList));
-                        } catch (e) { }
+                        } catch (e) {
+                            console.warn("LocalStorage limit exceeded, using in-memory live gallery state.");
+                        }
                     } else {
+                        window.arnof_live_gallery = [];
                         try {
                             localStorage.setItem('arnof_gallery_cache', JSON.stringify([]));
                             localStorage.setItem('galleryActivities', JSON.stringify([]));

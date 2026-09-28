@@ -2074,9 +2074,9 @@
                     const file = files[i];
                     const photoTitle = files.length > 1 ? `${baseTitle} (${i + 1})` : baseTitle;
 
-                    // 1. Kompresi gambar HD (2560x2560, quality 0.95)
-                    const { dataUrl } = await compressImage(file, 2560, 2560, 0.95);
-                    let galId = 'gal_' + Date.now() + '_' + i;
+                    // 1. Kompresi gambar HD (1920x1920, quality 0.85) - Optimal HD & Fast
+                    const { dataUrl } = await compressImage(file, 1920, 1920, 0.85);
+                    let galId = 'gal_' + Date.now() + '_' + i + '_' + Math.random().toString(36).substring(2, 7);
 
                     if (rtdb && push && dbRef) {
                         const newRef = push(dbRef(rtdb, "gallery"));
