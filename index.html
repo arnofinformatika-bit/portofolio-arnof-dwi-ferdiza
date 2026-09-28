@@ -1821,7 +1821,7 @@
                 <!-- Capsule Filter Buttons -->
                 <div class="gallery-capsule-container">
                     <button class="capsule-btn active" data-period="all" onclick="filterGallery('all', this)">
-                        <i class="fas fa-th-large"></i> Semua Foto
+                        <i class="fas fa-th-large"></i> Dokumentasi Umum
                     </button>
                     <button class="capsule-btn" data-period="hmif" onclick="filterGallery('hmif', this)">
                         <i class="fas fa-users"></i> Semua Kegiatan HMIF
@@ -3416,11 +3416,21 @@
 
             // Filter by selected capsule filter
             let filteredActivities = activities;
-            if (currentGalleryFilter === 'hmif') {
+            if (currentGalleryFilter === 'all') {
+                // Dokumentasi Umum: HANYA foto umum / non-HMIF kepengurusan
                 filteredActivities = activities.filter(a => {
-                    return (a.period && a.period.length > 0) || (a.category && a.category === 'hmif') || (a.title && a.title.toUpperCase().includes('HMIF'));
+                    if (a.period === 'general' || a.category === 'general') return true;
+                    if (a.period === '2025/2026' || a.period === '2026/2027' || a.period === 'hmif' || a.category === 'hmif') return false;
+                    return true;
                 });
-            } else if (currentGalleryFilter !== 'all') {
+            } else if (currentGalleryFilter === 'hmif') {
+                // Semua Kegiatan HMIF: HANYA foto-foto HMIF
+                filteredActivities = activities.filter(a => {
+                    if (a.period === 'general' || a.category === 'general') return false;
+                    return (a.period === '2025/2026' || a.period === '2026/2027' || a.period === 'hmif' || a.category === 'hmif' || (a.title && a.title.toUpperCase().includes('HMIF')));
+                });
+            } else {
+                // Filter khusus periode HMIF (2025/2026 atau 2026/2027)
                 filteredActivities = activities.filter(a => {
                     const p = a.period || '';
                     return p === currentGalleryFilter || p.includes(currentGalleryFilter);
@@ -3430,7 +3440,7 @@
             container.innerHTML = '';
 
             if (filteredActivities.length === 0) {
-                let filterLabel = 'ini';
+                let filterLabel = 'Dokumentasi Umum';
                 if (currentGalleryFilter === 'hmif') filterLabel = 'Kegiatan HMIF';
                 else if (currentGalleryFilter === '2025/2026') filterLabel = 'HMIF KEPENGURUSAN 2025/2026';
                 else if (currentGalleryFilter === '2026/2027') filterLabel = 'HMIF KEPENGURUSAN 2026/2027';

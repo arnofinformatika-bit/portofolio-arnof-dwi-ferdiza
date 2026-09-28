@@ -840,7 +840,6 @@
                             <select id="galleryPeriod" class="form-input" style="background: rgba(20,20,20,0.8); color: #fff; border: 1px solid rgba(255,255,255,0.15); padding: 10px; border-radius: 8px;">
                                 <option value="2025/2026">HMIF KEPENGURUSAN 2025/2026</option>
                                 <option value="2026/2027" selected>HMIF KEPENGURUSAN 2026/2027</option>
-                                <option value="hmif">HMIF Kegiatan (Umum)</option>
                                 <option value="general">Dokumentasi Umum / Lainnya</option>
                             </select>
                         </div>
@@ -1980,9 +1979,10 @@
             const existing = document.getElementById(`card_gal_${g.id}`);
             if (existing) existing.remove();
 
-            const isHMIF = (g.period && g.period.length > 0) || (g.category && g.category === 'hmif') || (g.title && g.title.toUpperCase().includes('HMIF'));
-            const badgeText = g.period ? 'HMIF ' + g.period : (isHMIF ? 'KEGIATAN HMIF' : 'DOKUMENTASI');
-            const badgeBg = isHMIF ? '#06b6d4' : '#3b82f6';
+            const isHMIF = (g.period === '2025/2026' || g.period === '2026/2027' || g.period === 'hmif') || (g.category === 'hmif');
+            const isGeneral = (g.period === 'general' || g.category === 'general');
+            const badgeText = (g.period && g.period !== 'general' && g.period !== 'hmif') ? 'HMIF ' + g.period : (isGeneral ? 'DOKUMENTASI UMUM' : (isHMIF ? 'KEGIATAN HMIF' : 'DOKUMENTASI UMUM'));
+            const badgeBg = (isHMIF && !isGeneral) ? '#06b6d4' : '#64748b';
 
             const card = document.createElement("div");
             card.className = "admin-item-card";
