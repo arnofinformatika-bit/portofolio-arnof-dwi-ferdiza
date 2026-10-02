@@ -19,6 +19,14 @@
     <link rel="shortcut icon" type="image/jpeg" href="foto/logo/logo.jpeg">
     <link rel="apple-touch-icon" href="foto/logo/logo.jpeg">
 
+    <!-- Progressive Web App (PWA) Manifest & Theme Meta -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#0d0d0d">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Arnof App">
+
     <!-- Open Graph / Social Media Meta Tags -->
     <meta property="og:title" content="Portofolio Arnof Dwi Ferdiza">
     <meta property="og:description"
@@ -199,6 +207,10 @@
             <li><a href="#" onclick="showSection('logbook')"><i class="fas fa-book"></i> Logbook</a></li>
             <li><a href="#" onclick="showSection('gallery')"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
             <li><a href="#" onclick="showSection('achievements')"><i class="fas fa-trophy"></i> Pencapaian</a></li>
+            <li id="pwaNavLi">
+                <a href="#" onclick="triggerPWAInstall(event)" style="color: var(--accent-color); font-weight: 600;"><i
+                        class="fas fa-download"></i> Unduh / Install App</a>
+            </li>
             <li id="adminNavLi"
                 style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; display: none;">
                 <a href="admin.html" target="_blank" style="color: var(--accent-color); font-weight: 500;"><i
@@ -4400,6 +4412,128 @@
                 });
             } catch (e) { }
         }
+    </script>
+
+    <!-- PWA Install Banner -->
+    <div id="pwaInstallBanner" class="pwa-install-banner">
+        <img src="foto/logo/logo.jpeg" alt="Logo Arnof App" class="pwa-banner-icon">
+        <div class="pwa-banner-text">
+            <span class="pwa-banner-title">Install Aplikasi Portofolio</span>
+            <span class="pwa-banner-desc">Unduh ke layar utama HP / Laptop untuk akses lebih cepat!</span>
+        </div>
+        <button onclick="triggerPWAInstall(event)" class="pwa-install-btn">
+            <i class="fas fa-download"></i> Install
+        </button>
+        <button onclick="dismissPWABanner()" class="pwa-close-btn" title="Tutup">
+            <i class="fas fa-times"></i>
+        </button>
+    </div>
+
+    <!-- PWA Instructions Modal (Petunjuk Install Chrome) -->
+    <div id="pwaModal" class="pwa-modal-overlay">
+        <div class="pwa-modal-card">
+            <div class="pwa-modal-header">
+                <div class="pwa-modal-title">
+                    <i class="fab fa-chrome"></i> Install Aplikasi di Chrome
+                </div>
+                <button onclick="closePWAModal()" class="pwa-close-btn" style="font-size: 1.3rem;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div style="margin-bottom: 16px;">
+                <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
+                    Jika tombol install otomatis tidak langsung memicu dialog, Anda dapat menginstall aplikasi ini secara manual di Google Chrome:
+                </p>
+                <div class="pwa-step-item">
+                    <div class="pwa-step-num">1</div>
+                    <div class="pwa-step-text">
+                        Klik <strong>ikon titik tiga (⋮)</strong> atau ikon <strong>Install App (<i class="fas fa-desktop"></i>)</strong> di pojok kanan atas / address bar browser Google Chrome.
+                    </div>
+                </div>
+                <div class="pwa-step-item">
+                    <div class="pwa-step-num">2</div>
+                    <div class="pwa-step-text">
+                        Pilih menu <strong>"Install Portofolio Arnof Dwi Ferdiza..."</strong> atau <strong>"Tambahkan ke Layar Utama" (Add to Home screen)</strong>.
+                    </div>
+                </div>
+                <div class="pwa-step-item">
+                    <div class="pwa-step-num">3</div>
+                    <div class="pwa-step-text">
+                        Klik <strong>"Install"</strong> atau <strong>"Tambah"</strong>. Aplikasi kini terpasang langsung di perangkat Anda!
+                    </div>
+                </div>
+            </div>
+            <button onclick="closePWAModal()" class="btn" style="width: 100%; background: var(--accent-gradient); color: #0d0d0d; font-weight: 700; border: none; padding: 10px; border-radius: 12px; cursor: pointer;">
+                Saya Mengerti
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // PWA Service Worker & Install Logic
+        let deferredPwaPrompt = null;
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('/sw.js')
+                    .then((reg) => {
+                        console.log('Service Worker registered successfully:', reg.scope);
+                    })
+                    .catch((err) => {
+                        console.warn('Service Worker registration failed:', err);
+                    });
+            });
+        }
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            e.preventDefault();
+            deferredPwaPrompt = e;
+            
+            // Show banner if not dismissed previously
+            if (!localStorage.getItem('pwa_banner_dismissed')) {
+                setTimeout(() => {
+                    const banner = document.getElementById('pwaInstallBanner');
+                    if (banner) banner.classList.add('show');
+                }, 1500);
+            }
+        });
+
+        function triggerPWAInstall(e) {
+            if (e) e.preventDefault();
+            if (deferredPwaPrompt) {
+                deferredPwaPrompt.prompt();
+                deferredPwaPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the PWA install prompt');
+                        dismissPWABanner();
+                    }
+                    deferredPwaPrompt = null;
+                });
+            } else {
+                openPWAModal();
+            }
+        }
+
+        function dismissPWABanner() {
+            const banner = document.getElementById('pwaInstallBanner');
+            if (banner) banner.classList.remove('show');
+            localStorage.setItem('pwa_banner_dismissed', 'true');
+        }
+
+        function openPWAModal() {
+            const modal = document.getElementById('pwaModal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closePWAModal() {
+            const modal = document.getElementById('pwaModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        window.addEventListener('appinstalled', () => {
+            console.log('PWA application installed successfully');
+            dismissPWABanner();
+        });
     </script>
 </body>
 

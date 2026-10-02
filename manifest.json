@@ -1,0 +1,33 @@
+{
+  "name": "Portofolio Arnof Dwi Ferdiza",
+  "short_name": "Arnof App",
+  "description": "Aplikasi Resmi Portofolio Arnof Dwi Ferdiza - Software Engineer & Web Developer",
+  "start_url": "/",
+  "id": "/",
+  "display": "standalone",
+  "background_color": "#0d0d0d",
+  "theme_color": "#0d0d0d",
+  "orientation": "any",
+  "scope": "/",
+  "icons": [
+    {
+      "src": "foto/logo/logo.jpeg",
+      "sizes": "192x192",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "foto/logo/logo.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "profil.jpeg",
+      "sizes": "512x512",
+      "type": "image/jpeg",
+      "purpose": "any"
+    }
+  ],
+  "categories": ["portfolio", "productivity", "utilities"]
+}
