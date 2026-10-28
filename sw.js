@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arnof-portfolio-v1';
+const CACHE_NAME = 'arnof-portfolio-v2';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -8,6 +8,28 @@ const ASSETS_TO_CACHE = [
   '/foto/logo/logo.jpeg',
   '/profil.jpeg',
   '/arnof.jpg',
+  '/user/beranda.js',
+  '/user/projek.js',
+  '/user/tentang.js',
+  '/user/pendidikan.js',
+  '/user/skill.js',
+  '/user/pengalaman.js',
+  '/user/sertifikat.js',
+  '/user/learning.js',
+  '/user/loogbook.js',
+  '/user/galeri.js',
+  '/user/pencapaian.js',
+  '/admin/beranda.js',
+  '/admin/projek.js',
+  '/admin/tentang.js',
+  '/admin/pendidikan.js',
+  '/admin/skill.js',
+  '/admin/pengalaman.js',
+  '/admin/sertifikat.js',
+  '/admin/learning.js',
+  '/admin/loogbook.js',
+  '/admin/galeri.js',
+  '/admin/pencapaian.js',
   'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];

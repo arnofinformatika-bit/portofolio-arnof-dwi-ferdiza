@@ -914,6 +914,19 @@
         <span id="toastMsg">Operasi berhasil!</span>
     </div>
 
+    <!-- Admin Feature Modules -->
+    <script src="admin/beranda.js"></script>
+    <script src="admin/projek.js"></script>
+    <script src="admin/tentang.js"></script>
+    <script src="admin/pendidikan.js"></script>
+    <script src="admin/skill.js"></script>
+    <script src="admin/pengalaman.js"></script>
+    <script src="admin/sertifikat.js"></script>
+    <script src="admin/learning.js"></script>
+    <script src="admin/loogbook.js"></script>
+    <script src="admin/galeri.js"></script>
+    <script src="admin/pencapaian.js"></script>
+
     <!-- FIREBASE MODULE & SEMUA FUNGSI CRUD -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
@@ -936,6 +949,29 @@
         const db = getFirestore(app);
         const storage = getStorage(app);
         const rtdb = getDatabase(app, firebaseConfig.databaseURL);
+
+        // Expose Firebase on window agar modul admin dapat mengaksesnya
+        window.app = app;
+        window.db = db;
+        window.storage = storage;
+        window.rtdb = rtdb;
+        window.dbRef = dbRef;
+        window.set = set;
+        window.push = push;
+        window.get = get;
+        window.child = child;
+        window.remove = remove;
+        window.doc = doc;
+        window.setDoc = setDoc;
+        window.getDoc = getDoc;
+        window.collection = collection;
+        window.addDoc = addDoc;
+        window.deleteDoc = deleteDoc;
+        window.updateDoc = updateDoc;
+        window.getDocs = getDocs;
+        window.ref = ref;
+        window.uploadBytesResumable = uploadBytesResumable;
+        window.getDownloadURL = getDownloadURL;
 
         // Global check auth
         window.handleAdminLogin = function(e) {
@@ -965,8 +1001,8 @@
             }
         }
 
-        // Section switcher
-        window.switchSection = function(sectionId) {
+        // Section switcher with hash routing
+        window.switchSection = function(sectionId, updateHash = true) {
             const sections = document.querySelectorAll('main section');
             sections.forEach(s => s.classList.remove('active'));
 
@@ -980,9 +1016,27 @@
                     l.classList.add('active');
                 }
             });
+
+            if (updateHash) {
+                history.pushState(null, '', '#/' + sectionId);
+            }
         };
 
-        function showToast(msg, type = "info") {
+        function handleAdminHashRouting() {
+            let hash = window.location.hash;
+            if (hash && hash.startsWith('#/')) {
+                const sectionId = hash.substring(2).trim();
+                if (document.getElementById(sectionId)) {
+                    window.switchSection(sectionId, false);
+                }
+            }
+        }
+        window.addEventListener('hashchange', handleAdminHashRouting);
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(handleAdminHashRouting, 100);
+        });
+
+        window.showToast = function(msg, type = "info") {
             const toast = document.getElementById("toastNotification");
             const icon = document.getElementById("toastIcon");
             const text = document.getElementById("toastMsg");
@@ -995,10 +1049,11 @@
             else icon.className = "fas fa-info-circle";
 
             setTimeout(() => toast.classList.remove("show"), 3500);
-        }
+        };
+        const showToast = window.showToast;
 
         // Helper Kompresi Gambar HD Otomatis (Canvas High Quality)
-        function compressImage(file, maxWidth = 1920, maxHeight = 1920, quality = 0.90) {
+        window.compressImage = function(file, maxWidth = 1920, maxHeight = 1920, quality = 0.90) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
                 reader.readAsDataURL(file);
@@ -1052,7 +1107,8 @@
                 };
                 reader.onerror = (err) => reject(err);
             });
-        }
+        };
+        const compressImage = window.compressImage;
 
         window.previewImg = function(e, previewId) {
             const file = e.target.files[0];
@@ -1069,19 +1125,32 @@
             }
         };
 
-        function loadAllData() {
-            loadHomeData();
-            loadProjectsData();
-            loadAboutData();
-            loadEduData();
-            loadSkillsData();
-            loadExpData();
-            loadCertData();
-            loadCourseData();
-            loadLogbookData();
-            loadGalleryData();
-            loadAchieveData();
+        /* LocalStorage Caching Helper */
+        function getLocalCache(key) {
+            try { return JSON.parse(localStorage.getItem(`arnof_${key}_cache`) || "[]"); } catch(e) { return []; }
         }
+        function saveLocalCache(key, items) {
+            try { localStorage.setItem(`arnof_${key}_cache`, JSON.stringify(items)); } catch(e) {}
+        }
+        window.getLocalCache = getLocalCache;
+        window.saveLocalCache = saveLocalCache;
+        window.showToast = showToast;
+        window.compressImage = compressImage;
+
+        function loadAllData() {
+            if (typeof window.loadHomeData === 'function') window.loadHomeData();
+            if (typeof window.loadProjectsData === 'function') window.loadProjectsData();
+            if (typeof window.loadAboutData === 'function') window.loadAboutData();
+            if (typeof window.loadEduData === 'function') window.loadEduData();
+            if (typeof window.loadSkillsData === 'function') window.loadSkillsData();
+            if (typeof window.loadExpData === 'function') window.loadExpData();
+            if (typeof window.loadCertData === 'function') window.loadCertData();
+            if (typeof window.loadCourseData === 'function') window.loadCourseData();
+            if (typeof window.loadLogbookData === 'function') window.loadLogbookData();
+            if (typeof window.loadGalleryData === 'function') window.loadGalleryData();
+            if (typeof window.loadAchieveData === 'function') window.loadAchieveData();
+        }
+        window.loadAllData = loadAllData;
 
         /* Helper Generic Fetch dari RTDB (dengan Timeout Cepat & Fallback) */
         async function fetchRtdbOrFirestore(path) {
@@ -1198,1008 +1267,7 @@
             }
         };
 
-        /* 1. BERANDA */
-        async function loadHomeData() {
-            try {
-                let d = null;
-                const snapshot = await get(dbRef(rtdb, "portfolio_content/home"));
-                if (snapshot.exists()) {
-                    d = snapshot.val();
-                } else {
-                    const snap = await getDoc(doc(db, "portfolio_content", "home"));
-                    if (snap.exists()) d = snap.data();
-                }
-                if (d) {
-                    if (d.projects) document.getElementById("homeStatProjects").value = d.projects;
-                    if (d.certs) document.getElementById("homeStatCerts").value = d.certs;
-                    if (d.exp) document.getElementById("homeStatExp").value = d.exp;
-                    if (d.bio1) document.getElementById("homeBioP1").value = d.bio1;
-                    if (d.bio2) document.getElementById("homeBioP2").value = d.bio2;
-                }
-            } catch (e) { console.error(e); }
-        }
-
-        window.saveHomeProfile = async function(e) {
-            e.preventDefault();
-            try {
-                const data = {
-                    projects: document.getElementById("homeStatProjects").value || "6+",
-                    certs: document.getElementById("homeStatCerts").value || "10+",
-                    exp: document.getElementById("homeStatExp").value || "5+",
-                    bio1: document.getElementById("homeBioP1").value,
-                    bio2: document.getElementById("homeBioP2").value,
-                    updatedAt: Date.now()
-                };
-
-                // Save to local cache
-                try { localStorage.setItem("arnof_home_cache", JSON.stringify(data)); } catch(e){}
-
-                showToast("✨ Data Beranda berhasil disimpan!", "success");
-
-                // Save to RTDB and Firestore
-                set(dbRef(rtdb, "portfolio_content/home"), data).catch(err => console.warn("Home RTDB error:", err));
-                setDoc(doc(db, "portfolio_content", "home"), data).catch(err => console.warn("Home Firestore error:", err));
-            } catch (err) { showToast(err.message, "error"); }
-        };
-
-        /* 2. PROJEK SELSEAI */
-        function renderProjectCard(p, prepend = false) {
-            const container = document.getElementById("adminProjectsList");
-            if (container.innerText.includes("Belum ada") || container.innerText.includes("Memuat")) {
-                container.innerHTML = "";
-            }
-            const card = document.createElement("div");
-            card.className = "admin-item-card";
-            card.id = `card_proj_${p.id}`;
-            card.innerHTML = `
-                <img src="${p.image}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px;">
-                <div class="admin-item-info">
-                    <h4>${p.title}</h4>
-                    <p><a href="${p.link}" target="_blank" style="color: #38bdf8;">${p.link}</a></p>
-                </div>
-                <div class="admin-item-btns">
-                    <button class="btn-action-del" onclick="deleteItem('projects', '${p.id}', 'loadProjectsData')"><i class="fas fa-trash"></i> Hapus</button>
-                </div>
-            `;
-            if (prepend && container.firstChild) {
-                container.insertBefore(card, container.firstChild);
-            } else {
-                container.appendChild(card);
-            }
-        }
-
-        async function loadProjectsData() {
-            const container = document.getElementById("adminProjectsList");
-            try {
-                const items = await fetchRtdbOrFirestore("projects");
-                if (items.length === 0 && container.children.length === 0) {
-                    container.innerHTML = "<p style='color: #888;'>Belum ada projek.</p>";
-                    return;
-                }
-                if (items.length > 0) {
-                    container.innerHTML = "";
-                    items.forEach(p => renderProjectCard(p, false));
-                }
-            } catch (err) { if(container.children.length === 0) container.innerHTML = `<p style="color:red;">${err.message}</p>`; }
-        }
-
-        window.submitAddProject = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById("btnAddProj");
-            const file = document.getElementById("projImageFile").files[0];
-            const title = document.getElementById("projTitle").value.trim();
-            const link = document.getElementById("projLink").value.trim();
-
-            if (!file) return showToast("Pilih foto projek terlebih dahulu!", "error");
-            if (!title) return showToast("Judul projek tidak boleh kosong!", "error");
-
-            btn.disabled = true;
-            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memproses...";
-
-            try {
-                // Kompresi gambar kualitas HD (1920x1920, quality 0.90)
-                const { dataUrl } = await compressImage(file, 1920, 1920, 0.90);
-                const tempId = "tmp_" + Date.now();
-                const projPayload = {
-                    title: title,
-                    link: link,
-                    image: dataUrl,
-                    createdAt: Date.now()
-                };
-
-                // OPTIMISTIC UI: LANGSUNG MASUK KE LIST SEKETIKA!
-                renderProjectCard({ id: tempId, ...projPayload }, true);
-
-                // Cache lokal
-                let cached = getLocalCache("projects");
-                cached.unshift({ id: tempId, ...projPayload });
-                saveLocalCache("projects", cached);
-
-                // Reset form & preview seketika
-                document.getElementById("formAddProject").reset();
-                document.getElementById("projImgPreview").style.display = 'none';
-                document.getElementById("projImgPlaceholder").style.display = 'block';
-
-                showToast("✨ Projek berhasil ditambahkan!", "success");
-
-                // Simpan ke Realtime Database & Firestore
-                push(dbRef(rtdb, "projects"), projPayload).catch(err => console.warn("Proj rtdb note:", err.message));
-                addDoc(collection(db, "projects"), projPayload).catch(err => console.warn("Proj firestore note:", err.message));
-
-            } catch (err) { showToast(err.message, "error"); }
-            finally {
-                btn.disabled = false;
-                btn.innerHTML = "<i class='fas fa-cloud-upload-alt'></i> Upload & Simpan Projek";
-            }
-        };
-
-        /* 3. TENTANG SAYA */
-        async function loadAboutData() {
-            try {
-                let d = null;
-                const snapshot = await get(dbRef(rtdb, "portfolio_content/about"));
-                if (snapshot.exists()) {
-                    d = snapshot.val();
-                } else {
-                    const snap = await getDoc(doc(db, "portfolio_content", "about"));
-                    if (snap.exists()) d = snap.data();
-                }
-                if (d) {
-                    if (d.bio) document.getElementById("aboutBioText").value = d.bio;
-                    if (d.wa) document.getElementById("aboutWa").value = d.wa;
-                    if (d.ig) document.getElementById("aboutIg").value = d.ig;
-                    if (d.linkedin) document.getElementById("aboutIn").value = d.linkedin;
-                    if (d.email) document.getElementById("aboutEmail").value = d.email;
-                }
-            } catch (e) { console.error(e); }
-        }
-
-        window.saveAboutData = async function(e) {
-            e.preventDefault();
-            try {
-                const data = {
-                    bio: document.getElementById("aboutBioText").value,
-                    wa: document.getElementById("aboutWa").value,
-                    ig: document.getElementById("aboutIg").value,
-                    linkedin: document.getElementById("aboutIn").value,
-                    email: document.getElementById("aboutEmail").value,
-                    updatedAt: Date.now()
-                };
-                showToast("✨ Data Tentang Saya berhasil disimpan!", "success");
-                set(dbRef(rtdb, "portfolio_content/about"), data).catch(err => console.warn(err));
-            } catch (err) { showToast(err.message, "error"); }
-        };
-
-        /* 4. PENDIDIKAN */
-        async function loadEduData() {
-            const container = document.getElementById("adminEduList");
-            try {
-                const items = await fetchRtdbOrFirestore("education");
-                if (items.length === 0) { container.innerHTML = "<p style='color:#888;'>Belum ada data pendidikan.</p>"; return; }
-                container.innerHTML = "";
-                items.forEach(e => {
-                    const card = document.createElement("div");
-                    card.className = "admin-item-card";
-                    card.innerHTML = `
-                        <div class="admin-item-info">
-                            <h4>${e.school}</h4>
-                            <p>${e.major}</p>
-                            <div class="admin-item-meta"><i class="fas fa-calendar"></i> ${e.period}</div>
-                        </div>
-                        <div class="admin-item-btns">
-                            <button class="btn-action-del" onclick="deleteItem('education', '${e.id}', 'loadEduData')"><i class="fas fa-trash"></i> Hapus</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (err) { container.innerHTML = `<p style="color:red;">${err.message}</p>`; }
-        }
-
-        window.submitAddEdu = async function(e) {
-            e.preventDefault();
-            try {
-                const school = document.getElementById("eduSchool").value;
-                const period = document.getElementById("eduPeriod").value;
-                const major = document.getElementById("eduMajor").value;
-                showToast("Pendidikan berhasil ditambahkan!", "success");
-                document.getElementById("formAddEdu").reset();
-
-                push(dbRef(rtdb, "education"), {
-                    school: school,
-                    period: period,
-                    major: major,
-                    createdAt: Date.now()
-                }).then(() => loadEduData()).catch(e => console.warn(e));
-            } catch (err) { showToast(err.message, "error"); }
-        };
-
-        /* 5. SKILL */
-        async function loadSkillsData() {
-            const container = document.getElementById("adminSkillsList");
-            try {
-                const items = await fetchRtdbOrFirestore("skills");
-                if (items.length === 0) { container.innerHTML = "<p style='color:#888;'>Belum ada skill.</p>"; return; }
-                container.innerHTML = "";
-                items.forEach(s => {
-                    const card = document.createElement("div");
-                    card.className = "admin-item-card";
-                    card.innerHTML = `
-                        <div class="admin-item-info">
-                            <h4>${s.name}</h4>
-                            <p style="color: var(--accent-color); font-size: 0.8rem;">Kategori: ${s.category}</p>
-                        </div>
-                        <div class="admin-item-btns">
-                            <button class="btn-action-del" onclick="deleteItem('skills', '${s.id}', 'loadSkillsData')"><i class="fas fa-trash"></i> Hapus</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (err) { container.innerHTML = `<p style="color:red;">${err.message}</p>`; }
-        }
-
-        window.submitAddSkill = async function(e) {
-            e.preventDefault();
-            try {
-                const name = document.getElementById("skillName").value;
-                const category = document.getElementById("skillCategory").value;
-                showToast("Skill berhasil ditambahkan!", "success");
-                document.getElementById("formAddSkill").reset();
-
-                push(dbRef(rtdb, "skills"), {
-                    name: name,
-                    category: category,
-                    createdAt: Date.now()
-                }).then(() => loadSkillsData()).catch(e => console.warn(e));
-            } catch (err) { showToast(err.message, "error"); }
-        };
-
-        /* 6. PENGALAMAN */
-        async function loadExpData() {
-            const container = document.getElementById("adminExpList");
-            try {
-                const items = await fetchRtdbOrFirestore("experience");
-                if (items.length === 0) { container.innerHTML = "<p style='color:#888;'>Belum ada pengalaman.</p>"; return; }
-                container.innerHTML = "";
-                items.forEach(ex => {
-                    const card = document.createElement("div");
-                    card.className = "admin-item-card";
-                    card.innerHTML = `
-                        <div class="admin-item-info">
-                            <h4>${ex.role} &bull; <span style="font-size: 0.9rem; color: #a0a0a0;">${ex.org}</span></h4>
-                            <p>${ex.desc}</p>
-                            <div class="admin-item-meta"><i class="fas fa-calendar"></i> ${ex.period}</div>
-                        </div>
-                        <div class="admin-item-btns">
-                            <button class="btn-action-del" onclick="deleteItem('experience', '${ex.id}', 'loadExpData')"><i class="fas fa-trash"></i> Hapus</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (err) { container.innerHTML = `<p style="color:red;">${err.message}</p>`; }
-        }
-
-        window.submitAddExp = async function(e) {
-            e.preventDefault();
-            try {
-                const role = document.getElementById("expRole").value;
-                const org = document.getElementById("expOrg").value;
-                const period = document.getElementById("expPeriod").value;
-                const desc = document.getElementById("expDesc").value;
-
-                showToast("Pengalaman berhasil ditambahkan!", "success");
-                document.getElementById("formAddExp").reset();
-
-                push(dbRef(rtdb, "experience"), {
-                    role: role,
-                    org: org,
-                    period: period,
-                    desc: desc,
-                    createdAt: Date.now()
-                }).then(() => loadExpData()).catch(e => console.warn(e));
-            } catch (err) { showToast(err.message, "error"); }
-        };
-
-        /* 7. SERTIFIKAT */
-        function renderCertCard(c, prepend = false) {
-            const container = document.getElementById("adminCertList");
-            if (container.innerText.includes("Belum ada") || container.innerText.includes("Memuat")) {
-                container.innerHTML = "";
-            }
-            const card = document.createElement("div");
-            card.className = "admin-item-card";
-            card.id = `card_cert_${c.id}`;
-            card.innerHTML = `
-                <img src="${c.image}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px;">
-                <div class="admin-item-info">
-                    <h4>${c.title}</h4>
-                    <p>${c.issuer}</p>
-                </div>
-                <div class="admin-item-btns">
-                    <button class="btn-action-del" onclick="deleteItem('certificates', '${c.id}', 'loadCertData')"><i class="fas fa-trash"></i> Hapus</button>
-                </div>
-            `;
-            if (prepend && container.firstChild) {
-                container.insertBefore(card, container.firstChild);
-            } else {
-                container.appendChild(card);
-            }
-        }
-
-        const defaultCertificates = [
-            { id: 'cert_def_1', title: 'Dicoding - AI Praktis Untuk Produktivitas', issuer: 'Dicoding Indonesia', image: 'foto/ai.jpeg' },
-            { id: 'cert_def_2', title: 'Dicoding - Membangun Aplikasi Gen AI dengan Microsoft Azure', issuer: 'Dicoding Indonesia', image: 'foto/ha.jpeg' },
-            { id: 'cert_def_3', title: 'Dicoding - Belajar Penerapan Data Science dengan Microsoft Fabric', issuer: 'Dicoding Indonesia', image: 'foto/y.jpeg' },
-            { id: 'cert_def_4', title: 'Dicoding - Belajar Dasar AI', issuer: 'Dicoding Indonesia', image: 'foto/h.jpeg' },
-            { id: 'cert_def_5', title: 'Microsoft Elevate - "Melatih dan Mengelola Model Machine Learning di Microsoft Fabric"', issuer: 'Microsoft Elevate', image: 'foto/i.jpeg' },
-            { id: 'cert_def_6', title: 'Microsoft Elevate - "Merancang Percakapan Cerdas di Azure AI Foundry"', issuer: 'Microsoft Elevate', image: 'foto/q.jpeg' },
-            { id: 'cert_def_7', title: 'Microsoft Elevate - "Mempersiapkan Data untuk Model AI di Microsoft Fabric"', issuer: 'Microsoft Elevate', image: 'foto/w.jpeg' },
-            { id: 'cert_def_8', title: 'UBL Trainer - Precollege 2025 - Computational Thinking Information Technology Center Universitas Bandar Lampung', issuer: 'Universitas Bandar Lampung', image: 'foto/ubl.jpeg' },
-            { id: 'cert_def_9', title: 'KEMNAKER - Pembekalan 12+ Essential Skills Program Magang Nasional', issuer: 'KEMNAKER', image: 'foto/t.jpeg' },
-            { id: 'cert_def_10', title: 'Sertifikat Vibe Coding 2026 Google', issuer: 'Google', image: 'foto/google.jpeg' }
-        ];
-
-        async function loadCertData() {
-            const container = document.getElementById("adminCertList");
-            try {
-                let deletedIds = [];
-                try {
-                    const d = localStorage.getItem('arnof_deleted_certificates');
-                    if (d) deletedIds = JSON.parse(d);
-                } catch(e){}
-
-                try {
-                    const delSnap = await get(dbRef(rtdb, "deleted_certificates"));
-                    if (delSnap.exists()) {
-                        deletedIds = Object.keys(delSnap.val());
-                        localStorage.setItem('arnof_deleted_certificates', JSON.stringify(deletedIds));
-                    }
-                } catch(e){}
-
-                const items = await fetchRtdbOrFirestore("certificates");
-
-                let combined = defaultCertificates.filter(c => !deletedIds.includes(String(c.id)));
-                if (Array.isArray(items)) {
-                    items.forEach(c => {
-                        if (c && c.title && !deletedIds.includes(String(c.id))) {
-                            const exists = combined.some(item => String(item.id) === String(c.id) || item.title === c.title);
-                            if (!exists) combined.push(c);
-                        }
-                    });
-                }
-
-                if (combined.length === 0) {
-                    container.innerHTML = "<p style='color:#888;'>Belum ada sertifikat.</p>";
-                    return;
-                }
-
-                container.innerHTML = "";
-                combined.forEach(c => renderCertCard(c, false));
-            } catch (err) {
-                if(container.children.length === 0) container.innerHTML = `<p style="color:red;">${err.message}</p>`;
-            }
-        }
-        window.loadCertData = loadCertData;
-
-        window.submitAddCert = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById("btnSubmitCert");
-            const file = document.getElementById("certFile").files[0];
-            const title = document.getElementById("certTitle").value.trim();
-            const issuer = document.getElementById("certIssuer").value.trim();
-            if (!file) return showToast("Pilih foto sertifikat!", "error");
-
-            btn.disabled = true;
-            btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memproses...";
-            try {
-                const { dataUrl } = await compressImage(file, 1920, 1920, 0.90);
-                
-                const newRef = push(dbRef(rtdb, "certificates"));
-                const certId = newRef.key;
-                
-                const certPayload = {
-                    id: certId,
-                    title: title,
-                    issuer: issuer,
-                    image: dataUrl,
-                    createdAt: Date.now()
-                };
-
-                // OPTIMISTIC UI: RENDER SEKETIKA
-                renderCertCard(certPayload, true);
-
-                // Cache lokal
-                let cached = getLocalCache("certificates");
-                cached.unshift(certPayload);
-                saveLocalCache("certificates", cached);
-
-                document.getElementById("formAddCert").reset();
-                document.getElementById("certImgPreview").style.display = 'none';
-                document.getElementById("certImgPlaceholder").style.display = 'block';
-
-                showToast("✨ Sertifikat berhasil ditambahkan ke Firebase!", "success");
-
-                // Simpan ke Realtime Database dan Firestore dengan ID yang sama
-                await set(newRef, certPayload).catch(err => console.warn("Background cert rtdb note:", err.message));
-                await setDoc(doc(db, "certificates", certId), certPayload).catch(err => console.warn("Background cert firestore note:", err.message));
-
-            } catch (err) { 
-                showToast(err.message, "error"); 
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = "<i class='fas fa-cloud-upload-alt'></i> Upload & Simpan Sertifikat";
-            }
-        };
-
-        /* 8. LEARNING PATH */
-        const defaultCourses = [
-            // Semester 1
-            { code: "UN108", name: "Personal Development", sks: "1 SKS", semester: "Semester 1", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "FK107", name: "Pengantar Desain Sistem", sks: "3 SKS", semester: "Semester 1", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "FK102", name: "Matematika Dasar", sks: "3 SKS", semester: "Semester 1", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "FK101", name: "Pengantar TI & Komunikasi", sks: "3 SKS", semester: "Semester 1", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "UN101", name: "Pendidikan Agama Islam", sks: "2 SKS", semester: "Semester 1", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "UN-6102", name: "Pancasila", sks: "2 SKS", semester: "Semester 1", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "UN-6105", name: "English for General Communication", sks: "2 SKS", semester: "Semester 1", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "UN-6104", name: "Innovation & Entrepreunership", sks: "2 SKS", semester: "Semester 1", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-
-            // Semester 2
-            { code: "FK-6205", name: "Algoritma dan Struktur Data", sks: "2 SKS", semester: "Semester 2", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-            { code: "UN-6202", name: "Bahasa Indonesia", sks: "2 SKS", semester: "Semester 2", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-            { code: "UN-6203", name: "Kewarganegaraan", sks: "2 SKS", semester: "Semester 2", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-            { code: "UN-6205", name: "Analytical and Creative Thinking", sks: "2 SKS", semester: "Semester 2", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-            { code: "FK-6206", name: "Prak. Algoritma dan Struktur Data", sks: "1 SKS", semester: "Semester 2", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-            { code: "UN305", name: "Pendidikan Anti Korupsi", sks: "2 SKS", semester: "Semester 2", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "UN109", name: "Olahraga, Seni & Budaya I", sks: "1 SKS", semester: "Semester 2", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "FK103", name: "Pemrograman I", sks: "3 SKS", semester: "Semester 2", defaultStatus: "Sudah Ambil", defaultGrade: "B" },
-            { code: "FK105", name: "Basis Data I", sks: "3 SKS", semester: "Semester 2", defaultStatus: "Sudah Ambil", defaultGrade: "B" },
-            { code: "FK104", name: "Prak. Pemrograman I", sks: "1 SKS", semester: "Semester 2", defaultStatus: "Sudah Ambil", defaultGrade: "AB" },
-            { code: "FK106", name: "Prak Basis Data I", sks: "1 SKS", semester: "Semester 2", defaultStatus: "Sudah Ambil", defaultGrade: "B" },
-
-            // Semester 3
-            { code: "FK202", name: "Pemrograman II", sks: "3 SKS", semester: "Semester 3", defaultStatus: "Sudah Ambil", defaultGrade: "AB" },
-            { code: "FK206", name: "Analisa Kebutuhan Sistem", sks: "3 SKS", semester: "Semester 3", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "FK-6306", name: "Jaringan Komputer", sks: "3 SKS", semester: "Semester 3", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "IF-6301", name: "Kecerdasan Buatan", sks: "3 SKS", semester: "Semester 3", defaultStatus: "Sudah Ambil", defaultGrade: "AB" },
-            { code: "FK204", name: "Basis Data II", sks: "3 SKS", semester: "Semester 3", defaultStatus: "Sudah Ambil", defaultGrade: "B" },
-            { code: "FK205", name: "Prak. Basis Data II", sks: "1 SKS", semester: "Semester 3", defaultStatus: "Sudah Ambil", defaultGrade: "B" },
-            { code: "FK203", name: "Prak. Pemrograman II", sks: "1 SKS", semester: "Semester 3", defaultStatus: "Sudah Ambil", defaultGrade: "AB" },
-            { code: "UN-6301", name: "Pilihan Industri 1", sks: "2 SKS", semester: "Semester 3", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "FK201", name: "Matematika Lanjut", sks: "3 SKS", semester: "Semester 3", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-
-            // Semester 4
-            { code: "UN-6302", name: "Pilihan Industri 2", sks: "2 SKS", semester: "Semester 4", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "FK-6401", name: "Rekayasa Perangkat Lunak", sks: "3 SKS", semester: "Semester 4", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "FK-6403", name: "Prak. Pemrograman III", sks: "1 SKS", semester: "Semester 4", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-            { code: "IF-6401", name: "IoT & Cyber-Physical Systems", sks: "3 SKS", semester: "Semester 4", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-            { code: "IF-6402", name: "Computer Vision & Pengolahan Citra Digital", sks: "3 SKS", semester: "Semester 4", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-            { code: "IF-6403", name: "Sistem Cerdas dan Otomasi", sks: "3 SKS", semester: "Semester 4", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-            { code: "FK-6402", name: "Pemrograman III", sks: "2 SKS", semester: "Semester 4", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-            { code: "FK-6404", name: "Sistem Operasi", sks: "3 SKS", semester: "Semester 4", defaultStatus: "Sedang Ambil", defaultGrade: "-" },
-
-            // Semester 5
-            { code: "IF-6503", name: "Rekayasa Perangkat Lunak Lanjut", sks: "2 SKS", semester: "Semester 5", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "UN-6303", name: "Pilihan Industri 3", sks: "2 SKS", semester: "Semester 5", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "UN-6501", name: "Community & Industrial Service", sks: "2 SKS", semester: "Semester 5", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "UN-6502", name: "Persiapan Pemagangan", sks: "0 SKS", semester: "Semester 5", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "IF-6604", name: "Pilihan Profesi 1", sks: "2 SKS", semester: "Semester 5", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "FK-6502", name: "Data Mining", sks: "3 SKS", semester: "Semester 5", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "FK-6501", name: "Statistik", sks: "3 SKS", semester: "Semester 5", defaultStatus: "Sudah Ambil", defaultGrade: "B" },
-            { code: "FK-6503", name: "Interaksi Manusia dan Komputer", sks: "3 SKS", semester: "Semester 5", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-            { code: "FK-6504", name: "Sistem Terdistribusi", sks: "3 SKS", semester: "Semester 5", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "FK-6505", name: "Kewirausahaan dan Teknologi", sks: "3 SKS", semester: "Semester 5", defaultStatus: "Sudah Ambil", defaultGrade: "A" },
-
-            // Semester 6
-            { code: "FK-6602", name: "Etika Profesi TI", sks: "2 SKS", semester: "Semester 6", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "UN-6304", name: "Pilihan Industri 4", sks: "2 SKS", semester: "Semester 6", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "IF-6405", name: "Cloud, Edge, & Fog Computing", sks: "3 SKS", semester: "Semester 6", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "FK-6605", name: "Metodologi Penelitian", sks: "2 SKS", semester: "Semester 6", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "FK-6604", name: "Keamanan Siber", sks: "3 SKS", semester: "Semester 6", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "FK-6601", name: "Pengujian dan Kualitas Sistem", sks: "3 SKS", semester: "Semester 6", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "IF-6605", name: "Pilihan Profesi 2", sks: "2 SKS", semester: "Semester 6", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "IF-6601", name: "Teori Bahasa Formal & Otomata", sks: "3 SKS", semester: "Semester 6", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "FK-6603", name: "Manajemen Proyek", sks: "3 SKS", semester: "Semester 6", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-
-            // Semester 7
-            { code: "UN-6701", name: "Pemagangan", sks: "4 SKS", semester: "Semester 7", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-
-            // Semester 8
-            { code: "UN-6305", name: "Pilihan Industri 5", sks: "2 SKS", semester: "Semester 8", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "IF-6501", name: "Graph Database & Knowledge Graph", sks: "3 SKS", semester: "Semester 8", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "IF-6502", name: "Green Computing & Sustainable AI", sks: "3 SKS", semester: "Semester 8", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "IF-6404", name: "Deep Learning", sks: "3 SKS", semester: "Semester 8", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "IF-6606", name: "Pilihan Profesi 3", sks: "2 SKS", semester: "Semester 8", defaultStatus: "Belum Ambil", defaultGrade: "-" },
-            { code: "IF-6302", name: "Machine Learning", sks: "3 SKS", semester: "Semester 8", defaultStatus: "Sudah Ambil", defaultGrade: "AB" },
-            { code: "FK-6801", name: "Tugas Akhir", sks: "4 SKS", semester: "Semester 8", defaultStatus: "Belum Ambil", defaultGrade: "-" }
-        ];
-
-        let allMergedCourses = [];
-
-        async function loadCourseData() {
-            const container = document.getElementById("adminCourseList");
-            if (!container) return;
-
-            try {
-                let overrides = {};
-                try {
-                    const snap = await get(dbRef(rtdb, "learning_path_overrides"));
-                    if (snap.exists()) overrides = snap.val();
-                } catch(e){}
-
-                let customCourses = [];
-                try {
-                    customCourses = await fetchRtdbOrFirestore("learning_path");
-                } catch(e){}
-
-                const listMap = new Map();
-
-                defaultCourses.forEach(c => {
-                    const ov = overrides[c.code] || {};
-                    listMap.set(c.code, {
-                        id: c.code,
-                        code: c.code,
-                        name: c.name,
-                        sks: c.sks,
-                        semester: c.semester,
-                        status: ov.status || c.defaultStatus,
-                        grade: ov.grade || c.defaultGrade,
-                        isCustom: false
-                    });
-                });
-
-                if (Array.isArray(customCourses)) {
-                    customCourses.forEach(c => {
-                        if (c && c.code) {
-                            const ov = overrides[c.code] || {};
-                            listMap.set(c.code, {
-                                id: c.id || c.code,
-                                code: c.code,
-                                name: c.name,
-                                sks: c.sks || "3 SKS",
-                                semester: c.semester || "Semester 1",
-                                status: ov.status || c.status || "Sudah Ambil",
-                                grade: ov.grade || c.grade || "-",
-                                isCustom: true
-                            });
-                        }
-                    });
-                }
-
-                allMergedCourses = Array.from(listMap.values());
-                renderCourseTableRows(allMergedCourses);
-
-            } catch (err) {
-                container.innerHTML = `<tr><td colspan="8" style="color:red; text-align:center; padding:1.5rem;">Gagal memuat mata kuliah: ${err.message}</td></tr>`;
-            }
-        }
-
-        function renderCourseTableRows(courses) {
-            const container = document.getElementById("adminCourseList");
-            if (!container) return;
-
-            if (courses.length === 0) {
-                container.innerHTML = `<tr><td colspan="8" style="text-align: center; color: #888; padding: 2rem;">Tidak ada mata kuliah yang cocok.</td></tr>`;
-                return;
-            }
-
-            let html = "";
-            courses.forEach((c, idx) => {
-                const statusOptions = ["Sudah Ambil", "Sedang Ambil", "Belum Ambil"].map(st => 
-                    `<option value="${st}" ${c.status === st ? 'selected' : ''}>${st}</option>`
-                ).join('');
-
-                const gradeOptions = ["-", "A", "AB", "B", "BC", "C", "D", "E"].map(gr => 
-                    `<option value="${gr}" ${c.grade === gr ? 'selected' : ''}>${gr === '-' ? 'Belum Ada (-)' : 'Nilai ' + gr}</option>`
-                ).join('');
-
-                const customBadge = c.isCustom ? '<span style="font-size:0.65rem; background:rgba(212,175,55,0.2); color:var(--accent-color); padding:2px 6px; border-radius:4px; margin-left:4px;">Kustom</span>' : '';
-
-                html += `
-                    <tr id="row_${c.code}">
-                        <td style="text-align: center; color: #64748b; font-weight: 500;">${idx + 1}</td>
-                        <td><span style="font-weight: 700; color: var(--accent-color);">${c.code}</span>${customBadge}</td>
-                        <td style="font-weight: 500; color: #f8fafc;">${c.name}</td>
-                        <td><span style="font-size:0.75rem; background:rgba(255,255,255,0.06); padding:3px 8px; border-radius:6px;">${c.sks}</span></td>
-                        <td><span style="font-size:0.75rem; color:#94a3b8;">${c.semester}</span></td>
-                        <td>
-                            <select id="status_${c.code}" class="course-select-sm" onchange="saveCourseRow('${c.code}')">
-                                ${statusOptions}
-                            </select>
-                        </td>
-                        <td>
-                            <select id="grade_${c.code}" class="course-select-sm" onchange="saveCourseRow('${c.code}')">
-                                ${gradeOptions}
-                            </select>
-                        </td>
-                        <td style="text-align: center;">
-                            <div style="display: flex; gap: 4px; justify-content: center;">
-                                <button class="btn-action-edit" onclick="saveCourseRow('${c.code}')" title="Simpan Perubahan"><i class="fas fa-save"></i> Simpan</button>
-                                ${c.isCustom ? `<button class="btn-action-del" onclick="deleteItem('learning_path', '${c.id}', 'loadCourseData')" title="Hapus"><i class="fas fa-trash"></i></button>` : ''}
-                            </div>
-                        </td>
-                    </tr>
-                `;
-            });
-
-            container.innerHTML = html;
-        }
-
-        window.filterCourseTable = function() {
-            const search = (document.getElementById("courseSearchInput")?.value || "").toLowerCase().trim();
-            const semFilter = document.getElementById("courseSemesterFilter")?.value || "ALL";
-            const statFilter = document.getElementById("courseStatusFilter")?.value || "ALL";
-
-            const filtered = allMergedCourses.filter(c => {
-                const matchSearch = c.name.toLowerCase().includes(search) || c.code.toLowerCase().includes(search);
-                const matchSem = semFilter === "ALL" || c.semester.includes(semFilter);
-                const matchStat = statFilter === "ALL" || c.status === statFilter;
-                return matchSearch && matchSem && matchStat;
-            });
-
-            renderCourseTableRows(filtered);
-        };
-
-        window.saveCourseRow = async function(code) {
-            const statusEl = document.getElementById(`status_${code}`);
-            const gradeEl = document.getElementById(`grade_${code}`);
-            if (!statusEl || !gradeEl) return;
-
-            const newStatus = statusEl.value;
-            const newGrade = gradeEl.value;
-
-            const found = allMergedCourses.find(c => c.code === code);
-            if (found) {
-                found.status = newStatus;
-                found.grade = newGrade;
-            }
-
-            const payload = {
-                code: code,
-                status: newStatus,
-                grade: newGrade,
-                updatedAt: Date.now()
-            };
-
-            showToast(`✨ Status & Nilai Matkul ${code} tersimpan!`, "success");
-
-            try {
-                if (rtdb) {
-                    await set(dbRef(rtdb, `learning_path_overrides/${code}`), payload);
-                }
-                if (db) {
-                    await setDoc(doc(db, "learning_path_overrides", code), payload);
-                }
-            } catch(err) {
-                console.warn("Course override save note:", err.message);
-            }
-        };
-
-        window.submitAddCourse = async function(e) {
-            e.preventDefault();
-            try {
-                const code = document.getElementById("courseCode").value.trim().toUpperCase();
-                const name = document.getElementById("courseName").value.trim();
-                const sks = document.getElementById("courseSks").value.trim() || "3 SKS";
-                const semester = document.getElementById("courseSemester").value;
-                const status = document.getElementById("courseStatus").value;
-                const grade = document.getElementById("courseGrade").value;
-
-                if (!code || !name) return showToast("Isi kode dan nama mata kuliah!", "error");
-
-                showToast("✨ Mata kuliah berhasil ditambahkan!", "success");
-                document.getElementById("formAddCourse").reset();
-
-                const newRef = push(dbRef(rtdb, "learning_path"));
-                const courseId = newRef.key;
-
-                const coursePayload = {
-                    id: courseId,
-                    code: code,
-                    name: name,
-                    sks: sks,
-                    semester: semester,
-                    status: status,
-                    grade: grade,
-                    createdAt: Date.now()
-                };
-
-                await set(newRef, coursePayload).catch(e => console.warn(e));
-                await setDoc(doc(db, "learning_path", courseId), coursePayload).catch(e => console.warn(e));
-
-                await set(dbRef(rtdb, `learning_path_overrides/${code}`), {
-                    code: code,
-                    status: status,
-                    grade: grade,
-                    updatedAt: Date.now()
-                }).catch(e => console.warn(e));
-
-                loadCourseData();
-            } catch (err) { showToast(err.message, "error"); }
-        };
-
-        /* 9. LOGBOOK */
-        async function loadLogbookData() {
-            const container = document.getElementById("adminLogbookList");
-            try {
-                const items = await fetchRtdbOrFirestore("logbook");
-                if (items.length === 0) { container.innerHTML = "<p style='color:#888;'>Belum ada logbook.</p>"; return; }
-                container.innerHTML = "";
-                items.forEach(l => {
-                    const dateStr = l.createdAt ? new Date(l.createdAt).toLocaleDateString('id-ID') : '';
-                    const card = document.createElement("div");
-                    card.className = "admin-item-card";
-                    card.innerHTML = `
-                        <div class="admin-item-info">
-                            <h4>${l.activity}</h4>
-                            <p><strong>Hasil:</strong> ${l.result || '-'}</p>
-                            <div class="admin-item-meta"><i class="fas fa-clock"></i> ${dateStr}</div>
-                        </div>
-                        <div class="admin-item-btns">
-                            <button class="btn-action-del" onclick="deleteItem('logbook', '${l.id}', 'loadLogbookData')"><i class="fas fa-trash"></i> Hapus</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (err) { container.innerHTML = `<p style="color:red;">${err.message}</p>`; }
-        }
-
-        window.submitAddLogbook = async function(e) {
-            e.preventDefault();
-            try {
-                const activity = document.getElementById("logbookActivity").value;
-                const result = document.getElementById("logbookResult").value;
-                const obstacle = document.getElementById("logbookObstacle").value;
-
-                showToast("Logbook berhasil disimpan!", "success");
-                document.getElementById("formAddLogbook").reset();
-
-                push(dbRef(rtdb, "logbook"), {
-                    activity: activity,
-                    result: result,
-                    obstacle: obstacle,
-                    createdAt: Date.now()
-                }).then(() => loadLogbookData()).catch(e => console.warn(e));
-            } catch (err) { showToast(err.message, "error"); }
-        };
-
-        /* LocalStorage Caching Helper */
-        function getLocalCache(key) {
-            try { return JSON.parse(localStorage.getItem(`arnof_${key}_cache`) || "[]"); } catch(e) { return []; }
-        }
-        function saveLocalCache(key, items) {
-            try { localStorage.setItem(`arnof_${key}_cache`, JSON.stringify(items)); } catch(e) {}
-        }
-
-        /* 10. GALERI (OPTIMISTIC UI + INSTANT CACHE) */
-        function renderGalleryCard(g, prepend = false) {
-            const container = document.getElementById("adminGalleryList");
-            if (!container) return;
-
-            // Bersihkan teks "Memuat galeri..." atau "Belum ada foto galeri."
-            if (!container.querySelector(".admin-item-card") && !container.querySelector("img")) {
-                container.innerHTML = "";
-            }
-
-            // Mencegah duplikasi id
-            const existing = document.getElementById(`card_gal_${g.id}`);
-            if (existing) existing.remove();
-
-            const isHMIF = (g.period === '2025/2026' || g.period === '2026/2027' || g.period === 'hmif') || (g.category === 'hmif');
-            const isGeneral = (g.period === 'general' || g.category === 'general');
-            const badgeText = (g.period && g.period !== 'general' && g.period !== 'hmif') ? 'HMIF ' + g.period : (isGeneral ? 'DOKUMENTASI UMUM' : (isHMIF ? 'KEGIATAN HMIF' : 'DOKUMENTASI UMUM'));
-            const badgeBg = (isHMIF && !isGeneral) ? '#06b6d4' : '#64748b';
-
-            const card = document.createElement("div");
-            card.className = "admin-item-card";
-            card.style.cssText = "background: rgba(20,20,20,0.85); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; overflow: hidden; display: flex; flex-direction: column; position: relative;";
-            card.id = `card_gal_${g.id}`;
-            card.innerHTML = `
-                <div style="position: relative; width: 100%; height: 140px; overflow: hidden;">
-                    <img src="${g.image}" style="width: 100%; height: 100%; object-fit: cover;">
-                    <span style="position: absolute; top: 8px; left: 8px; background: ${badgeBg}; color: #fff; font-size: 0.68rem; font-weight: 700; padding: 2px 8px; border-radius: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.5);">
-                        ${badgeText}
-                    </span>
-                </div>
-                <div style="padding: 0.8rem; flex: 1; display: flex; flex-direction: column; justify-content: space-between; gap: 0.5rem;">
-                    <h5 style="font-size: 0.85rem; color: #fff; line-height: 1.3;">${g.title}</h5>
-                    <button class="btn-action-del" onclick="deleteItem('gallery', '${g.id}', 'loadGalleryData')" style="width: 100%; justify-content: center;"><i class="fas fa-trash"></i> Hapus</button>
-                </div>
-            `;
-            if (prepend && container.firstChild) {
-                container.insertBefore(card, container.firstChild);
-            } else {
-                container.appendChild(card);
-            }
-        }
-
-        async function loadGalleryData() {
-            const container = document.getElementById("adminGalleryList");
-            if (!container) return;
-
-            let deletedIds = [];
-            try {
-                const d = localStorage.getItem('arnof_deleted_gallery');
-                if (d) deletedIds = JSON.parse(d);
-            } catch(e){}
-
-            try {
-                const delSnap = await get(dbRef(rtdb, "deleted_gallery"));
-                if (delSnap.exists()) {
-                    deletedIds = Object.keys(delSnap.val());
-                    localStorage.setItem('arnof_deleted_gallery', JSON.stringify(deletedIds));
-                }
-            } catch(e){}
-
-            // 1. Render dari cache lokal INSTAN (0.00ms)
-            let cached = getLocalCache("gallery").filter(g => g && g.title && !deletedIds.includes(String(g.id)));
-            if (cached.length > 0) {
-                container.innerHTML = "";
-                cached.forEach(g => renderGalleryCard(g, false));
-            }
-
-            // 2. Fetch data dari server
-            try {
-                const items = await fetchRtdbOrFirestore("gallery");
-                const filtered = items.filter(g => g && g.title && !deletedIds.includes(String(g.id)));
-
-                if (filtered.length > 0) {
-                    saveLocalCache("gallery", filtered);
-                    try { localStorage.setItem('galleryActivities', JSON.stringify(filtered)); } catch(e){}
-                    container.innerHTML = "";
-                    filtered.forEach(g => renderGalleryCard(g, false));
-                } else if (cached.length === 0) {
-                    container.innerHTML = "<p style='color:#888; grid-column: 1/-1;'>Belum ada foto galeri kustom.</p>";
-                }
-            } catch (err) {
-                if (cached.length === 0) {
-                    container.innerHTML = "<p style='color:#888; grid-column: 1/-1;'>Belum ada foto galeri.</p>";
-                }
-            }
-        }
-
-        window.submitAddGallery = async function(e) {
-            e.preventDefault();
-            const btn = document.getElementById("btnSubmitGallery");
-            const fileInput = document.getElementById("galleryFile");
-            const files = Array.from(fileInput.files);
-            const titleInput = document.getElementById("galleryTitle");
-            const baseTitle = titleInput.value.trim();
-            const periodSelect = document.getElementById("galleryPeriod");
-            const period = periodSelect ? periodSelect.value : "2026/2027";
-
-            if (!files || files.length === 0) return showToast("Pilih setidaknya 1 foto terlebih dahulu!", "error");
-            if (!baseTitle) return showToast("Judul foto tidak boleh kosong!", "error");
-
-            btn.disabled = true;
-            btn.innerHTML = `<i class='fas fa-spinner fa-spin'></i> Memproses ${files.length} Foto...`;
-
-            try {
-                let successCount = 0;
-                for (let i = 0; i < files.length; i++) {
-                    const file = files[i];
-                    const photoTitle = files.length > 1 ? `${baseTitle} (${i + 1})` : baseTitle;
-
-                    // 1. Kompresi gambar HD (1920x1920, quality 0.85) - Optimal HD & Fast
-                    const { dataUrl } = await compressImage(file, 1920, 1920, 0.85);
-                    let galId = 'gal_' + Date.now() + '_' + i + '_' + Math.random().toString(36).substring(2, 7);
-
-                    if (rtdb && push && dbRef) {
-                        const newRef = push(dbRef(rtdb, "gallery"));
-                        if (newRef && newRef.key) galId = newRef.key;
-                    }
-
-                    const isHMIFCategory = (period === '2025/2026' || period === '2026/2027' || period === 'hmif');
-                    const galPayload = {
-                        id: galId,
-                        title: photoTitle,
-                        period: period,
-                        category: isHMIFCategory ? 'hmif' : 'general',
-                        image: dataUrl,
-                        createdAt: Date.now() + i
-                    };
-
-                    // 2. Simpan ke Cache Lokal seketika
-                    const cached = getLocalCache("gallery");
-                    cached.unshift(galPayload);
-                    saveLocalCache("gallery", cached);
-                    try { localStorage.setItem('galleryActivities', JSON.stringify(cached)); } catch(e){}
-
-                    // 3. OPTIMISTIC UI: LANGSUNG MASUK KE LIST SEKETIKA
-                    renderGalleryCard(galPayload, true);
-
-                    // 4. Simpan ke Realtime Database & Firestore
-                    try {
-                        if (rtdb && set && dbRef) {
-                            await set(dbRef(rtdb, `gallery/${galId}`), galPayload);
-                        }
-                    } catch(rErr) {
-                        console.error("RTDB Save Error:", rErr);
-                    }
-
-                    try {
-                        if (db && setDoc && doc) {
-                            await setDoc(doc(db, "gallery", galId), galPayload);
-                        }
-                    } catch(fErr) {
-                        console.error("Firestore Save Error:", fErr);
-                    }
-
-                    successCount++;
-                }
-
-                // Reset form & preview seketika
-                document.getElementById("formAddGallery").reset();
-                document.getElementById("galleryImgPreview").style.display = 'none';
-                document.getElementById("galleryImgPlaceholder").style.display = 'block';
-
-                showToast(`✨ ${successCount} foto galeri HMIF berhasil tersimpan ke Firebase!`, "success");
-                loadGalleryData();
-
-            } catch (err) {
-                showToast("Gagal menyimpan foto: " + err.message, "error");
-            } finally {
-                btn.disabled = false;
-                btn.innerHTML = "<i class='fas fa-cloud-upload-alt'></i> Upload Ke Galeri Firebase (HD)";
-            }
-        };
-
-        /* 11. PENCAPAIAN */
-        async function loadAchieveData() {
-            const container = document.getElementById("adminAchieveList");
-            try {
-                const items = await fetchRtdbOrFirestore("achievements");
-                if (items.length === 0) { container.innerHTML = "<p style='color:#888;'>Belum ada data pencapaian.</p>"; return; }
-                container.innerHTML = "";
-                items.forEach(a => {
-                    const card = document.createElement("div");
-                    card.className = "admin-item-card";
-                    card.innerHTML = `
-                        <div class="admin-item-info">
-                            <h4>${a.title}</h4>
-                            <p>${a.desc || ''}</p>
-                            <div class="admin-item-meta"><i class="fas fa-trophy"></i> ${a.year}</div>
-                        </div>
-                        <div class="admin-item-btns">
-                            <button class="btn-action-del" onclick="deleteItem('achievements', '${a.id}', 'loadAchieveData')"><i class="fas fa-trash"></i> Hapus</button>
-                        </div>
-                    `;
-                    container.appendChild(card);
-                });
-            } catch (err) { container.innerHTML = `<p style="color:red;">${err.message}</p>`; }
-        }
-
-        window.submitAddAchieve = async function(e) {
-            e.preventDefault();
-            try {
-                const title = document.getElementById("achieveTitle").value;
-                const year = document.getElementById("achieveYear").value;
-                const desc = document.getElementById("achieveDesc").value;
-
-                showToast("Pencapaian berhasil disimpan!", "success");
-                document.getElementById("formAddAchieve").reset();
-
-                push(dbRef(rtdb, "achievements"), {
-                    title: title,
-                    year: year,
-                    desc: desc,
-                    createdAt: Date.now()
-                }).then(() => loadAchieveData()).catch(e => console.warn(e));
-            } catch (err) { showToast(err.message, "error"); }
-        };
-
-        // Expose load functions to window
-        window.loadHomeData = loadHomeData;
-        window.loadProjectsData = loadProjectsData;
-        window.loadAboutData = loadAboutData;
-        window.loadEduData = loadEduData;
-        window.loadSkillsData = loadSkillsData;
-        window.loadExpData = loadExpData;
-        window.loadCertData = loadCertData;
-        window.loadCourseData = loadCourseData;
-        window.loadLogbookData = loadLogbookData;
-        window.loadGalleryData = loadGalleryData;
-        window.loadAchieveData = loadAchieveData;
-
-        // Init
+        // Inisialisasi Auth Check
         checkAuth();
     </script>
 </body>

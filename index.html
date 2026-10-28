@@ -194,19 +194,19 @@
         <div id="google_translate_element"></div>
 
         <ul class="nav-links">
-            <li><a href="#" class="active" onclick="showSection('home')"><i class="fas fa-home"></i> Beranda</a></li>
-            <li><a href="#" onclick="showSection('projects')"><i class="fas fa-project-diagram"></i> Projek Selesai</a>
+            <li><a href="#/beranda" class="active" onclick="showSection('home', event)"><i class="fas fa-home"></i> Beranda</a></li>
+            <li><a href="#/projek" onclick="showSection('projects', event)"><i class="fas fa-project-diagram"></i> Projek Selesai</a>
             </li>
-            <li><a href="#" onclick="showSection('about')"><i class="fas fa-user"></i> Tentang Saya</a></li>
-            <li><a href="#" onclick="showSection('education')"><i class="fas fa-graduation-cap"></i> Pendidikan</a></li>
-            <li><a href="#" onclick="showSection('skills')"><i class="fas fa-code"></i> Skill</a></li>
-            <li><a href="#" onclick="showSection('experience')"><i class="fas fa-briefcase"></i> Pengalaman</a></li>
-            <li><a href="#" onclick="showSection('certificates')"><i class="fas fa-certificate"></i> Sertifikat</a></li>
-            <li><a href="#" onclick="showSection('learning-path')"><i class="fas fa-map-signs"></i> Learning Path</a>
+            <li><a href="#/tentang" onclick="showSection('about', event)"><i class="fas fa-user"></i> Tentang Saya</a></li>
+            <li><a href="#/pendidikan" onclick="showSection('education', event)"><i class="fas fa-graduation-cap"></i> Pendidikan</a></li>
+            <li><a href="#/skill" onclick="showSection('skills', event)"><i class="fas fa-code"></i> Skill</a></li>
+            <li><a href="#/pengalaman" onclick="showSection('experience', event)"><i class="fas fa-briefcase"></i> Pengalaman</a></li>
+            <li><a href="#/sertifikat" onclick="showSection('certificates', event)"><i class="fas fa-certificate"></i> Sertifikat</a></li>
+            <li><a href="#/learning" onclick="showSection('learning-path', event)"><i class="fas fa-map-signs"></i> Learning Path</a>
             </li>
-            <li><a href="#" onclick="showSection('logbook')"><i class="fas fa-book"></i> Logbook</a></li>
-            <li><a href="#" onclick="showSection('gallery')"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
-            <li><a href="#" onclick="showSection('achievements')"><i class="fas fa-trophy"></i> Pencapaian</a></li>
+            <li><a href="#/logbook" onclick="showSection('logbook', event)"><i class="fas fa-book"></i> Logbook</a></li>
+            <li><a href="#/galeri" onclick="showSection('gallery', event)"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
+            <li><a href="#/pencapaian" onclick="showSection('achievements', event)"><i class="fas fa-trophy"></i> Pencapaian</a></li>
             <li id="pwaNavLi">
                 <a href="#" onclick="triggerPWAInstall(event)" style="color: var(--accent-color); font-weight: 600;"><i
                         class="fas fa-download"></i> Unduh / Install App</a>
@@ -2730,13 +2730,62 @@
             });
         }
 
-        // Function to show sections with a "New Session" loading effect
-        function showSection(sectionId) {
+        // Hash Routing Map (Section ID <-> URL Slug)
+        const routeSlugMap = {
+            'home': 'beranda',
+            'projects': 'projek',
+            'about': 'tentang',
+            'education': 'pendidikan',
+            'skills': 'skill',
+            'experience': 'pengalaman',
+            'certificates': 'sertifikat',
+            'learning-path': 'learning',
+            'logbook': 'logbook',
+            'gallery': 'galeri',
+            'achievements': 'pencapaian'
+        };
+
+        const reverseRouteSlugMap = {
+            'beranda': 'home',
+            'home': 'home',
+            'projek': 'projects',
+            'projects': 'projects',
+            'tentang': 'about',
+            'about': 'about',
+            'pendidikan': 'education',
+            'education': 'education',
+            'skill': 'skills',
+            'skills': 'skills',
+            'pengalaman': 'experience',
+            'experience': 'experience',
+            'sertifikat': 'certificates',
+            'certificates': 'certificates',
+            'learning': 'learning-path',
+            'learning-path': 'learning-path',
+            'logbook': 'logbook',
+            'loogbook': 'logbook',
+            'galeri': 'gallery',
+            'gallery': 'gallery',
+            'pencapaian': 'achievements',
+            'achievements': 'achievements'
+        };
+
+        // Function to show sections with a "New Session" loading effect & update URL Hash
+        function showSection(sectionId, event, updateHash = true) {
+            if (event && typeof event.preventDefault === 'function') {
+                event.preventDefault();
+            }
+
+            const slug = routeSlugMap[sectionId] || sectionId;
+            if (updateHash) {
+                history.pushState(null, '', '#/' + slug);
+            }
+
             const loader = document.getElementById('loader');
             const sidebar = document.getElementById('sidebar');
 
             // Show loader
-            loader.style.display = 'flex';
+            if (loader) loader.style.display = 'flex';
 
             setTimeout(() => {
                 // Hide all sections
@@ -2759,30 +2808,63 @@
                 const allItems = document.querySelectorAll('section .card, section .timeline-item, section .skill-tag, section .gallery-item, section .course-card, section .custom-table tbody tr');
                 allItems.forEach(el => el.style.display = '');
 
-                // Update navigation links
+                // Update navigation links in sidebar
                 const navLinks = document.querySelectorAll('.nav-links li a');
                 navLinks.forEach(link => {
                     link.classList.remove('active');
-                    // Check if the onclick attribute contains the sectionId
-                    if (link.getAttribute('onclick') && link.getAttribute('onclick').includes(sectionId)) {
+                    const onclickVal = link.getAttribute('onclick') || '';
+                    const hrefVal = link.getAttribute('href') || '';
+                    if (onclickVal.includes(sectionId) || hrefVal.includes(slug)) {
                         link.classList.add('active');
                     }
                 });
 
+                // Update tab bar links
+                const tabLinks = document.querySelectorAll('.tab-bar .tab-item');
+                tabLinks.forEach(tab => {
+                    tab.classList.remove('active');
+                    const onclickVal = tab.getAttribute('onclick') || '';
+                    const hrefVal = tab.getAttribute('href') || '';
+                    if (onclickVal.includes(sectionId) || hrefVal.includes(slug)) {
+                        tab.classList.add('active');
+                    }
+                });
+
                 // Hide sidebar and overlay on mobile after clicking
-                if (window.innerWidth <= 768) {
+                if (window.innerWidth <= 768 && sidebar) {
                     sidebar.classList.remove('show');
                     const overlay = document.getElementById('sidebar-overlay');
                     if (overlay) overlay.classList.remove('show');
                 }
 
                 // Hide loader
-                loader.style.display = 'none';
+                if (loader) loader.style.display = 'none';
 
                 // Scroll to top
                 window.scrollTo(0, 0);
-            }, 600); // 600ms match with loader animation
+            }, 350);
         }
+
+        // Handle URL Hash on load & back/forward navigation
+        function handleHashRouting() {
+            let hash = window.location.hash;
+            if (hash && hash.startsWith('#/')) {
+                const route = hash.substring(2).toLowerCase().replace(/\/$/, '').trim();
+                const targetSection = reverseRouteSlugMap[route] || route;
+                if (document.getElementById(targetSection)) {
+                    showSection(targetSection, null, false);
+                    return;
+                }
+            } else if (!hash || hash === '#' || hash === '#/') {
+                history.replaceState(null, '', '#/beranda');
+                showSection('home', null, false);
+            }
+        }
+
+        window.addEventListener('hashchange', handleHashRouting);
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(handleHashRouting, 100);
+        });
 
         // Toggle Sidebar on Mobile
         const menuBtn = document.getElementById('menu-btn');
@@ -2826,275 +2908,20 @@
                     localStorage.setItem('theme', 'dark');
                 }
             });
-
-            loadGallery();
-            loadLogbook();
-            loadProjects();
         });
-
-        // Project Functions
-        function openProjectModal() {
-            document.getElementById('projectModal').style.display = 'flex';
-        }
-
-        function closeProjectModal() {
-            document.getElementById('projectModal').style.display = 'none';
-            document.getElementById('projectForm').reset();
-        }
-
-        const projectForm = document.getElementById('projectForm');
-        if (projectForm) {
-            projectForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-                const title = document.getElementById('projectTitle').value;
-                const link = document.getElementById('projectLink').value;
-                const fileInput = document.getElementById('projectImage');
-                const file = fileInput.files[0];
-
-                if (file) {
-                    try {
-                        // 1. Unggah Gambar ke Firebase Storage
-                        const storageRef = window.ref(window.storage, 'projects_images/' + Date.now() + '_' + file.name);
-                        const uploadTask = window.uploadBytesResumable(storageRef, file);
-
-                        uploadTask.on('state_changed',
-                            (snapshot) => {
-                                // Anda bisa menambahkan animasi loading di sini
-                                console.log("Sedang mengunggah foto...");
-                            },
-                            (error) => {
-                                console.error("Gagal mengunggah foto:", error);
-                                alert("Gagal mengunggah foto.");
-                            },
-                            async () => {
-                                // 2. Dapatkan Link URL foto yang berhasil diunggah
-                                const downloadURL = await window.getDownloadURL(uploadTask.snapshot.ref);
-
-                                // 3. Simpan data (teks + URL gambar) ke Firestore
-                                await window.addDoc(window.collection(window.db, "projects"), {
-                                    title: title,
-                                    link: link,
-                                    image: downloadURL, // Menyimpan URL gambar, bukan Base64
-                                    createdAt: Date.now()
-                                });
-
-                                alert("Projek berhasil ditambahkan ke Database!");
-                                closeProjectModal();
-                                loadProjects(); // Segarkan tampilan
-                            }
-                        );
-                    } catch (error) {
-                        console.error("Gagal menyimpan data:", error);
-                    }
-                }
-            });
-        }
-
-        async function loadProjects() {
-            const container = document.getElementById('projects-container');
-            if (!container) return;
-
-            let projects = [];
-            try {
-                const c = localStorage.getItem('arnof_projects_cache');
-                if (c) projects = JSON.parse(c);
-            } catch (e) { }
-
-            const defaultProjects = [
-                {
-                    id: 'proj_def_1',
-                    title: 'Diet Sehat Yuk',
-                    link: 'https://diet-sehat-yuks-741694573454.asia-southeast1.run.app/',
-                    image: 'foto/PROJECT/diet sehat yuk.png',
-                    desc: 'Aplikasi panduan nutrisi dan pola hidup sehat berbasis web.'
-                },
-                {
-                    id: 'proj_def_2',
-                    title: 'Rekap Keuangan',
-                    link: 'https://rekap-keuangan-five.vercel.app/',
-                    image: 'foto/PROJECT/rekap keuangan.jpeg',
-                    desc: 'Sistem rekapitulasi dan manajemen pencatatan keuangan harian.'
-                },
-                {
-                    id: 'proj_def_3',
-                    title: 'Deteksi Pencegah Kantuk Sopir (YOLO)',
-                    link: 'https://huggingface.co/spaces/Arnof24/deteksi-kantuk-yolo',
-                    image: 'foto/PROJECT/deteksi kantuk yolo.jpeg',
-                    desc: 'Sistem AI deteksi wajah realtime untuk mencegah pengemudi mengantuk.'
-                },
-                {
-                    id: 'proj_def_4',
-                    title: 'Game Edukasi Niko',
-                    link: 'https://permainan-niko-by-arnof.vercel.app/',
-                    image: 'foto/PROJECT/game edukasi niko.jpeg',
-                    desc: 'Game interaktif berbasis web sebagai media pembelajaran edukatif.'
-                },
-                {
-                    id: 'proj_def_5',
-                    title: 'Sistem Absensi Kamera (Realtime)',
-                    link: 'https://absen-perlengkapan-fiks.vercel.app/',
-                    image: 'foto/PROJECT/absensi kamera.jpeg',
-                    desc: 'Sistem absensi dan monitoring perlengkapan otomatis via kamera realtime.'
-                },
-                {
-                    id: 'proj_def_6',
-                    title: 'Sistem Informasi UKM ROBOTIC UBL',
-                    link: 'https://ukm.robotic.ubl.web.id/',
-                    image: 'foto/PROJECT/website UKM ROBOTIC UBL.jpeg',
-                    desc: 'Website resmi sistem informasi dan pendaftaran UKM ROBOTIC UBL.'
-                }
-            ];
-
-            let combined = [...defaultProjects];
-            if (Array.isArray(projects) && projects.length > 0) {
-                projects.forEach(p => {
-                    if (p && p.title) {
-                        const exists = combined.some(item => String(item.id) === String(p.id) || item.title === p.title);
-                        if (!exists) combined.push(p);
-                    }
-                });
-            }
-
-            container.innerHTML = '';
-            combined.forEach(project => {
-                const item = document.createElement('div');
-                item.className = 'card';
-                item.style.padding = '1.2rem';
-                item.style.background = 'var(--card-bg)';
-                item.style.display = 'flex';
-                item.style.flexDirection = 'column';
-                item.style.justifyContent = 'space-between';
-                item.style.minHeight = '360px';
-
-                const descText = project.desc ? `<p class="text-secondary" style="font-size: 0.85rem; margin-top: 0.5rem; line-height: 1.4; opacity: 0.85;">${project.desc}</p>` : '';
-
-                item.innerHTML = `
-                    <div style="display: flex; flex-direction: column; flex-grow: 1;">
-                        <div class="gallery-item" style="height: 170px; overflow: hidden; position: relative; border-radius: 10px; margin-bottom: 0.8rem;">
-                            <img src="${project.image}" alt="${project.title}" style="height: 100%; width: 100%; object-fit: cover;">
-                        </div>
-                        <h3 style="font-size: 1rem; color: var(--text-primary); line-height: 1.3; font-weight: 600;">${project.title}</h3>
-                        ${descText}
-                    </div>
-                    <div style="margin-top: 1.2rem; width: 100%;">
-                        <a href="${project.link || '#'}" target="_blank" class="btn" style="display: flex; width: 100%; font-size: 0.88rem; background: var(--accent-color); color: #fff; text-align: center; align-items: center; justify-content: center; gap: 8px; padding: 0.75rem 1rem; border-radius: 10px; font-weight: 600; text-decoration: none; border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.3); transition: all 0.2s ease;">
-                            <i class="fas fa-external-link-alt"></i> Lihat Projek
-                        </a>
-                    </div>
-                `;
-                container.appendChild(item);
-            });
-        }
-
-        // Fungsi Hapus Projek menggunakan Firestore
-        async function deleteProject(id) {
-            if (confirm('Hapus projek ini dari database?')) {
-                try {
-                    await window.deleteDoc(window.doc(window.db, "projects", id));
-                    loadProjects(); // Muat ulang setelah dihapus
-                } catch (error) {
-                    console.error("Gagal menghapus: ", error);
-                }
-            }
-        }
-
-        window.loadProjects = loadProjects;
-        window.deleteProject = deleteProject;
-
-        const defaultCertificates = [
-            { id: 'cert_def_1', title: 'Dicoding - AI Praktis Untuk Produktivitas', issuer: 'Dicoding Indonesia', image: 'foto/ai.jpeg' },
-            { id: 'cert_def_2', title: 'Dicoding - Membangun Aplikasi Gen AI dengan Microsoft Azure', issuer: 'Dicoding Indonesia', image: 'foto/ha.jpeg' },
-            { id: 'cert_def_3', title: 'Dicoding - Belajar Penerapan Data Science dengan Microsoft Fabric', issuer: 'Dicoding Indonesia', image: 'foto/y.jpeg' },
-            { id: 'cert_def_4', title: 'Dicoding - Belajar Dasar AI', issuer: 'Dicoding Indonesia', image: 'foto/h.jpeg' },
-            { id: 'cert_def_5', title: 'Microsoft Elevate - "Melatih dan Mengelola Model Machine Learning di Microsoft Fabric"', issuer: 'Microsoft Elevate', image: 'foto/i.jpeg' },
-            { id: 'cert_def_6', title: 'Microsoft Elevate - "Merancang Percakapan Cerdas di Azure AI Foundry"', issuer: 'Microsoft Elevate', image: 'foto/q.jpeg' },
-            { id: 'cert_def_7', title: 'Microsoft Elevate - "Mempersiapkan Data untuk Model AI di Microsoft Fabric"', issuer: 'Microsoft Elevate', image: 'foto/w.jpeg' },
-            { id: 'cert_def_8', title: 'UBL Trainer - Precollege 2025 - Computational Thinking Information Technology Center Universitas Bandar Lampung', issuer: 'Universitas Bandar Lampung', image: 'foto/ubl.jpeg' },
-            { id: 'cert_def_9', title: 'KEMNAKER - Pembekalan 12+ Essential Skills Program Magang Nasional', issuer: 'KEMNAKER', image: 'foto/t.jpeg' },
-            { id: 'cert_def_10', title: 'Sertifikat Vibe Coding 2026 Google', issuer: 'Google', image: 'foto/google.jpeg' }
-        ];
-
-        function loadCertificates() {
-            const container = document.querySelector('#certificates .gallery-grid');
-            if (!container) return;
-
-            let deletedIds = [];
-            try {
-                const d = localStorage.getItem('arnof_deleted_certificates');
-                if (d) deletedIds = JSON.parse(d);
-            } catch (e) { }
-
-            let customCerts = [];
-            try {
-                const c = localStorage.getItem('arnof_certificates_cache');
-                if (c) customCerts = JSON.parse(c);
-            } catch (e) { }
-
-            let combined = defaultCertificates.filter(item => !deletedIds.includes(String(item.id)));
-            if (Array.isArray(customCerts)) {
-                customCerts.forEach(item => {
-                    if (item && item.title && !deletedIds.includes(String(item.id))) {
-                        const exists = combined.some(c => String(c.id) === String(item.id) || (c.title === item.title && c.image === item.image));
-                        if (!exists) combined.push(item);
-                    }
-                });
-            }
-
-            container.innerHTML = '';
-            combined.forEach(cert => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                card.style.padding = '1rem';
-                card.style.background = 'var(--card-bg)';
-                card.style.position = 'relative';
-
-                card.innerHTML = `
-                    <div class="gallery-item" style="height: 180px; overflow: hidden; position: relative; border-radius: 8px;">
-                        <img src="${cert.image}" alt="${cert.title}" style="width: 100%; height: 100%; object-fit: cover;">
-                        <button class="cert-view-btn" onclick="openImageViewer('${cert.image}')" title="Lihat Foto" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer;">
-                            <i class="fas fa-eye"></i>
-                        </button>
-                    </div>
-                    <h4 style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-primary); line-height: 1.3;">${cert.title}</h4>
-                    ${cert.issuer ? `<small style="color: var(--accent-color); margin-top: 4px; display: block;">${cert.issuer}</small>` : ''}
-                `;
-                container.appendChild(card);
-            });
-
-            const lastCard = document.createElement('div');
-            lastCard.className = 'card';
-            lastCard.style.padding = '1rem';
-            lastCard.style.background = 'var(--card-bg)';
-            lastCard.innerHTML = `
-                <div class="gallery-item" style="height: 180px; border-style: solid; overflow: hidden; display: flex; align-items: center; justify-content: center; border-radius: 8px;">
-                    <i class="fas fa-plus fa-2x" style="color: var(--accent-color);"></i>
-                </div>
-                <h4 style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-primary);">Sertifikat Lainnya...</h4>
-            `;
-            container.appendChild(lastCard);
-        }
-
-        window.loadCertificates = loadCertificates;
-
-        // Logbook Functions
-        function openLogbookModal() {
-            document.getElementById('logbookModal').style.display = 'flex';
-        }
-
-        function closeLogbookModal() {
-            document.getElementById('logbookModal').style.display = 'none';
-            document.getElementById('logbookForm').reset();
-        }
 
         // Image Viewer Functions
         function openImageViewer(src) {
             const modal = document.getElementById('imageViewerModal');
             const img = document.getElementById('viewerImage');
-            img.src = src;
-            modal.style.display = 'flex';
+            if (img && modal) {
+                img.src = src;
+                modal.style.display = 'flex';
+            }
         }
         function closeImageViewer() {
-            document.getElementById('imageViewerModal').style.display = 'none';
+            const modal = document.getElementById('imageViewerModal');
+            if (modal) modal.style.display = 'none';
         }
 
         // Close modal when clicking outside
@@ -3103,453 +2930,19 @@
             const logbookModal = document.getElementById('logbookModal');
             const projectModal = document.getElementById('projectModal');
             const imageViewerModal = document.getElementById('imageViewerModal');
-            if (event.target == uploadModal) {
+            if (event.target == uploadModal && typeof closeUploadModal === 'function') {
                 closeUploadModal();
             }
-            if (event.target == logbookModal) {
+            if (event.target == logbookModal && typeof closeLogbookModal === 'function') {
                 closeLogbookModal();
             }
-            if (event.target == projectModal) {
+            if (event.target == projectModal && typeof closeProjectModal === 'function') {
                 closeProjectModal();
             }
-            if (event.target == imageViewerModal) {
+            if (event.target == imageViewerModal && typeof closeImageViewer === 'function') {
                 closeImageViewer();
             }
-        }
-
-        const logbookForm = document.getElementById('logbookForm');
-        if (logbookForm) {
-            logbookForm.addEventListener('submit', function (e) {
-                e.preventDefault();
-
-                const activity = document.getElementById('logActivity').value;
-                const result = document.getElementById('logResult').value;
-                const obstacle = document.getElementById('logObstacle').value || '-';
-                const timestamp = new Date().toLocaleString('id-ID', {
-                    day: '2-digit',
-                    month: 'short',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit'
-                });
-
-                const newLog = {
-                    id: Date.now(),
-                    activity: activity,
-                    result: result,
-                    obstacle: obstacle,
-                    time: timestamp
-                };
-
-                // Save to localStorage
-                let logs = JSON.parse(localStorage.getItem('logbookEntries')) || [];
-                logs.unshift(newLog); // Add to beginning
-                localStorage.setItem('logbookEntries', JSON.stringify(logs));
-
-                // Reload table and close modal
-                loadLogbook();
-                closeLogbookModal();
-            });
-        }
-
-        function loadLogbook() {
-            const container = document.getElementById('logbook-container');
-            if (!container) return;
-
-            const logs = JSON.parse(localStorage.getItem('logbookEntries')) || [];
-
-            if (logs.length === 0) {
-                container.innerHTML = `
-                    <tr>
-                        <td colspan="5" class="empty-state">
-                            <i class="fas fa-info-circle" style="display: block; font-size: 2rem; margin-bottom: 1rem; opacity: 0.5;"></i>
-                            Belum ada data logbook. Klik "Tambah Data" untuk memulai.
-                        </td>
-                    </tr>
-                `;
-                return;
-            }
-
-            container.innerHTML = '';
-            logs.forEach(log => {
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td data-label="Aktifitas">${log.activity}</td>
-                    <td data-label="Hasil">${log.result}</td>
-                    <td data-label="Kendala">${log.obstacle}</td>
-                    <td data-label="Waktu Dibuat" style="font-size: 0.8rem; color: var(--text-secondary);">${log.time}</td>
-                    <td class="col-action">
-                        <button class="btn-delete" onclick="deleteLog(${log.id})" title="Hapus Log">
-                            <i class="fas fa-trash"></i>
-                        </button>
-                    </td>
-                `;
-                container.appendChild(tr);
-            });
-        }
-
-        function deleteLog(id) {
-            if (confirm('Hapus catatan logbook ini?')) {
-                let logs = JSON.parse(localStorage.getItem('logbookEntries')) || [];
-                logs = logs.filter(l => l.id !== id);
-                localStorage.setItem('logbookEntries', JSON.stringify(logs));
-                loadLogbook();
-            }
-        }
-
-        // Gallery Functions
-        function openUploadModal() {
-            document.getElementById('uploadModal').style.display = 'flex';
-        }
-
-        function closeUploadModal() {
-            document.getElementById('uploadModal').style.display = 'none';
-        }
-
-        // (Removed redundant window.onclick)
-
-        // Helper Kompresi Gambar HD Otomatis (Optimal 1200p HD Resolution & Fast Firebase Sync)
-        function compressImageHD(file, maxWidth = 1200, maxHeight = 1200, quality = 0.80) {
-            return new Promise((resolve, reject) => {
-                const reader = new FileReader();
-                reader.readAsDataURL(file);
-                reader.onload = (event) => {
-                    const img = new Image();
-                    img.src = event.target.result;
-                    img.onload = () => {
-                        let width = img.width;
-                        let height = img.height;
-
-                        if (width > maxWidth || height > maxHeight) {
-                            if (width > height) {
-                                if (width > maxWidth) {
-                                    height = Math.round((height * maxWidth) / width);
-                                    width = maxWidth;
-                                }
-                            } else {
-                                if (height > maxHeight) {
-                                    width = Math.round((width * maxHeight) / height);
-                                    height = maxHeight;
-                                }
-                            }
-                        }
-
-                        const canvas = document.createElement('canvas');
-                        canvas.width = width;
-                        canvas.height = height;
-                        const ctx = canvas.getContext('2d', { alpha: false });
-                        ctx.imageSmoothingEnabled = true;
-                        ctx.imageSmoothingQuality = 'high';
-                        ctx.drawImage(img, 0, 0, width, height);
-
-                        const dataUrl = canvas.toDataURL('image/jpeg', quality);
-                        resolve(dataUrl);
-                    };
-                    img.onerror = () => resolve(event.target.result);
-                };
-                reader.onerror = () => reject(new Error("Gagal membaca file foto"));
-            });
-        }
-
-        const uploadForm = document.getElementById('uploadForm');
-        if (uploadForm) {
-            uploadForm.addEventListener('submit', async function (e) {
-                e.preventDefault();
-
-                const title = document.getElementById('activityTitle').value.trim();
-                const periodSelect = document.getElementById('activityPeriod');
-                const period = periodSelect ? periodSelect.value : '2026/2027';
-                const fileInput = document.getElementById('activityImage');
-                const file = fileInput.files[0];
-
-                if (!title || !file) return alert('Pilih foto dan isi judul kegiatan!');
-
-                try {
-                    const imageData = await compressImageHD(file, 1200, 1200, 0.80);
-
-                    let galId = 'gal_' + Date.now() + '_' + Math.random().toString(36).substring(2, 7);
-                    if (window.rtdb && window.push && window.dbRef) {
-                        const newRef = window.push(window.dbRef(window.rtdb, "gallery"));
-                        if (newRef && newRef.key) galId = newRef.key;
-                    }
-
-                    const isHMIFCategory = (period === '2025/2026' || period === '2026/2027' || period === 'hmif');
-                    const newActivity = {
-                        id: galId,
-                        title: title,
-                        period: period,
-                        category: isHMIFCategory ? 'hmif' : 'general',
-                        image: imageData,
-                        createdAt: Date.now()
-                    };
-
-                    // Save to local cache
-                    let cached = [];
-                    try {
-                        cached = JSON.parse(localStorage.getItem('arnof_gallery_cache') || '[]');
-                    } catch (e) { }
-                    cached.unshift(newActivity);
-                    try {
-                        localStorage.setItem('arnof_gallery_cache', JSON.stringify(cached));
-                        localStorage.setItem('galleryActivities', JSON.stringify(cached));
-                    } catch (e) { }
-
-                    if (!Array.isArray(window.arnof_live_gallery)) window.arnof_live_gallery = [];
-                    window.arnof_live_gallery.unshift(newActivity);
-
-                    // Save to Firebase Realtime Database & Firestore
-                    if (window.rtdb && window.setRtdb && window.dbRef) {
-                        window.setRtdb(window.dbRef(window.rtdb, `gallery/${galId}`), newActivity).catch(err => console.warn("Firebase gal note:", err.message));
-                    }
-                    if (window.db && window.setDoc && window.doc) {
-                        window.setDoc(window.doc(window.db, "gallery", galId), newActivity).catch(err => console.warn("Firestore gal note:", err.message));
-                    }
-
-                    // Reload gallery and close modal
-                    loadGallery();
-                    closeUploadModal();
-                    uploadForm.reset();
-                } catch (err) {
-                    alert("Gagal memproses gambar: " + err.message);
-                }
-            });
-        }
-
-        const defaultGalleryActivities = [
-            { id: 'def_1', title: 'Kegiatan 1', image: 'foto/kegiatan/q.jpeg' },
-            { id: 'def_2', title: 'Kegiatan 2', image: 'foto/kegiatan/w.jpeg' },
-            { id: 'def_3', title: 'Kegiatan 3', image: 'foto/kegiatan/e.jpeg' },
-            { id: 'def_4', title: 'Kegiatan 4', image: 'foto/kegiatan/r.jpeg' },
-            { id: 'def_5', title: 'Kegiatan 5', image: 'foto/kegiatan/t.jpeg' },
-            { id: 'def_6', title: 'Kegiatan 6', image: 'foto/kegiatan/y.jpeg' },
-            { id: 'def_7', title: 'Kegiatan 7', image: 'foto/kegiatan/a.jpeg' },
-            { id: 'def_8', title: 'Kegiatan 8', image: 'foto/kegiatan/d.jpeg' },
-            { id: 'def_9', title: 'Kegiatan 9', image: 'foto/kegiatan/f.jpeg' },
-            { id: 'def_10', title: 'Kegiatan 10', image: 'foto/kegiatan/h.jpeg' },
-            { id: 'def_11', title: 'Kegiatan 11', image: 'foto/kegiatan/i.jpeg' },
-            { id: 'def_12', title: 'Kegiatan 12', image: 'foto/kegiatan/o.jpeg' },
-            { id: 'def_13', title: 'Kegiatan 13', image: 'foto/kegiatan/p.jpeg' },
-            { id: 'def_14', title: 'Kegiatan 14', image: 'foto/kegiatan/s.jpeg' },
-            { id: 'def_15', title: 'Kegiatan 15', image: 'foto/kegiatan/u.jpeg' },
-            { id: 'def_16', title: 'Kegiatan 16 Seminar 2026', image: 'foto/kegiatan/kegiatan seminar 2026.jpeg' },
-            { id: 'def_17', title: 'Kegiatan 17 Seminar Teknologi 2026', image: 'foto/kegiatan/kegiatan seminar teknologi 2026.jpeg' },
-            { id: 'def_18', title: 'Kegiatan 18 Seminar Umum', image: 'foto/kegiatan/kegiatan seminar.jpeg' },
-            { id: 'def_19', title: 'Kegiatan 19 Sosialisasi mesin iris pisang pada mitra..', image: 'foto/kegiatan/KEGIATAN 19.jpeg' },
-            { id: 'def_20', title: 'Kegiatan 20 Evaluasi pelaksanaan dan keberlanjutan program', image: 'foto/kegiatan/KEGIATAN 20.jpeg' }
-        ];
-
-        let currentGalleryFilter = 'all';
-
-        function filterGallery(period, btnElement) {
-            currentGalleryFilter = period;
-            const buttons = document.querySelectorAll('.capsule-btn');
-            buttons.forEach(b => b.classList.remove('active'));
-            if (btnElement) {
-                btnElement.classList.add('active');
-            } else {
-                const targetBtn = document.querySelector(`.capsule-btn[data-period="${period}"]`);
-                if (targetBtn) targetBtn.classList.add('active');
-            }
-            loadGallery();
-        }
-        window.filterGallery = filterGallery;
-
-        function showAllHMIFKegiatan() {
-            const section = document.getElementById('gallery');
-            if (section) {
-                section.scrollIntoView({ behavior: 'smooth' });
-            }
-            filterGallery('hmif');
-        }
-        window.showAllHMIFKegiatan = showAllHMIFKegiatan;
-
-        function loadGallery() {
-            const container = document.getElementById('gallery-container');
-            if (!container) return;
-
-            let deletedIds = [];
-            try {
-                const d = localStorage.getItem('arnof_deleted_gallery');
-                if (d) deletedIds = JSON.parse(d);
-            } catch (e) { }
-
-            let customItems = [];
-
-            // 1. Read local cache first
-            try {
-                const c1 = localStorage.getItem('arnof_gallery_cache');
-                if (c1) {
-                    const parsed = JSON.parse(c1);
-                    if (Array.isArray(parsed)) customItems = parsed;
-                } else {
-                    const c2 = localStorage.getItem('galleryActivities');
-                    if (c2) {
-                        const parsed = JSON.parse(c2);
-                        if (Array.isArray(parsed)) customItems = parsed;
-                    }
-                }
-            } catch (e) { }
-
-            // 2. Merge with Firebase live server items (Never wipe local items)
-            if (Array.isArray(window.arnof_live_gallery)) {
-                window.arnof_live_gallery.forEach(sItem => {
-                    if (sItem && sItem.id && sItem.image) {
-                        const idx = customItems.findIndex(ci => String(ci.id) === String(sItem.id));
-                        if (idx >= 0) {
-                            customItems[idx] = { ...customItems[idx], ...sItem };
-                        } else {
-                            customItems.unshift(sItem);
-                        }
-                    }
-                });
-            }
-
-            // Merge custom uploaded activities AT THE TOP + default activities
-            let activities = [];
-            if (Array.isArray(customItems)) {
-                customItems.forEach(item => {
-                    if (item && item.image && !deletedIds.includes(String(item.id))) {
-                        const exists = activities.some(a => String(a.id) === String(item.id));
-                        if (!exists) {
-                            activities.push(item);
-                        }
-                    }
-                });
-            }
-
-            defaultGalleryActivities.forEach(item => {
-                if (!deletedIds.includes(String(item.id))) {
-                    const exists = activities.some(a => String(a.id) === String(item.id));
-                    if (!exists) {
-                        activities.push(item);
-                    }
-                }
-            });
-
-            // Filter by selected capsule filter
-            let filteredActivities = activities;
-            if (currentGalleryFilter === 'all') {
-                // Dokumentasi Umum: HANYA foto umum / non-HMIF kepengurusan
-                filteredActivities = activities.filter(a => {
-                    if (a.period === 'general' || a.category === 'general') return true;
-                    if (a.period === '2025/2026' || a.period === '2026/2027' || a.period === 'hmif' || a.category === 'hmif') return false;
-                    return true;
-                });
-            } else if (currentGalleryFilter === 'hmif') {
-                // Semua Kegiatan HMIF: HANYA foto-foto HMIF
-                filteredActivities = activities.filter(a => {
-                    if (a.period === 'general' || a.category === 'general') return false;
-                    return (a.period === '2025/2026' || a.period === '2026/2027' || a.period === 'hmif' || a.category === 'hmif' || (a.title && a.title.toUpperCase().includes('HMIF')));
-                });
-            } else {
-                // Filter khusus periode HMIF (2025/2026 atau 2026/2027)
-                filteredActivities = activities.filter(a => {
-                    const p = a.period || '';
-                    return p === currentGalleryFilter || p.includes(currentGalleryFilter);
-                });
-            }
-
-            container.innerHTML = '';
-
-            if (filteredActivities.length === 0) {
-                let filterLabel = 'Dokumentasi Umum';
-                if (currentGalleryFilter === 'hmif') filterLabel = 'Kegiatan HMIF';
-                else if (currentGalleryFilter === '2025/2026') filterLabel = 'HMIF KEPENGURUSAN 2025/2026';
-                else if (currentGalleryFilter === '2026/2027') filterLabel = 'HMIF KEPENGURUSAN 2026/2027';
-
-                container.innerHTML = `
-                    <div style="grid-column: 1 / -1; text-align: center; padding: 3.5rem 1rem; color: var(--text-secondary); background: rgba(255,255,255,0.02); border-radius: 16px; border: 1px dashed rgba(255,255,255,0.1);">
-                        <i class="fas fa-folder-open" style="font-size: 3rem; margin-bottom: 1rem; color: var(--accent-color); opacity: 0.7;"></i>
-                        <h4 style="color: #fff; margin-bottom: 0.5rem; font-size: 1.1rem;">Belum Ada Foto Kegiatan (${filterLabel})</h4>
-                        <p style="font-size: 0.9rem; color: #94a3b8; max-width: 500px; margin: 0 auto;">Menunggu Admin memasukkan foto-foto kegiatan HMIF untuk kategori ini...</p>
-                    </div>
-                `;
-                return;
-            }
-
-            filteredActivities.forEach(activity => {
-                const item = document.createElement('div');
-                item.className = 'gallery-item';
-                item.style.position = 'relative';
-                item.style.overflow = 'hidden';
-                item.style.flexDirection = 'column';
-                item.style.borderRadius = '16px';
-                item.style.cursor = 'pointer';
-
-                const imgSrc = activity.image;
-                const actId = String(activity.id || '');
-
-                const isHMIF = (activity.period && activity.period.length > 0) || (activity.category && activity.category === 'hmif') || (activity.title && activity.title.toUpperCase().includes('HMIF'));
-                const badgeText = activity.period ? 'HMIF ' + activity.period : (isHMIF ? 'KEGIATAN HMIF' : 'DOKUMENTASI');
-                const badgeBg = isHMIF ? 'rgba(6, 182, 212, 0.85)' : 'rgba(59, 130, 246, 0.85)';
-
-                item.innerHTML = `
-                    <img src="${imgSrc}" alt="${activity.title}" onclick="openImageViewer('${imgSrc}')" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(0.25, 0.8, 0.25, 1); image-rendering: high-quality; backface-visibility: hidden; transform: translateZ(0);">
-                    <div style="position: absolute; top: 10px; left: 10px; background: ${badgeBg}; backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); font-size: 0.72rem; color: #ffffff; font-weight: 700; padding: 4px 10px; border-radius: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.4); letter-spacing: 0.3px;">
-                        <i class="${isHMIF ? 'fas fa-users' : 'fas fa-camera'}" style="margin-right: 4px; font-size: 0.65rem;"></i>${badgeText}
-                    </div>
-                    <div style="position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to top, rgba(8,11,17,0.92) 0%, rgba(8,11,17,0.5) 70%, transparent 100%); padding: 16px 12px 10px 12px; font-size: 0.88rem; color: #ffffff; font-weight: 600; text-shadow: 0 1px 3px rgba(0,0,0,0.8); pointer-events: none; line-height: 1.35;">
-                        ${activity.title}
-                    </div>
-                    <button class="download-btn" onclick="event.stopPropagation(); downloadImage('${imgSrc}', '${activity.title}')" title="Unduh Gambar"><i class="fas fa-download"></i></button>
-                    <button class="delete-btn" onclick="event.stopPropagation(); deleteActivity('${actId}')" title="Hapus"><i class="fas fa-trash"></i></button>
-                `;
-                container.appendChild(item);
-            });
-        }
-        window.loadGallery = loadGallery;
-
-        function deleteActivity(id) {
-            const isAdmin = sessionStorage.getItem('arnof_auth') === 'true';
-            if (!isAdmin) {
-                if (typeof showAdminToast === 'function') {
-                    showAdminToast('🔒 Akses Ditolak: Hanya Admin yang dapat menghapus foto ini.');
-                }
-                alert('🔒 Akses Ditolak!\n\nHanya Admin yang dapat menghapus foto galeri kegiatan.\nSilakan masuk ke Panel Admin untuk mengelola/menghapus foto.');
-                return;
-            }
-
-            if (confirm('Hapus kegiatan ini dari database?')) {
-                try {
-                    let cached = JSON.parse(localStorage.getItem('arnof_gallery_cache') || '[]');
-                    cached = cached.filter(a => String(a.id) !== String(id));
-                    localStorage.setItem('arnof_gallery_cache', JSON.stringify(cached));
-                    localStorage.setItem('galleryActivities', JSON.stringify(cached));
-                } catch (e) { }
-
-                try {
-                    let deleted = JSON.parse(localStorage.getItem('arnof_deleted_gallery') || '[]');
-                    if (!deleted.includes(String(id))) {
-                        deleted.push(String(id));
-                        localStorage.setItem('arnof_deleted_gallery', JSON.stringify(deleted));
-                    }
-                } catch (e) { }
-
-                if (window.rtdb && id) {
-                    if (window.remove && window.dbRef && !id.startsWith('def_')) {
-                        window.remove(window.dbRef(window.rtdb, `gallery/${id}`)).catch(e => console.warn(e));
-                    }
-                    if (window.setRtdb && window.dbRef) {
-                        window.setRtdb(window.dbRef(window.rtdb, `deleted_gallery/${id}`), true).catch(e => console.warn(e));
-                    }
-                }
-
-                if (window.db && window.deleteDoc && window.doc && id && !id.startsWith('def_')) {
-                    window.deleteDoc(window.doc(window.db, "gallery", id)).catch(e => console.warn(e));
-                }
-
-                loadGallery();
-            }
-        }
-
-        function downloadImage(imgSrc, title) {
-            const link = document.createElement('a');
-            link.href = imgSrc;
-            link.download = title || 'kegiatan-arnof';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        }
+        };
 
         // Welcome Flow
         document.addEventListener('DOMContentLoaded', () => {
@@ -3639,23 +3032,23 @@
 
     <!-- Tab Bar -->
     <nav class="tab-bar">
-        <a href="#" class="tab-item active" onclick="showSection('home'); updateActiveTab(this)">
+        <a href="#/beranda" class="tab-item active" onclick="showSection('home', event)">
             <i class="fas fa-home"></i>
             <span>Beranda</span>
         </a>
-        <a href="#" class="tab-item" onclick="showSection('projects'); updateActiveTab(this)">
+        <a href="#/projek" class="tab-item" onclick="showSection('projects', event)">
             <i class="fas fa-project-diagram"></i>
             <span>Projek</span>
         </a>
-        <a href="#" class="tab-item" onclick="showSection('skills'); updateActiveTab(this)">
+        <a href="#/skill" class="tab-item" onclick="showSection('skills', event)">
             <i class="fas fa-code"></i>
             <span>Skill</span>
         </a>
-        <a href="#" class="tab-item" onclick="showSection('about'); updateActiveTab(this)">
+        <a href="#/tentang" class="tab-item" onclick="showSection('about', event)">
             <i class="fas fa-user"></i>
             <span>Profil</span>
         </a>
-        <a href="#" class="tab-item"
+        <a href="javascript:void(0)" class="tab-item"
             onclick="document.querySelector('.sidebar').classList.toggle('show'); if(document.querySelector('.sidebar-overlay')) document.querySelector('.sidebar-overlay').classList.toggle('show');">
             <i class="fas fa-bars"></i>
             <span>Lainnya</span>
@@ -3768,23 +3161,6 @@
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const certificateItems = document.querySelectorAll('#certificates .gallery-item');
-            certificateItems.forEach(item => {
-                const img = item.querySelector('img');
-                if (img) {
-                    item.style.position = 'relative';
-                    const btn = document.createElement('button');
-                    btn.className = 'cert-view-btn';
-                    btn.innerHTML = '<i class="fas fa-eye"></i>';
-                    btn.onclick = () => openImageViewer(img.src);
-                    item.appendChild(btn);
-                    item.addEventListener('mouseenter', () => btn.style.opacity = '1');
-                    item.addEventListener('mouseleave', () => btn.style.opacity = '0');
-                }
-            });
-        });
-
         // Shortcut rahasia untuk memunculkan / menyembunyikan Panel Admin (Ctrl + Shift + A atau Ctrl + A)
         document.addEventListener('keydown', function (e) {
             const isCtrl = e.ctrlKey || e.metaKey;
@@ -3917,6 +3293,19 @@
         }
     </script>
 
+    <!-- User Feature Modules -->
+    <script src="user/beranda.js"></script>
+    <script src="user/projek.js"></script>
+    <script src="user/tentang.js"></script>
+    <script src="user/pendidikan.js"></script>
+    <script src="user/skill.js"></script>
+    <script src="user/pengalaman.js"></script>
+    <script src="user/sertifikat.js"></script>
+    <script src="user/learning.js"></script>
+    <script src="user/loogbook.js"></script>
+    <script src="user/galeri.js"></script>
+    <script src="user/pencapaian.js"></script>
+
     <!-- Modul Firebase & Analytics -->
     <script type="module">
         // Import fungsi Firebase dari CDN
@@ -3958,460 +3347,54 @@
         window.collection = collection;
         window.addDoc = addDoc;
         window.getDocs = getDocs;
-        window.deleteDoc = deleteDoc;
+        window.getDoc = getDoc;
         window.doc = doc;
         window.ref = ref;
         window.uploadBytesResumable = uploadBytesResumable;
         window.getDownloadURL = getDownloadURL;
 
-        // Panggil loadProjects & loadCertificates setelah Firebase selesai dimuat
-        if (typeof window.loadProjects === 'function') {
-            window.loadProjects();
-        }
-        if (typeof window.loadCertificates === 'function') {
-            window.loadCertificates();
-        }
-
-        // Sinkronisasi otomatis konten dari Realtime Database (Gratis 100% + Cache Instan)
-        async function syncFirebaseContent() {
-            async function getList(path) {
-                let list = [];
-                try {
-                    const cached = localStorage.getItem(`arnof_${path}_cache`);
-                    if (cached) list = JSON.parse(cached);
-                } catch (e) { }
-
-                try {
-                    const snap = await window.getRtdb(window.dbRef(window.rtdb, path));
-                    if (snap.exists()) {
-                        const val = snap.val();
-                        const serverList = [];
-                        Object.keys(val).forEach(k => serverList.push({ id: k, ...val[k] }));
-                        if (serverList.length > 0) {
-                            list = serverList;
-                            try { localStorage.setItem(`arnof_${path}_cache`, JSON.stringify(serverList)); } catch (e) { }
-                        }
-                    }
-                } catch (e) { }
-                return list;
-            }
-
+        // Helper to fetch list from RTDB with local cache fallback
+        window.getRTDBList = async function (path) {
+            let list = [];
             try {
-                // 1. Home Profile & Stats
-                let h = null;
-                try {
-                    const hSnap = await window.getRtdb(window.dbRef(window.rtdb, "portfolio_content/home"));
-                    if (hSnap.exists()) h = hSnap.val();
-                } catch (e) { }
-                if (!h) {
-                    try {
-                        const fH = await getDoc(doc(window.db, "portfolio_content", "home"));
-                        if (fH.exists()) h = fH.data();
-                    } catch (e) { }
-                }
-                if (h) {
-                    const statCards = document.querySelectorAll('#home .card');
-                    statCards.forEach(c => {
-                        const text = c.innerText || '';
-                        if (text.includes('PROJEK SELESAI') && h.projects) {
-                            const num = c.querySelector('div[style*="font-size: 2rem"], div[style*="font-weight: 700"]');
-                            if (num) num.innerText = h.projects;
-                        }
-                        if (text.includes('SERTIFIKASI') && h.certs) {
-                            const num = c.querySelector('div[style*="font-size: 2rem"], div[style*="font-weight: 700"]');
-                            if (num) num.innerText = h.certs;
-                        }
-                        if (text.includes('PENGALAMAN') && h.exp) {
-                            const num = c.querySelector('div[style*="font-size: 2rem"], div[style*="font-weight: 700"]');
-                            if (num) num.innerText = h.exp;
-                        }
-                    });
-                    const homeCard = document.querySelector('#home .card');
-                    if (homeCard) {
-                        const pTags = homeCard.querySelectorAll('p.text-lead');
-                        if (pTags[0] && h.bio1) pTags[0].innerHTML = h.bio1;
-                        if (pTags[1] && h.bio2) pTags[1].innerHTML = h.bio2;
-                    }
-                }
-
-                // 2. About Me
-                let a = null;
-                try {
-                    const aSnap = await window.getRtdb(window.dbRef(window.rtdb, "portfolio_content/about"));
-                    if (aSnap.exists()) a = aSnap.val();
-                } catch (e) { }
-                if (!a) {
-                    try {
-                        const fA = await getDoc(doc(window.db, "portfolio_content", "about"));
-                        if (fA.exists()) a = fA.data();
-                    } catch (e) { }
-                }
-                if (a) {
-                    const aboutCard = document.querySelector('#about .card');
-                    if (aboutCard && a.bio) {
-                        const bioP = aboutCard.querySelector('p.text-lead');
-                        if (bioP) bioP.innerHTML = a.bio;
-                    }
-                }
-
-                // 3. Education
-                const eduItems = await getList("education");
-                if (eduItems.length > 0) {
-                    const eduTimeline = document.querySelector('#education .timeline');
-                    if (eduTimeline) {
-                        eduItems.forEach(item => {
-                            const existing = Array.from(eduTimeline.querySelectorAll('h3')).some(h => h.innerText.trim() === (item.school || '').trim());
-                            if (!existing) {
-                                const el = document.createElement('div');
-                                el.className = 'timeline-item';
-                                el.innerHTML = `
-                    <div class="timeline-date">${item.period || ''}</div>
-                    <h3>${item.school}</h3>
-                    <p class="text-secondary">${item.major || ''}</p>
-                  `;
-                                eduTimeline.prepend(el);
-                            }
-                        });
-                    }
-                }
-
-                // 4. Experience
-                const expItems = await getList("experience");
-                if (expItems.length > 0) {
-                    const expTimeline = document.querySelector('#experience .timeline');
-                    if (expTimeline) {
-                        expItems.forEach(item => {
-                            const existing = Array.from(expTimeline.querySelectorAll('h3')).some(h => h.innerText.trim().includes((item.role || '').trim()));
-                            if (!existing) {
-                                const el = document.createElement('div');
-                                el.className = 'timeline-item';
-                                el.innerHTML = `
-                    <div class="timeline-date">${item.period || ''}</div>
-                    <h3>${item.role} - <span style="font-size: 0.95rem; color: var(--accent-color);">${item.org || ''}</span></h3>
-                    <p class="text-secondary" style="margin-top: 0.5rem;">${item.desc || ''}</p>
-                  `;
-                                expTimeline.prepend(el);
-                            }
-                        });
-                    }
-                }
-
-                // 5. Certificates
-                const certItems = await getList("certificates");
-                if (certItems.length > 0) {
-                    try {
-                        localStorage.setItem('arnof_certificates_cache', JSON.stringify(certItems));
-                    } catch (e) { }
-                }
-                try {
-                    const delSnap = await window.getRtdb(window.dbRef(window.rtdb, "deleted_certificates"));
-                    if (delSnap.exists()) {
-                        const delVal = delSnap.val();
-                        const deletedList = Object.keys(delVal);
-                        localStorage.setItem('arnof_deleted_certificates', JSON.stringify(deletedList));
-                    }
-                } catch (e) { }
-
-                if (typeof window.loadCertificates === 'function') {
-                    window.loadCertificates();
-                }
-
-                // 6. Gallery (Realtime Database - Gratis 100%)
-                const galItems = await getList("gallery");
-                if (galItems.length > 0) {
-                    window.arnof_live_gallery = galItems;
-                    try {
-                        localStorage.setItem('arnof_gallery_cache', JSON.stringify(galItems));
-                    } catch (e) { }
-                    if (typeof window.loadGallery === 'function') {
-                        window.loadGallery();
-                    }
-                }
-
-                // 7. Logbook
-                const logItems = await getList("logbook");
-                if (logItems.length > 0) {
-                    const logContainer = document.getElementById('logbook-container') || document.querySelector('#logbook tbody');
-                    if (logContainer) {
-                        logItems.forEach(item => {
-                            const dateStr = item.createdAt ? new Date(item.createdAt).toLocaleDateString('id-ID') : '-';
-                            const existing = Array.from(logContainer.querySelectorAll('td')).some(td => td.innerText.trim() === (item.activity || '').trim());
-                            if (!existing) {
-                                const tr = document.createElement('tr');
-                                tr.innerHTML = `
-                    <td>${item.activity}</td>
-                    <td>${item.result || '-'}</td>
-                    <td>${item.obstacle || '-'}</td>
-                    <td>${dateStr}</td>
-                    <td><span class="badge badge-wajib" style="background: rgba(16,185,129,0.2); color: #10b981;">Tersimpan</span></td>
-                  `;
-                                logContainer.prepend(tr);
-                            }
-                        });
-                    }
-                }
-
-                // 8. Achievements
-                const achItems = await getList("achievements");
-                if (achItems.length > 0) {
-                    const achContainer = document.querySelector('#achievements .card .grid-2') || document.querySelector('#achievements .card');
-                    if (achContainer) {
-                        achItems.forEach(item => {
-                            const existing = Array.from(achContainer.querySelectorAll('h3, h4')).some(h => h.innerText.trim().toLowerCase() === (item.title || '').trim().toLowerCase());
-                            if (!existing) {
-                                const el = document.createElement('div');
-                                el.style.borderLeft = '3px solid var(--accent-color)';
-                                el.style.paddingLeft = '1rem';
-                                el.style.marginBottom = '1rem';
-                                el.innerHTML = `
-                    <h3 style="margin-bottom: 0.5rem; color: #fff;">${item.title}</h3>
-                    <p class="text-secondary" style="font-size: 0.85rem;">${item.year || ''} &bull; ${item.desc || ''}</p>
-                  `;
-                                achContainer.appendChild(el);
-                            }
-                        });
-                    }
-                }
-
-                // 9. Projects
-                const projItems = await getList("projects");
-                if (projItems.length > 0) {
-                    try {
-                        localStorage.setItem('arnof_projects_cache', JSON.stringify(projItems));
-                    } catch (e) { }
-                    if (typeof window.loadProjects === 'function') {
-                        window.loadProjects();
-                    }
-                }
-
-                // 10. Skills
-                const skillItems = await getList("skills");
-                if (skillItems.length > 0) {
-                    skillItems.forEach(item => {
-                        const skillTagsContainers = document.querySelectorAll('#skills .skill-tags');
-                        if (skillTagsContainers.length > 0) {
-                            const targetBox = skillTagsContainers[0];
-                            const existing = Array.from(document.querySelectorAll('#skills .skill-tag')).some(t => t.innerText.trim().toLowerCase().includes((item.name || '').trim().toLowerCase()));
-                            if (!existing) {
-                                const tag = document.createElement('span');
-                                tag.className = 'skill-tag';
-                                tag.innerHTML = `<i class="fas fa-check-circle"></i> ${item.name}`;
-                                targetBox.appendChild(tag);
-                            }
-                        }
-                    });
-                }
-            } catch (err) {
-                console.log("Firebase sync note:", err.message);
-            }
-        }
-
-        syncFirebaseContent();
-
-        // Synchronize Learning Path Updates to Transcript Table
-        function updateTranscriptFromFirebase(overridesMap, customList) {
-            const transcriptTbody = document.querySelector('#transcript-template .transcript-table tbody');
-            if (!transcriptTbody) return;
-
-            // 1. Update grades for existing courses in transcript table
-            if (overridesMap) {
-                const rows = transcriptTbody.querySelectorAll('tr');
-                rows.forEach(tr => {
-                    const tds = tr.querySelectorAll('td');
-                    if (tds.length >= 5) {
-                        const codeText = tds[1].innerText.trim();
-                        const ov = overridesMap[codeText];
-                        if (ov && ov.grade !== undefined) {
-                            tds[4].innerText = (ov.grade === 'Belum Ada' || !ov.grade) ? '-' : ov.grade;
-                        }
-                    }
-                });
-            }
-
-            // 2. Add custom courses from learning_path to transcript table
-            if (Array.isArray(customList)) {
-                customList.forEach(cr => {
-                    if (!cr || !cr.code) return;
-                    const rows = transcriptTbody.querySelectorAll('tr');
-                    let existingRow = null;
-                    rows.forEach(tr => {
-                        const tds = tr.querySelectorAll('td');
-                        if (tds.length >= 5 && tds[1].innerText.trim() === cr.code) {
-                            existingRow = tr;
-                        }
-                    });
-
-                    const cleanGrade = (!cr.grade || cr.grade === 'Belum Ada') ? '-' : cr.grade;
-
-                    if (existingRow) {
-                        const tds = existingRow.querySelectorAll('td');
-                        tds[2].innerText = cr.name;
-                        tds[3].innerText = (cr.sks ? String(cr.sks).replace(/[^0-9]/g, '') : '3');
-                        tds[4].innerText = cleanGrade;
-                    } else {
-                        const newTr = document.createElement('tr');
-                        const dataRowCount = transcriptTbody.querySelectorAll('tr:not([colspan])').length + 1;
-                        newTr.innerHTML = `
-                            <td style="text-align: center;">${dataRowCount}</td>
-                            <td>${cr.code}</td>
-                            <td>${cr.name}</td>
-                            <td style="text-align: center;">${cr.sks ? String(cr.sks).replace(/[^0-9]/g, '') : 3}</td>
-                            <td style="text-align: center;">${cleanGrade}</td>
-                        `;
-                        transcriptTbody.appendChild(newTr);
-                    }
-                });
-            }
-        }
-
-        // Helper override matkul & grade
-        function applyCourseOverrides(overridesMap) {
-            if (!overridesMap) return;
-            const cards = document.querySelectorAll('#learning-path .course-card');
-            cards.forEach(card => {
-                const codeEl = card.querySelector('.course-code');
-                if (!codeEl) return;
-                const code = codeEl.innerText.trim();
-                const ov = overridesMap[code];
-                if (ov) {
-                    if (ov.status) {
-                        const statusBadge = card.querySelector('.course-status-badge');
-                        if (statusBadge) {
-                            statusBadge.innerText = ov.status;
-                            statusBadge.className = 'course-status-badge ' + (
-                                ov.status === 'Sudah Ambil' ? 'status-sudah' :
-                                    ov.status === 'Sedang Ambil' ? 'status-sedang' : 'status-belum'
-                            );
-                        }
-                    }
-                    if (ov.grade !== undefined) {
-                        const gradeBox = card.querySelector('.course-grade');
-                        if (gradeBox) {
-                            const isNone = (ov.grade === '-' || ov.grade === 'Belum Ada');
-                            const gradeClass = isNone ? 'grade-none' : 'grade-' + String(ov.grade).toLowerCase();
-                            const gradeLabel = isNone ? 'Belum Ada' : ov.grade;
-                            gradeBox.innerHTML = `Nilai: <span class="badge-grade ${gradeClass}">${gradeLabel}</span>`;
-                        }
-                    }
-                }
-            });
-
-            updateTranscriptFromFirebase(overridesMap, null);
-        }
-
-        function renderCustomCourses(customList) {
-            if (!Array.isArray(customList) || customList.length === 0) return;
-            customList.forEach(cr => {
-                if (!cr || !cr.code) return;
-                const existing = Array.from(document.querySelectorAll('#learning-path .course-code')).some(el => el.innerText.trim() === cr.code);
-                if (!existing) {
-                    const card = document.createElement('div');
-                    card.className = 'course-card';
-                    const statusClass = cr.status === 'Sudah Ambil' ? 'status-sudah' : cr.status === 'Sedang Ambil' ? 'status-sedang' : 'status-belum';
-                    const isNone = (!cr.grade || cr.grade === '-' || cr.grade === 'Belum Ada');
-                    const gradeClass = isNone ? 'grade-none' : 'grade-' + String(cr.grade).toLowerCase();
-                    const gradeLabel = isNone ? 'Belum Ada' : cr.grade;
-
-                    card.innerHTML = `
-              <div class="course-status-badge ${statusClass}">${cr.status || 'Sudah Ambil'}</div>
-              <div class="course-code">${cr.code}</div>
-              <div class="course-name">${cr.name}</div>
-              <div class="course-type-container">
-                <span class="badge badge-wajib">Kustom</span>
-                <span class="badge badge-category">${cr.semester || 'Semester 1'}</span>
-              </div>
-              <div class="course-info-row">
-                <div class="course-sks-val"><i class="fas fa-clock"></i> ${cr.sks || '3 SKS'}</div>
-                <div class="course-grade">Nilai: <span class="badge-grade ${gradeClass}">${gradeLabel}</span></div>
-              </div>
-            `;
-                    const grid = document.querySelector('#learning-path .courses-grid');
-                    if (grid) grid.appendChild(card);
-                }
-            });
-
-            updateTranscriptFromFirebase(null, customList);
-        }
-
-        // Realtime Database Listeners for Instant Live Sync (Certificates, Gallery & Learning Path)
-        if (window.rtdb && window.onValue && window.dbRef) {
-            try {
-                window.onValue(window.dbRef(window.rtdb, "certificates"), (snapshot) => {
-                    if (snapshot.exists()) {
-                        const val = snapshot.val();
-                        const serverList = Object.keys(val).map(k => ({ id: k, ...val[k] }));
-                        try { localStorage.setItem('arnof_certificates_cache', JSON.stringify(serverList)); } catch (e) { }
-                    } else {
-                        try { localStorage.setItem('arnof_certificates_cache', JSON.stringify([])); } catch (e) { }
-                    }
-                    if (typeof window.loadCertificates === 'function') {
-                        window.loadCertificates();
-                    }
-                });
-
-                window.onValue(window.dbRef(window.rtdb, "deleted_certificates"), (snapshot) => {
-                    if (snapshot.exists()) {
-                        const delVal = snapshot.val();
-                        const deletedList = Object.keys(delVal);
-                        try { localStorage.setItem('arnof_deleted_certificates', JSON.stringify(deletedList)); } catch (e) { }
-                    }
-                    if (typeof window.loadCertificates === 'function') {
-                        window.loadCertificates();
-                    }
-                });
-
-                // Listener Realtime Galeri Kegiatan (Upload Baru & Hapus Foto)
-                window.onValue(window.dbRef(window.rtdb, "gallery"), (snapshot) => {
-                    if (snapshot.exists()) {
-                        const val = snapshot.val();
-                        const serverList = Object.keys(val).map(k => ({ id: k, ...val[k] }));
-                        window.arnof_live_gallery = serverList;
-                        try {
-                            localStorage.setItem('arnof_gallery_cache', JSON.stringify(serverList));
-                            localStorage.setItem('galleryActivities', JSON.stringify(serverList));
-                        } catch (e) {
-                            console.warn("LocalStorage limit exceeded, using in-memory live gallery state.");
-                        }
-                    } else {
-                        window.arnof_live_gallery = [];
-                        try {
-                            localStorage.setItem('arnof_gallery_cache', JSON.stringify([]));
-                            localStorage.setItem('galleryActivities', JSON.stringify([]));
-                        } catch (e) { }
-                    }
-                    if (typeof window.loadGallery === 'function') {
-                        window.loadGallery();
-                    }
-                });
-
-                window.onValue(window.dbRef(window.rtdb, "deleted_gallery"), (snapshot) => {
-                    if (snapshot.exists()) {
-                        const delVal = snapshot.val();
-                        const deletedList = Object.keys(delVal);
-                        try { localStorage.setItem('arnof_deleted_gallery', JSON.stringify(deletedList)); } catch (e) { }
-                    }
-                    if (typeof window.loadGallery === 'function') {
-                        window.loadGallery();
-                    }
-                });
-
-                // Listener Realtime Override Status & Nilai Matkul
-                window.onValue(window.dbRef(window.rtdb, "learning_path_overrides"), (snapshot) => {
-                    if (snapshot.exists()) {
-                        applyCourseOverrides(snapshot.val());
-                    }
-                });
-
-                // Listener Realtime Matkul Kustom Baru
-                window.onValue(window.dbRef(window.rtdb, "learning_path"), (snapshot) => {
-                    if (snapshot.exists()) {
-                        const val = snapshot.val();
-                        const customList = Object.keys(val).map(k => ({ id: k, ...val[k] }));
-                        renderCustomCourses(customList);
-                    }
-                });
+                const cached = localStorage.getItem(`arnof_${path}_cache`);
+                if (cached) list = JSON.parse(cached);
             } catch (e) { }
+
+            try {
+                const snap = await window.getRtdb(window.dbRef(window.rtdb, path));
+                if (snap.exists()) {
+                    const val = snap.val();
+                    const serverList = [];
+                    Object.keys(val).forEach(k => serverList.push({ id: k, ...val[k] }));
+                    if (serverList.length > 0) {
+                        list = serverList;
+                        try { localStorage.setItem(`arnof_${path}_cache`, JSON.stringify(serverList)); } catch (e) { }
+                    }
+                }
+            } catch (e) { }
+            return list;
+        };
+
+        // Panggil & sinkronisasi semua modul dari folder user
+        async function syncAllUserModules() {
+            if (typeof window.syncHomeContent === 'function') await window.syncHomeContent();
+            if (typeof window.syncAboutContent === 'function') await window.syncAboutContent();
+            if (typeof window.syncEducationContent === 'function') await window.syncEducationContent();
+            if (typeof window.syncSkillsContent === 'function') await window.syncSkillsContent();
+            if (typeof window.syncExperienceContent === 'function') await window.syncExperienceContent();
+            if (typeof window.syncCertificatesContent === 'function') await window.syncCertificatesContent();
+            if (typeof window.syncGalleryContent === 'function') await window.syncGalleryContent();
+            if (typeof window.syncLogbookContent === 'function') await window.syncLogbookContent();
+            if (typeof window.syncAchievementsContent === 'function') await window.syncAchievementsContent();
+            if (typeof window.syncProjectsContent === 'function') await window.syncProjectsContent();
+
+            if (typeof window.initCertificatesRealtime === 'function') window.initCertificatesRealtime();
+            if (typeof window.initGalleryRealtime === 'function') window.initGalleryRealtime();
+            if (typeof window.initLearningPathRealtime === 'function') window.initLearningPathRealtime();
         }
+
+        syncAllUserModules();
     </script>
 
     <!-- PWA Install Banner -->
