@@ -21,17 +21,22 @@ function renderCertCard(c, prepend = false) {
     if (container.innerText.includes("Belum ada") || container.innerText.includes("Memuat")) {
         container.innerHTML = "";
     }
+    const cTitle = c.title || c.name || c.nama || "Sertifikat Baru";
+    const cIssuer = c.issuer || c.publisher || c.instansi || c.organisasi || "-";
+    const cImg = c.image || c.url || c.foto || "foto/ai.jpeg";
+    const cId = c.id || "cert_" + Date.now();
+
     const card = document.createElement("div");
     card.className = "admin-item-card";
-    card.id = `card_cert_${c.id}`;
+    card.id = `card_cert_${cId}`;
     card.innerHTML = `
-        <img src="${c.image}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px;">
+        <img src="${cImg}" alt="${cTitle}" style="width: 80px; height: 60px; object-fit: cover; border-radius: 8px;">
         <div class="admin-item-info">
-            <h4>${c.title}</h4>
-            <p>${c.issuer}</p>
+            <h4>${cTitle}</h4>
+            <p>${cIssuer}</p>
         </div>
         <div class="admin-item-btns">
-            <button class="btn-action-del" onclick="deleteItem('certificates', '${c.id}', 'loadCertData')"><i class="fas fa-trash"></i> Hapus</button>
+            <button class="btn-action-del" onclick="deleteItem('certificates', '${cId}', 'loadCertData')"><i class="fas fa-trash"></i> Hapus</button>
         </div>
     `;
     if (prepend && container.firstChild) {
@@ -71,9 +76,15 @@ async function loadCertData() {
         let combined = defaultCertificates.filter(c => !deletedIds.includes(String(c.id)));
         if (Array.isArray(items)) {
             items.forEach(c => {
-                if (c && c.title && !deletedIds.includes(String(c.id))) {
-                    const exists = combined.some(item => String(item.id) === String(c.id) || item.title === c.title);
-                    if (!exists) combined.push(c);
+                if (c && !deletedIds.includes(String(c.id))) {
+                    const cTitle = c.title || c.name || c.nama;
+                    if (cTitle) {
+                        const exists = combined.some(item => String(item.id) === String(c.id) || (item.title || item.name) === cTitle);
+                        if (!exists) {
+                            // Sertifikat yang baru ditambahkan ditampilkan di atas
+                            combined.unshift(c);
+                        }
+                    }
                 }
             });
         }
@@ -98,7 +109,9 @@ async function submitAddCert(e) {
     const issuer = document.getElementById("certIssuer")?.value.trim();
     const showToast = window.showToast || alert;
 
-    if (!file) return showToast("Pilih foto sertifikat!", "error");
+    if (!file) return showToast("Pilih foto sertifikat terlebih dahulu!", "error");
+    if (!title) return showToast("Nama / Judul sertifikat tidak boleh kosong!", "error");
+    if (!issuer) return showToast("Penerbit / Penyelenggara tidak boleh kosong!", "error");
 
     if (btn) {
         btn.disabled = true;
@@ -121,26 +134,35 @@ async function submitAddCert(e) {
 
         if (rtdb && push && dbRef) {
             newRef = push(dbRef(rtdb, "certificates"));
-            certId = newRef.key;
+            if (newRef && newRef.key) certId = newRef.key;
         }
 
+        const safeTitle = title || "Sertifikat Baru";
+        const safeIssuer = issuer || "-";
         const certPayload = {
             id: certId,
-            title: title,
-            issuer: issuer,
+            title: safeTitle,
+            name: safeTitle,
+            issuer: safeIssuer,
+            publisher: safeIssuer,
             image: dataUrl,
             createdAt: Date.now()
         };
 
-        // OPTIMISTIC UI: RENDER SEKETIKA
+        // OPTIMISTIC UI: RENDER SEKETIKA DI ADMIN
         renderCertCard(certPayload, true);
 
-        // Cache lokal
+        // Cache lokal admin & user
         if (window.getLocalCache && window.saveLocalCache) {
             let cached = window.getLocalCache("certificates");
             cached.unshift(certPayload);
             window.saveLocalCache("certificates", cached);
         }
+        try {
+            let userCached = JSON.parse(localStorage.getItem('arnof_certificates_cache') || "[]");
+            userCached.unshift(certPayload);
+            localStorage.setItem('arnof_certificates_cache', JSON.stringify(userCached));
+        } catch(e){}
 
         const form = document.getElementById("formAddCert");
         if (form) form.reset();
@@ -149,7 +171,7 @@ async function submitAddCert(e) {
         const placeholder = document.getElementById("certImgPlaceholder");
         if (placeholder) placeholder.style.display = 'block';
 
-        showToast("✨ Sertifikat berhasil ditambahkan ke Firebase!", "success");
+        showToast("✨ Sertifikat berhasil ditambahkan!", "success");
 
         // Simpan ke Realtime Database dan Firestore
         if (newRef && set) {

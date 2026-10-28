@@ -8,6 +8,8 @@ const ASSETS_TO_CACHE = [
   '/foto/logo/logo.jpeg',
   '/profil.jpeg',
   '/arnof.jpg',
+  '/menu/sidebar.js',
+  '/menu/tabbar.js',
   '/user/beranda.js',
   '/user/projek.js',
   '/user/tentang.js',

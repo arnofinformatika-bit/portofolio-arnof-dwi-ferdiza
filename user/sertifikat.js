@@ -34,9 +34,15 @@ function loadCertificates() {
     let combined = defaultCertificates.filter(item => !deletedIds.includes(String(item.id)));
     if (Array.isArray(customCerts)) {
         customCerts.forEach(item => {
-            if (item && item.title && !deletedIds.includes(String(item.id))) {
-                const exists = combined.some(c => String(c.id) === String(item.id) || (c.title === item.title && c.image === item.image));
-                if (!exists) combined.push(item);
+            if (item && !deletedIds.includes(String(item.id))) {
+                const cTitle = item.title || item.name || item.nama;
+                if (cTitle) {
+                    const exists = combined.some(c => String(c.id) === String(item.id) || (c.title || c.name) === cTitle);
+                    if (!exists) {
+                        // Tampilkan sertifikat terbaru di paling atas
+                        combined.unshift(item);
+                    }
+                }
             }
         });
     }
@@ -49,15 +55,19 @@ function loadCertificates() {
         card.style.background = 'var(--card-bg)';
         card.style.position = 'relative';
 
+        const certTitle = cert.title || cert.name || cert.nama || 'Sertifikat';
+        const certIssuer = cert.issuer || cert.publisher || cert.instansi || cert.organisasi || '';
+        const certImg = cert.image || cert.foto || cert.img || cert.url || 'foto/ai.jpeg';
+
         card.innerHTML = `
             <div class="gallery-item" style="height: 180px; overflow: hidden; position: relative; border-radius: 8px;">
-                <img src="${cert.image}" alt="${cert.title}" style="width: 100%; height: 100%; object-fit: cover;">
-                <button class="cert-view-btn" onclick="openImageViewer('${cert.image}')" title="Lihat Foto" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer;">
+                <img src="${certImg}" alt="${certTitle}" style="width: 100%; height: 100%; object-fit: cover;">
+                <button class="cert-view-btn" onclick="openImageViewer('${certImg}')" title="Lihat Foto" style="position: absolute; top: 10px; right: 10px; background: rgba(0,0,0,0.6); color: white; border: none; padding: 6px 10px; border-radius: 6px; cursor: pointer;">
                     <i class="fas fa-eye"></i>
                 </button>
             </div>
-            <h4 style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-primary); line-height: 1.3;">${cert.title}</h4>
-            ${cert.issuer ? `<small style="color: var(--accent-color); margin-top: 4px; display: block;">${cert.issuer}</small>` : ''}
+            <h4 style="margin-top: 1rem; font-size: 0.9rem; color: var(--text-primary); line-height: 1.3;">${certTitle}</h4>
+            ${certIssuer ? `<small style="color: var(--accent-color); margin-top: 4px; display: block;">${certIssuer}</small>` : ''}
         `;
         container.appendChild(card);
     });
@@ -78,11 +88,32 @@ function loadCertificates() {
 async function syncCertificatesContent(getListFn) {
     try {
         let certItems = [];
+        // 1. Ambil dari RTDB
         if (typeof getListFn === 'function') {
             certItems = await getListFn("certificates");
         } else if (window.getRTDBList) {
             certItems = await window.getRTDBList("certificates");
         }
+
+        // 2. Ambil dari Firestore dan gabungkan
+        if (window.getDocs && window.collection && window.db) {
+            try {
+                const snap = await window.getDocs(window.collection(window.db, "certificates"));
+                const firestoreCerts = [];
+                snap.forEach(d => {
+                    firestoreCerts.push({ id: d.id, ...d.data() });
+                });
+                if (firestoreCerts.length > 0) {
+                    firestoreCerts.forEach(fc => {
+                        const exists = certItems.some(ci => String(ci.id) === String(fc.id) || (ci.title || ci.name) === (fc.title || fc.name));
+                        if (!exists) certItems.push(fc);
+                    });
+                }
+            } catch (fErr) {
+                console.warn("Firestore certificates fetch note:", fErr.message);
+            }
+        }
+
         if (certItems && certItems.length > 0) {
             try {
                 localStorage.setItem('arnof_certificates_cache', JSON.stringify(certItems));
@@ -99,10 +130,10 @@ async function syncCertificatesContent(getListFn) {
                 }
             } catch (e) { }
         }
-
-        loadCertificates();
     } catch (err) {
         console.warn("syncCertificatesContent error:", err);
+    } finally {
+        loadCertificates();
     }
 }
 
@@ -115,10 +146,8 @@ function initCertificatesRealtime() {
                     const val = snapshot.val();
                     const serverList = Object.keys(val).map(k => ({ id: k, ...val[k] }));
                     try { localStorage.setItem('arnof_certificates_cache', JSON.stringify(serverList)); } catch (e) { }
-                } else {
-                    try { localStorage.setItem('arnof_certificates_cache', JSON.stringify([])); } catch (e) { }
+                    loadCertificates();
                 }
-                loadCertificates();
             });
 
             window.onValue(window.dbRef(window.rtdb, "deleted_certificates"), (snapshot) => {
@@ -126,8 +155,8 @@ function initCertificatesRealtime() {
                     const delVal = snapshot.val();
                     const deletedList = Object.keys(delVal);
                     try { localStorage.setItem('arnof_deleted_certificates', JSON.stringify(deletedList)); } catch (e) { }
+                    loadCertificates();
                 }
-                loadCertificates();
             });
         } catch (e) { }
     }
