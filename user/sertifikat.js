@@ -15,7 +15,7 @@ const defaultCertificates = [
     { id: 'cert_def_10', title: 'Sertifikat Vibe Coding 2026 Google', issuer: 'Google', image: 'foto/google.jpeg' }
 ];
 
-function loadCertificates() {
+function loadCertificates(overrideList) {
     const container = document.querySelector('#certificates .gallery-grid');
     if (!container) return;
 
@@ -26,10 +26,17 @@ function loadCertificates() {
     } catch (e) { }
 
     let customCerts = [];
-    try {
-        const c = localStorage.getItem('arnof_certificates_cache');
-        if (c) customCerts = JSON.parse(c);
-    } catch (e) { }
+    if (Array.isArray(overrideList) && overrideList.length > 0) {
+        customCerts = overrideList;
+        window._cachedCertificates = overrideList;
+    } else if (Array.isArray(window._cachedCertificates) && window._cachedCertificates.length > 0) {
+        customCerts = window._cachedCertificates;
+    } else {
+        try {
+            const c = localStorage.getItem('arnof_certificates_cache');
+            if (c) customCerts = JSON.parse(c);
+        } catch (e) { }
+    }
 
     let combined = defaultCertificates.filter(item => !deletedIds.includes(String(item.id)));
     if (Array.isArray(customCerts)) {
@@ -95,7 +102,7 @@ async function syncCertificatesContent(getListFn) {
             certItems = await window.getRTDBList("certificates");
         }
 
-        // 2. Ambil dari Firestore dan gabungkan
+        // 2. Ambil dari Firestore dan gabungkan jika ada
         if (window.getDocs && window.collection && window.db) {
             try {
                 const snap = await window.getDocs(window.collection(window.db, "certificates"));
@@ -114,6 +121,18 @@ async function syncCertificatesContent(getListFn) {
             }
         }
 
+        // 3. Gabungkan juga dari local storage agar sertifikat yang baru diupload tidak hilang
+        try {
+            const localSaved = JSON.parse(localStorage.getItem('arnof_certificates_cache') || '[]');
+            if (Array.isArray(localSaved)) {
+                localSaved.forEach(ls => {
+                    if (ls && !certItems.some(ci => String(ci.id) === String(ls.id) || (ci.title || ci.name) === (ls.title || ls.name))) {
+                        certItems.unshift(ls);
+                    }
+                });
+            }
+        } catch(e) {}
+
         if (certItems && certItems.length > 0) {
             try {
                 localStorage.setItem('arnof_certificates_cache', JSON.stringify(certItems));
@@ -130,9 +149,10 @@ async function syncCertificatesContent(getListFn) {
                 }
             } catch (e) { }
         }
+
+        loadCertificates(certItems);
     } catch (err) {
         console.warn("syncCertificatesContent error:", err);
-    } finally {
         loadCertificates();
     }
 }
@@ -146,7 +166,7 @@ function initCertificatesRealtime() {
                     const val = snapshot.val();
                     const serverList = Object.keys(val).map(k => ({ id: k, ...val[k] }));
                     try { localStorage.setItem('arnof_certificates_cache', JSON.stringify(serverList)); } catch (e) { }
-                    loadCertificates();
+                    loadCertificates(serverList);
                 }
             });
 

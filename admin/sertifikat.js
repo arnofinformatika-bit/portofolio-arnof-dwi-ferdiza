@@ -70,24 +70,63 @@ async function loadCertData() {
             } catch (e) { }
         }
 
-        const fetchFn = window.fetchRtdbOrFirestore;
-        const items = fetchFn ? await fetchFn("certificates") : [];
+        // 1. Ambil data dari cache lokal terlebih dahulu agar seketika muncul
+        let localCached = [];
+        try {
+            localCached = (window.getLocalCache ? window.getLocalCache("certificates") : []) || [];
+            if (!localCached.length) {
+                localCached = JSON.parse(localStorage.getItem('arnof_certificates_cache') || '[]');
+            }
+        } catch(e) {}
 
         let combined = defaultCertificates.filter(c => !deletedIds.includes(String(c.id)));
-        if (Array.isArray(items)) {
-            items.forEach(c => {
+        if (Array.isArray(localCached)) {
+            localCached.forEach(c => {
                 if (c && !deletedIds.includes(String(c.id))) {
                     const cTitle = c.title || c.name || c.nama;
                     if (cTitle) {
                         const exists = combined.some(item => String(item.id) === String(c.id) || (item.title || item.name) === cTitle);
                         if (!exists) {
-                            // Sertifikat yang baru ditambahkan ditampilkan di atas
                             combined.unshift(c);
                         }
                     }
                 }
             });
         }
+
+        if (combined.length > 0 && container.children.length === 0) {
+            container.innerHTML = "";
+            combined.forEach(c => renderCertCard(c, false));
+        }
+
+        // 2. Ambil data realtime dari server
+        const fetchFn = window.fetchRtdbOrFirestore;
+        const items = fetchFn ? await fetchFn("certificates") : [];
+
+        if (Array.isArray(items) && items.length > 0) {
+            items.forEach(c => {
+                if (c && !deletedIds.includes(String(c.id))) {
+                    const cTitle = c.title || c.name || c.nama;
+                    if (cTitle) {
+                        const existingIdx = combined.findIndex(item => String(item.id) === String(c.id) || (item.title || item.name) === cTitle);
+                        if (existingIdx !== -1) {
+                            combined[existingIdx] = { ...combined[existingIdx], ...c };
+                        } else {
+                            combined.unshift(c);
+                        }
+                    }
+                }
+            });
+        }
+
+        // Simpan cache gabungan
+        const customOnly = combined.filter(c => !String(c.id).startsWith('cert_def_'));
+        if (window.saveLocalCache) {
+            window.saveLocalCache("certificates", customOnly);
+        }
+        try {
+            localStorage.setItem('arnof_certificates_cache', JSON.stringify(customOnly));
+        } catch(e) {}
 
         if (combined.length === 0) {
             container.innerHTML = "<p style='color:#888;'>Belum ada sertifikat.</p>";
@@ -115,11 +154,12 @@ async function submitAddCert(e) {
 
     if (btn) {
         btn.disabled = true;
-        btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memproses...";
+        btn.innerHTML = "<i class='fas fa-spinner fa-spin'></i> Memproses Kompresi & Upload...";
     }
     try {
+        // Kompres gambar HD optimal (1200x1200, 0.78) agar sangat tajam tapi ringan (~90KB)
         const compressImage = window.compressImage;
-        const { dataUrl } = compressImage ? await compressImage(file, 1920, 1920, 0.90) : { dataUrl: URL.createObjectURL(file) };
+        const { dataUrl } = compressImage ? await compressImage(file, 1200, 1200, 0.78) : { dataUrl: URL.createObjectURL(file) };
 
         const rtdb = window.rtdb;
         const db = window.db;
@@ -149,12 +189,12 @@ async function submitAddCert(e) {
             createdAt: Date.now()
         };
 
-        // OPTIMISTIC UI: RENDER SEKETIKA DI ADMIN
+        // 1. OPTIMISTIC UI: RENDER SEKETIKA DI ADMIN
         renderCertCard(certPayload, true);
 
-        // Cache lokal admin & user
+        // 2. Cache lokal admin & user
         if (window.getLocalCache && window.saveLocalCache) {
-            let cached = window.getLocalCache("certificates");
+            let cached = window.getLocalCache("certificates") || [];
             cached.unshift(certPayload);
             window.saveLocalCache("certificates", cached);
         }
@@ -173,16 +213,20 @@ async function submitAddCert(e) {
 
         showToast("✨ Sertifikat berhasil ditambahkan!", "success");
 
-        // Simpan ke Realtime Database dan Firestore
-        if (newRef && set) {
-            await set(newRef, certPayload).catch(err => console.warn("Background cert rtdb note:", err.message));
+        // 3. Simpan permanen ke Realtime Database dan Firestore
+        const targetRef = newRef || (rtdb && dbRef ? dbRef(rtdb, `certificates/${certId}`) : null);
+        if (targetRef && set) {
+            await set(targetRef, certPayload).catch(err => console.warn("Background cert rtdb note:", err.message));
         }
         if (db && doc && setDoc) {
             await setDoc(doc(db, "certificates", certId), certPayload).catch(err => console.warn("Background cert firestore note:", err.message));
         }
 
+        // Muat ulang data terupdate
+        loadCertData();
+
     } catch (err) {
-        showToast(err.message, "error");
+        showToast("Gagal menyimpan: " + err.message, "error");
     } finally {
         if (btn) {
             btn.disabled = false;
