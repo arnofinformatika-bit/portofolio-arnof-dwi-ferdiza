@@ -3002,6 +3002,7 @@
                 // Hide overlay smoothly
                 const overlay = document.getElementById('welcome-overlay');
                 overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
 
                 setTimeout(() => {
                     overlay.style.display = 'none';
