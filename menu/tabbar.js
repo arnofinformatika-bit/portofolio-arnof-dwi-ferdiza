@@ -1,5 +1,5 @@
 // ==========================================
-// MENU: TABBAR (BOTTOM MOBILE TAB BAR) & MENU LAINNYA
+// MENU: TABBAR (BOTTOM MOBILE TAB BAR) & MENU LAINNYA (UBL STYLE)
 // ==========================================
 
 // Fungsi Update State Aktif Tab Bar
@@ -68,6 +68,17 @@ function openMoreMenuModal() {
     if (overlay) overlay.classList.add('show');
     if (sheet) sheet.classList.add('show');
 
+    // Update greeting name in profile card if visitorName exists
+    const savedName = sessionStorage.getItem('visitorName');
+    const subEl = document.getElementById('ubl-profile-sub');
+    if (subEl) {
+        if (savedName) {
+            subEl.innerHTML = `Informatika UBL &bull; Tamu: <strong>${savedName}</strong>`;
+        } else {
+            subEl.innerHTML = `Informatika UBL &bull; 2024`;
+        }
+    }
+
     // Kunci scroll halaman belakang
     document.body.style.overflow = 'hidden';
 
@@ -93,10 +104,10 @@ function closeMoreMenuModal() {
     document.body.style.overflow = '';
 }
 
-// Filter Menu secara Realtime
+// Filter Menu secara Realtime (UBL Grid Item)
 function filterMoreMenuItems(query) {
     const q = (query || '').toLowerCase().trim();
-    const items = document.querySelectorAll('.more-menu-grid .more-menu-card');
+    const items = document.querySelectorAll('.ubl-menu-grid .ubl-menu-item');
     const clearBtn = document.getElementById('moreMenuSearchClear');
     const emptyState = document.getElementById('moreMenuEmptyState');
     let visibleCount = 0;
@@ -106,11 +117,10 @@ function filterMoreMenuItems(query) {
     }
 
     items.forEach(card => {
-        const title = (card.querySelector('.more-menu-title')?.textContent || '').toLowerCase();
-        const sub = (card.querySelector('.more-menu-sub')?.textContent || '').toLowerCase();
+        const title = (card.querySelector('.ubl-menu-name')?.textContent || '').toLowerCase();
         const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
 
-        if (!q || title.includes(q) || sub.includes(q) || keywords.includes(q)) {
+        if (!q || title.includes(q) || keywords.includes(q)) {
             card.style.display = 'flex';
             visibleCount++;
         } else {
@@ -130,6 +140,17 @@ function clearMoreMenuSearch() {
         input.value = '';
         input.focus();
         filterMoreMenuItems('');
+    }
+}
+
+// Toggle Cepat Tema dari tombol Pengaturan
+function toggleThemeQuick() {
+    const themeCheckbox = document.getElementById('checkbox');
+    if (themeCheckbox) {
+        themeCheckbox.checked = !themeCheckbox.checked;
+        themeCheckbox.dispatchEvent(new Event('change'));
+    } else {
+        document.body.classList.toggle('light-mode');
     }
 }
 
@@ -163,6 +184,7 @@ window.openMoreMenuModal = openMoreMenuModal;
 window.closeMoreMenuModal = closeMoreMenuModal;
 window.filterMoreMenuItems = filterMoreMenuItems;
 window.clearMoreMenuSearch = clearMoreMenuSearch;
+window.toggleThemeQuick = toggleThemeQuick;
 
 document.addEventListener('DOMContentLoaded', () => {
     initTabBar();
