@@ -202,11 +202,6 @@
         <div class="loader-bar"></div>
     </div>
 
-    <!-- Tombol Menu Mobile (Garis Tiga Sidebar) -->
-    <button class="menu-toggle" id="menu-btn" onclick="toggleSidebar()" aria-label="Buka Menu Sidebar">
-        <i class="fas fa-bars"></i>
-    </button>
-
     <!-- Overlay for Mobile -->
     <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebarMobile()"></div>
 
@@ -2857,81 +2852,30 @@
                     }
                 });
 
-                // Update tab bar links
+                                // Update tab bar links
                 const tabLinks = document.querySelectorAll('.tab-bar .tab-item');
+                const mainSections = ['home', 'projects', 'about'];
+                const moreTab = document.getElementById('tab-item-more');
+                let anyMainActive = false;
+
                 tabLinks.forEach(tab => {
+                    if (tab === moreTab) return;
                     tab.classList.remove('active');
                     const onclickVal = tab.getAttribute('onclick') || '';
                     const hrefVal = tab.getAttribute('href') || '';
                     if (onclickVal.includes(sectionId) || hrefVal.includes(slug)) {
                         tab.classList.add('active');
+                        anyMainActive = true;
                     }
                 });
 
-                // Hide sidebar and overlay on mobile after clicking
-                if (window.innerWidth <= 768 && sidebar) {
-                    sidebar.classList.remove('show');
-                    const overlay = document.getElementById('sidebar-overlay');
-                    if (overlay) overlay.classList.remove('show');
+                if (moreTab) {
+                    if (!anyMainActive && !mainSections.includes(sectionId)) {
+                        moreTab.classList.add('active');
+                    } else {
+                        moreTab.classList.remove('active');
+                    }
                 }
-
-                // Hide loader
-                if (loader) loader.style.display = 'none';
-
-                // Scroll to top
-                window.scrollTo(0, 0);
-            }, 350);
-        }
-
-        // Handle URL Hash on load & back/forward navigation
-        function handleHashRouting() {
-            let hash = window.location.hash;
-            if (hash && hash.startsWith('#/')) {
-                const route = hash.substring(2).toLowerCase().replace(/\/$/, '').trim();
-                const targetSection = reverseRouteSlugMap[route] || route;
-                if (document.getElementById(targetSection)) {
-                    showSection(targetSection, null, false);
-                    return;
-                }
-            } else if (!hash || hash === '#' || hash === '#/') {
-                history.replaceState(null, '', '#/beranda');
-                showSection('home', null, false);
-            }
-        }
-
-        window.addEventListener('hashchange', handleHashRouting);
-        window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(handleHashRouting, 100);
-        });
-
-        // Toggle Sidebar on Mobile dipusatkan ke toggleSidebar() & closeSidebarMobile() di menu/sidebar.js
-
-        // Initialize System
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log("Dashboard System Initialized...");
-            console.log("Welcome, Arnof Dwi Ferdiza.");
-
-            // Theme Logic
-            const themeCheckbox = document.getElementById('checkbox');
-            const body = document.body;
-
-            // Check saved theme
-            const currentTheme = localStorage.getItem('theme');
-            if (currentTheme === 'light') {
-                body.classList.add('light-mode');
-                themeCheckbox.checked = true;
-            }
-
-            themeCheckbox.addEventListener('change', (e) => {
-                if (e.target.checked) {
-                    body.classList.add('light-mode');
-                    localStorage.setItem('theme', 'light');
-                } else {
-                    body.classList.remove('light-mode');
-                    localStorage.setItem('theme', 'dark');
-                }
-            });
-        });
 
         // Image Viewer Functions
         function openImageViewer(src) {
@@ -3064,7 +3008,7 @@
         }
     </script>
 
-    <!-- Tab Bar (Hanya Beranda, Project, Profile) -->
+    <!-- Tab Bar (Beranda, Project, Profile, Menu Lainnya) -->
     <nav class="tab-bar">
         <a href="#/beranda" class="tab-item active" onclick="showSection('home', event)">
             <i class="fas fa-home"></i>
@@ -3078,7 +3022,176 @@
             <i class="fas fa-user"></i>
             <span>Profile</span>
         </a>
+        <a href="javascript:void(0)" class="tab-item" id="tab-item-more" onclick="toggleMoreMenuModal(event)">
+            <i class="fas fa-th-large"></i>
+            <span>Lainnya</span>
+        </a>
     </nav>
+
+    <!-- Modal / Bottom Sheet Menu Lainnya -->
+    <div id="more-menu-overlay" class="more-menu-overlay" onclick="closeMoreMenuModal()"></div>
+    <div id="more-menu-sheet" class="more-menu-sheet" aria-modal="true" role="dialog">
+        <!-- Drag Handle Indicator -->
+        <div class="more-menu-handle"></div>
+
+        <div class="more-menu-header">
+            <div class="more-menu-header-title">
+                <i class="fas fa-compass" style="color: var(--accent-color);"></i>
+                <h3>Menu Lainnya</h3>
+            </div>
+            <button class="more-menu-close-btn" onclick="closeMoreMenuModal()" aria-label="Tutup Menu">&times;</button>
+        </div>
+
+        <!-- Search Bar: Cari Menu -->
+        <div class="more-menu-search-wrapper">
+            <i class="fas fa-search more-menu-search-icon"></i>
+            <input type="text" id="moreMenuSearchInput" class="more-menu-search-input"
+                   placeholder="Cari menu... (misal: skill, sertifikat, logbook)"
+                   oninput="filterMoreMenuItems(this.value)" autocomplete="off">
+            <button type="button" id="moreMenuSearchClear" class="more-menu-search-clear"
+                    onclick="clearMoreMenuSearch()" aria-label="Hapus pencarian">&times;</button>
+        </div>
+
+        <!-- Scrollable Body with Menu Grid -->
+        <div class="more-menu-body">
+            <!-- Empty Search State -->
+            <div id="moreMenuEmptyState" class="more-menu-empty" style="display: none;">
+                <i class="fas fa-search-minus"></i>
+                <p>Menu tidak ditemukan</p>
+                <span>Coba kata kunci lain seperti skill, sertifikat, atau logbook</span>
+            </div>
+
+            <div class="more-menu-grid">
+                <!-- 1. Beranda -->
+                <a href="#/beranda" class="more-menu-card" data-keywords="home beranda utama dashboard arnof"
+                   onclick="showSection('home', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-home"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Beranda</span>
+                        <span class="more-menu-sub">Halaman Utama</span>
+                    </div>
+                </a>
+
+                <!-- 2. Projek Selesai -->
+                <a href="#/projek" class="more-menu-card" data-keywords="projek project portofolio aplikasi karya coding web github showcase"
+                   onclick="showSection('projects', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-project-diagram"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Projek Selesai</span>
+                        <span class="more-menu-sub">Koleksi Portofolio</span>
+                    </div>
+                </a>
+
+                <!-- 3. Tentang Saya / Profile -->
+                <a href="#/tentang" class="more-menu-card" data-keywords="tentang saya profile profil biodata bio info arnof diri"
+                   onclick="showSection('about', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-user"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Tentang Saya</span>
+                        <span class="more-menu-sub">Profil & Biodata</span>
+                    </div>
+                </a>
+
+                <!-- 4. Pendidikan -->
+                <a href="#/pendidikan" class="more-menu-card" data-keywords="pendidikan sekolah kuliah universitas bandar lampung ubl edukasi education study"
+                   onclick="showSection('education', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Pendidikan</span>
+                        <span class="more-menu-sub">Riwayat Studi</span>
+                    </div>
+                </a>
+
+                <!-- 5. Skill -->
+                <a href="#/skill" class="more-menu-card" data-keywords="skill keahlian teknologi coding programming html css javascript python react flutter tech"
+                   onclick="showSection('skills', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-code"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Skill</span>
+                        <span class="more-menu-sub">Keahlian & Stack</span>
+                    </div>
+                </a>
+
+                <!-- 6. Pengalaman -->
+                <a href="#/pengalaman" class="more-menu-card" data-keywords="pengalaman experience organisasi kepanitiaan kerja magang hmif ubl robotik"
+                   onclick="showSection('experience', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-briefcase"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Pengalaman</span>
+                        <span class="more-menu-sub">Organisasi & Kerja</span>
+                    </div>
+                </a>
+
+                <!-- 7. Sertifikat -->
+                <a href="#/sertifikat" class="more-menu-card" data-keywords="sertifikat sertifikasi certificate lisensi dicoding microsoft google kemnaker kursus"
+                   onclick="showSection('certificates', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-certificate"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Sertifikat</span>
+                        <span class="more-menu-sub">Lisensi & Kursus</span>
+                    </div>
+                </a>
+
+                <!-- 8. Learning Path -->
+                <a href="#/learning" class="more-menu-card" data-keywords="learning path alur belajar kurikulum roadmap roadmap studi target"
+                   onclick="showSection('learning-path', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-map-signs"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Learning Path</span>
+                        <span class="more-menu-sub">Rencana Belajar</span>
+                    </div>
+                </a>
+
+                <!-- 9. Logbook -->
+                <a href="#/logbook" class="more-menu-card" data-keywords="logbook jurnal harian catatan diary aktivitas progress catatan"
+                   onclick="showSection('logbook', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-book"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Logbook</span>
+                        <span class="more-menu-sub">Jurnal Catatan</span>
+                    </div>
+                </a>
+
+                <!-- 10. Galeri Kegiatan -->
+                <a href="#/galeri" class="more-menu-card" data-keywords="galeri gallery foto dokumentasi kegiatan album momen capture"
+                   onclick="showSection('gallery', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-image"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Galeri Kegiatan</span>
+                        <span class="more-menu-sub">Dokumentasi Foto</span>
+                    </div>
+                </a>
+
+                <!-- 11. Pencapaian -->
+                <a href="#/pencapaian" class="more-menu-card" data-keywords="pencapaian achievement prestasi penghargaan rekognisi award juara trophy"
+                   onclick="showSection('achievements', event); closeMoreMenuModal();">
+                    <div class="more-menu-icon"><i class="fas fa-trophy"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Pencapaian</span>
+                        <span class="more-menu-sub">Prestasi & Rekognisi</span>
+                    </div>
+                </a>
+
+                <!-- 12. Unduh / Install App (PWA) -->
+                <a href="javascript:void(0)" class="more-menu-card" data-keywords="install unduh download aplikasi app pwa mobile"
+                   onclick="closeMoreMenuModal(); triggerPWAInstall(event);">
+                    <div class="more-menu-icon"><i class="fas fa-download"></i></div>
+                    <div class="more-menu-info">
+                        <span class="more-menu-title">Unduh App (PWA)</span>
+                        <span class="more-menu-sub">Install Aplikasi</span>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- Footer: Button Keluar -->
+        <div class="more-menu-footer">
+            <button type="button" class="more-menu-logout-btn" onclick="closeMoreMenuModal(); logoutVisitor();">
+                <i class="fas fa-sign-out-alt"></i>
+                <span>Keluar / Ganti Nama</span>
+            </button>
+        </div>
+    </div>
 
     <!-- Google Translate Script -->
     <script type="text/javascript">
