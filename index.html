@@ -135,29 +135,63 @@
                 normal pada pukul 05:00 WIB.</strong></p>
     </div>
 
-    <!-- Welcome Overlay -->
-    <div id="welcome-overlay"
-        style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: var(--bg-color); z-index: 10000; display: flex; justify-content: center; align-items: center; flex-direction: column; transition: opacity 0.5s ease;">
-        <div class="card"
-            style="width: 90%; max-width: 400px; text-align: center; box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5); border-color: var(--accent-color);">
-            <div
-                style="width: 90px; height: 90px; border-radius: 50%; margin: 0 auto 1.5rem; overflow: hidden; border: 3px solid var(--accent-color); padding: 3px; background: var(--card-bg);">
-                <img src="profil.jpeg" alt="Foto Arnof"
-                    style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">
+    <!-- Welcome Overlay (New Modern Glassmorphic Experience) -->
+    <div id="welcome-overlay" class="welcome-overlay">
+        <!-- Ambient Glowing Background Blobs -->
+        <div class="welcome-glow welcome-glow-1"></div>
+        <div class="welcome-glow welcome-glow-2"></div>
+
+        <div class="welcome-card">
+            <!-- Profile Avatar with Animated Glow Ring & Status -->
+            <div class="welcome-avatar-container">
+                <div class="welcome-avatar-ring"></div>
+                <img src="profil.jpeg" alt="Foto Arnof Dwi Ferdiza" class="welcome-avatar-img" onerror="this.src='foto/logo/logo.jpeg'">
+                <div class="welcome-status-badge" title="Tersedia & Online">
+                    <span class="status-dot"></span>
+                </div>
             </div>
-            <h2 style="margin-bottom: 0.5rem; font-size: 1.5rem;">Selamat Datang!</h2>
-            <p style="color: var(--text-secondary); font-size: 0.95rem; margin-bottom: 1.5rem;">Silakan masukkan nama
-                lengkap Anda sebelum masuk ke portofolio.</p>
-            <form id="welcomeForm" onsubmit="submitWelcomeForm(event)">
-                <input type="text" id="visitorName" class="form-control" placeholder="Nama Lengkap Anda..." required
-                    style="margin-bottom: 0.5rem; text-align: center; font-size: 1.05rem; padding: 0.8rem; border-radius: 10px;">
-                <div id="name-error"
-                    style="color: #ef4444; font-size: 0.85rem; margin-bottom: 1rem; display: none; font-weight: 500;">
-                    Isi nama lengkap Anda dengan benar (hanya huruf).</div>
-                <button type="submit" class="btn"
-                    style="width: 100%; background: var(--accent-color); color: white; border: none; padding: 0.8rem; font-size: 1.05rem; border-radius: 10px; font-weight: 600; cursor: pointer; transition: all 0.3s ease;">Masuk
-                    Portofolio <i class="fas fa-sign-in-alt" style="margin-left: 8px;"></i></button>
+
+            <!-- Header Badge -->
+            <div class="welcome-pill">
+                <i class="fas fa-sparkles"></i> Portofolio Resmi
+            </div>
+
+            <!-- Welcome Greetings -->
+            <h1 class="welcome-heading">
+                Selamat Datang di Portofolio<br>
+                <span class="welcome-name">Arnof Dwi Ferdiza</span>
+            </h1>
+
+            <p class="welcome-tagline">
+                Informatika UBL &bull; Web Developer &bull; UI/UX
+            </p>
+
+            <p class="welcome-intro">
+                Silakan ketik nama lengkap Anda untuk memulai pengalaman interaktif menjelajahi projek & keahlian saya.
+            </p>
+
+            <!-- Form Masuk -->
+            <form id="welcomeForm" class="welcome-form" onsubmit="submitWelcomeForm(event)">
+                <div class="welcome-input-wrapper">
+                    <i class="fas fa-user welcome-input-icon"></i>
+                    <input type="text" id="visitorName" class="welcome-input" placeholder="Nama Lengkap Anda..." required autocomplete="name" maxlength="40">
+                </div>
+
+                <div id="name-error" class="welcome-error-msg" style="display: none;">
+                    <i class="fas fa-exclamation-circle"></i> Mohon isi nama Anda dengan benar (hanya huruf & spasi).
+                </div>
+
+                <button type="submit" class="welcome-btn-enter">
+                    <span>Mulai Jelajah Portofolio</span>
+                    <i class="fas fa-arrow-right"></i>
+                </button>
             </form>
+
+            <div class="welcome-footer-info">
+                <span><i class="fas fa-shield-alt"></i> Sesi Interaktif</span>
+                <span class="dot-separator">&bull;</span>
+                <span>Version</span>
+            </div>
         </div>
     </div>
 
@@ -168,16 +202,20 @@
         <div class="loader-bar"></div>
     </div>
 
-    <!-- Tombol Menu Mobile -->
-    <button class="menu-toggle" id="menu-btn">
+    <!-- Tombol Menu Mobile (Garis Tiga Sidebar) -->
+    <button class="menu-toggle" id="menu-btn" onclick="toggleSidebar()" aria-label="Buka Menu Sidebar">
         <i class="fas fa-bars"></i>
     </button>
 
     <!-- Overlay for Mobile -->
-    <div class="sidebar-overlay" id="sidebar-overlay"></div>
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebarMobile()"></div>
 
     <!-- Sidebar Dashboard -->
     <nav class="sidebar" id="sidebar">
+        <!-- Tombol Tutup Sidebar di Mobile -->
+        <button class="sidebar-close-btn" onclick="closeSidebarMobile()" aria-label="Tutup Menu">
+            <i class="fas fa-times"></i>
+        </button>
         <!-- GANTI src DI BAWAH INI DENGAN NAMA FILE FOTO ANDA (misal: foto-arnof.jpg) -->
         <img src="profil.jpeg" alt="Foto Arnof" class="profile-img">
         <h2 class="sidebar-title">Arnof Dwi Ferdiza</h2>
@@ -230,7 +268,7 @@
         <div
             style="margin-top: 1rem; text-align: center; font-size: 0.7rem; color: var(--text-secondary); opacity: 0.7;">
             <div>&copy; 2026 Arnof Dwi Ferdiza</div>
-            <div>V.2.2.8 | Portofolio Arnof Dwi Ferdiza</div>
+            <div>VERSION | Portofolio Arnof Dwi Ferdiza</div>
         </div>
     </nav>
 
@@ -2866,22 +2904,7 @@
             setTimeout(handleHashRouting, 100);
         });
 
-        // Toggle Sidebar on Mobile
-        const menuBtn = document.getElementById('menu-btn');
-        const sidebar = document.getElementById('sidebar');
-        const overlay = document.getElementById('sidebar-overlay');
-
-        if (menuBtn && sidebar && overlay) {
-            menuBtn.addEventListener('click', () => {
-                sidebar.classList.toggle('show');
-                overlay.classList.toggle('show');
-            });
-
-            overlay.addEventListener('click', () => {
-                sidebar.classList.remove('show');
-                overlay.classList.remove('show');
-            });
-        }
+        // Toggle Sidebar on Mobile dipusatkan ke toggleSidebar() & closeSidebarMobile() di menu/sidebar.js
 
         // Initialize System
         document.addEventListener('DOMContentLoaded', () => {
@@ -2966,9 +2989,20 @@
         function showAdToast() {
             const toast = document.getElementById('ad-toaster');
             if (toast) {
+                const savedName = sessionStorage.getItem('visitorName');
+                const descEl = toast.querySelector('.ad-toaster-desc');
+                if (savedName && descEl) {
+                    descEl.innerHTML = `Selamat datang, <strong style="color: var(--accent-color);">${savedName}</strong> di Website Portofolio Arnof Dwi Ferdiza. Semoga karya ini menginspirasi Anda! ✨`;
+                }
                 setTimeout(() => {
                     toast.classList.add('show');
                 }, 1200);
+
+                // Auto hide after 9 seconds if not closed
+                clearTimeout(window.adToastAutoTimer);
+                window.adToastAutoTimer = setTimeout(() => {
+                    closeAdToast();
+                }, 9000);
             }
         }
 
@@ -2985,10 +3019,9 @@
             const errorElement = document.getElementById('name-error');
 
             // Regex to allow only letters, spaces, dots, and single quotes. Must be at least 2 characters.
-            const isValidName = /^[a-zA-Z\s\.,']+$/.test(nameInput) && nameInput.length >= 2;
-
+            const isValidName = /^[a-zA-Z\s\.,'-]+$/.test(nameInput) && nameInput.length >= 2;
             if (!isValidName) {
-                errorElement.style.display = 'block';
+                errorElement.style.display = 'flex';
                 return;
             } else {
                 errorElement.style.display = 'none';
@@ -3031,7 +3064,7 @@
         }
     </script>
 
-    <!-- Tab Bar -->
+    <!-- Tab Bar (Hanya Beranda, Project, Profile) -->
     <nav class="tab-bar">
         <a href="#/beranda" class="tab-item active" onclick="showSection('home', event)">
             <i class="fas fa-home"></i>
@@ -3039,20 +3072,11 @@
         </a>
         <a href="#/projek" class="tab-item" onclick="showSection('projects', event)">
             <i class="fas fa-project-diagram"></i>
-            <span>Projek</span>
-        </a>
-        <a href="#/skill" class="tab-item" onclick="showSection('skills', event)">
-            <i class="fas fa-code"></i>
-            <span>Skill</span>
+            <span>Project</span>
         </a>
         <a href="#/tentang" class="tab-item" onclick="showSection('about', event)">
             <i class="fas fa-user"></i>
-            <span>Profil</span>
-        </a>
-        <a href="javascript:void(0)" class="tab-item"
-            onclick="document.querySelector('.sidebar').classList.toggle('show'); if(document.querySelector('.sidebar-overlay')) document.querySelector('.sidebar-overlay').classList.toggle('show');">
-            <i class="fas fa-bars"></i>
-            <span>Lainnya</span>
+            <span>Profile</span>
         </a>
     </nav>
 
@@ -3148,16 +3172,28 @@
         </div>
     </div>
 
-    <!-- Toaster Pop-up Ads -->
+    <!-- Welcome Notification Banner / Toaster -->
     <div id="ad-toaster" class="ad-toaster">
-        <button class="ad-toaster-close" onclick="closeAdToast()" aria-label="Close ads">&times;</button>
-        <div class="ad-toaster-icon-wrapper">
-            <i class="fas fa-bullhorn"></i>
+        <button class="ad-toaster-close" onclick="closeAdToast()" aria-label="Tutup Notifikasi">&times;</button>
+        <div class="ad-toaster-avatar-wrap">
+            <img src="profil.jpeg" alt="Foto Arnof" class="ad-toaster-avatar" onerror="this.src='foto/logo/logo.jpeg'">
+            <span class="ad-toaster-badge-icon"><i class="fas fa-sparkles"></i></span>
         </div>
         <div class="ad-toaster-content">
-            <h4 class="ad-toaster-title">Portofolio Arnof Dwi Ferdiza</h4>
-            <p class="ad-toaster-desc">Selamat datang di Website Portofolio Arnof Dwi Ferdiza Semoga menginspirasi anda
-            </p>
+            <div class="ad-toaster-tag">
+                <span class="ad-toaster-dot"></span>
+                <span>Portofolio Resmi &bull; Arnof Dwi Ferdiza</span>
+            </div>
+            <h4 class="ad-toaster-title">Selamat Datang! 👋</h4>
+            <p class="ad-toaster-desc">Selamat datang di Website Portofolio Arnof Dwi Ferdiza. Semoga menginspirasi Anda!</p>
+            <div class="ad-toaster-actions">
+                <button class="ad-toaster-btn-primary" onclick="showSection('projects'); closeAdToast();">
+                    <i class="fas fa-project-diagram"></i> Lihat Projek
+                </button>
+                <button class="ad-toaster-btn-secondary" onclick="closeAdToast()">
+                    Oke, Siap
+                </button>
+            </div>
         </div>
     </div>
 

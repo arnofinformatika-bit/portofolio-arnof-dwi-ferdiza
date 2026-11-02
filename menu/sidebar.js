@@ -159,10 +159,10 @@ function initSidebar() {
     const overlay = document.getElementById('sidebar-overlay');
 
     if (menuBtn) {
-        menuBtn.addEventListener('click', toggleSidebar);
+        menuBtn.onclick = toggleSidebar;
     }
     if (overlay) {
-        overlay.addEventListener('click', closeSidebarMobile);
+        overlay.onclick = closeSidebarMobile;
     }
 
     initThemeToggle();

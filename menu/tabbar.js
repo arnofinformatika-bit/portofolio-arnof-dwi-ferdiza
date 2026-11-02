@@ -16,7 +16,6 @@ function syncActiveTab(sectionId) {
     const slugMap = {
         'home': 'beranda',
         'projects': 'projek',
-        'skills': 'skill',
         'about': 'tentang'
     };
     const slug = slugMap[sectionId] || sectionId;

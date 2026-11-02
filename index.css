@@ -264,29 +264,66 @@ body.light-mode .nav-links li a.active {
     border-color: rgba(2, 132, 199, 0.2);
 }
 
-/* Hamburger Menu Toggle */
+/* Hamburger Menu Toggle (Garis Tiga Sidebar Mobile) */
 .menu-toggle {
     display: none;
     position: fixed;
-    top: 1.2rem;
-    right: 1.5rem;
-    font-size: 1.5rem;
-    color: var(--text-primary);
-    background: var(--sidebar-bg);
-    backdrop-filter: blur(15px);
-    -webkit-backdrop-filter: blur(15px);
-    border: 1px solid var(--glass-border);
-    padding: 0.6rem;
-    border-radius: 10px;
+    top: 1rem;
+    left: 1rem;
+    width: 44px;
+    height: 44px;
+    font-size: 1.25rem;
+    color: var(--accent-color);
+    background: rgba(20, 20, 20, 0.88);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 12px;
     cursor: pointer;
     z-index: 1001;
-    transition: var(--transition);
-    box-shadow: var(--shadow);
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.55);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 .menu-toggle:hover {
     transform: scale(1.05);
-    border-color: var(--accent-color);
+    background: var(--accent-color);
+    color: #0d0d0d;
+}
+
+body.light-mode .menu-toggle {
+    background: rgba(255, 255, 255, 0.88);
+    border-color: rgba(184, 134, 11, 0.35);
+    color: #b8860b;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.sidebar-close-btn {
+    display: none;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: #fff;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    z-index: 10;
+}
+
+.sidebar-close-btn:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #fff;
+    transform: rotate(90deg);
 }
 
 /* Main Content Wrapper */
@@ -1558,27 +1595,304 @@ body.light-mode .search-result-item:hover {
     box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
 }
 
-/* Welcome Overlay Styling (Glass) */
-#welcome-overlay {
+/* ==========================================================================
+   NEW MODERN WELCOME OVERLAY (ULTRA GLASSMORPHISM)
+   ========================================================================== */
+.welcome-overlay {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
-    background: var(--bg-color);
-    background-image: var(--bg-gradient);
+    width: 100vw;
+    height: 100vh;
+    background: rgba(10, 12, 16, 0.92);
+    backdrop-filter: blur(28px);
+    -webkit-backdrop-filter: blur(28px);
     z-index: 10000;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-direction: column;
-    transition: opacity 0.6s cubic-bezier(0.25, 0.8, 0.25, 1);
+    padding: 1.5rem;
+    overflow-y: auto;
+    transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.5s ease;
 }
 
-#welcome-overlay .card {
+.welcome-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(90px);
+    opacity: 0.38;
+    pointer-events: none;
+    z-index: 0;
+    animation: welcomeFloat 8s ease-in-out infinite alternate;
+}
+
+.welcome-glow-1 {
+    width: 320px;
+    height: 320px;
+    background: radial-gradient(circle, rgba(212, 175, 55, 0.6) 0%, rgba(212, 175, 55, 0) 70%);
+    top: 15%;
+    left: 20%;
+}
+
+.welcome-glow-2 {
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, rgba(56, 189, 248, 0.5) 0%, rgba(56, 189, 248, 0) 70%);
+    bottom: 15%;
+    right: 20%;
+    animation-delay: -4s;
+}
+
+@keyframes welcomeFloat {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(25px, -25px) scale(1.1); }
+}
+
+.welcome-card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    background: rgba(22, 27, 34, 0.82);
+    backdrop-filter: blur(35px) saturate(200%);
+    -webkit-backdrop-filter: blur(35px) saturate(200%);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 30px;
+    padding: 2.2rem 2rem;
+    text-align: center;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(212, 175, 55, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    animation: welcomeSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes welcomeSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.welcome-avatar-container {
+    position: relative;
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 1.2rem;
+}
+
+.welcome-avatar-ring {
+    position: absolute;
+    inset: -4px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4af37 0%, #38bdf8 50%, #b8860b 100%);
+    animation: rotateRing 6s linear infinite;
+    z-index: 1;
+    opacity: 0.85;
+}
+
+@keyframes rotateRing {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.welcome-avatar-img {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid #161b22;
+    background: #0f172a;
+    display: block;
+}
+
+.welcome-status-badge {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    z-index: 3;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: #161b22;
+    border: 2px solid #161b22;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 8px #10b981;
+    animation: pulseDot 2s infinite;
+}
+
+@keyframes pulseDot {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { transform: scale(1); box-shadow: 0 0 0 8px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+.welcome-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 5px 14px;
+    background: rgba(212, 175, 55, 0.12);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 30px;
+    color: var(--accent-color);
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin-bottom: 0.9rem;
+}
+
+.welcome-heading {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #f8fafc;
+    line-height: 1.35;
+    margin-bottom: 0.35rem;
+}
+
+.welcome-name {
+    background: linear-gradient(135deg, #fef08a 0%, #d4af37 50%, #b8860b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+    display: inline-block;
+}
+
+.welcome-tagline {
+    font-size: 0.8rem;
+    color: #94a3b8;
+    font-weight: 500;
+    margin-bottom: 0.75rem;
+}
+
+.welcome-intro {
+    font-size: 0.86rem;
+    color: #cbd5e1;
+    line-height: 1.5;
+    margin-bottom: 1.4rem;
+    opacity: 0.92;
+}
+
+.welcome-form {
+    width: 100%;
+}
+
+.welcome-input-wrapper {
+    position: relative;
+    width: 100%;
+    margin-bottom: 0.8rem;
+}
+
+.welcome-input-icon {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--accent-color);
+    font-size: 1.05rem;
+    pointer-events: none;
+}
+
+.welcome-input {
+    width: 100%;
+    padding: 0.88rem 1rem 0.88rem 2.85rem;
+    background: rgba(15, 23, 42, 0.75);
+    border: 1.5px solid rgba(255, 255, 255, 0.12);
+    border-radius: 14px;
+    color: #fff;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.welcome-input:focus {
+    outline: none;
     border-color: var(--accent-color);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
-    animation: modalSlide 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+    background: rgba(15, 23, 42, 0.95);
+    box-shadow: 0 0 16px rgba(212, 175, 55, 0.3);
+}
+
+.welcome-error-msg {
+    color: #ef4444;
+    font-size: 0.82rem;
+    margin-bottom: 0.85rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-weight: 500;
+}
+
+.welcome-btn-enter {
+    width: 100%;
+    padding: 0.92rem 1.4rem;
+    background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+    color: #0d0d0d;
+    border: none;
+    border-radius: 14px;
+    font-size: 0.98rem;
+    font-weight: 700;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    box-shadow: 0 8px 25px rgba(212, 175, 55, 0.35);
+}
+
+.welcome-btn-enter:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 30px rgba(212, 175, 55, 0.5);
+    filter: brightness(1.08);
+}
+
+.welcome-footer-info {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1.2rem;
+    font-size: 0.74rem;
+    color: #64748b;
+}
+
+.dot-separator {
+    color: #475569;
+}
+
+/* Light mode support for welcome */
+body.light-mode .welcome-overlay {
+    background: rgba(248, 250, 252, 0.92);
+}
+body.light-mode .welcome-card {
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(184, 134, 11, 0.3);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12), 0 0 30px rgba(184, 134, 11, 0.1);
+}
+body.light-mode .welcome-heading {
+    color: #0f172a;
+}
+body.light-mode .welcome-intro {
+    color: #475569;
+}
+body.light-mode .welcome-input {
+    background: rgba(241, 245, 249, 0.9);
+    border: 1.5px solid #cbd5e1;
+    color: #0f172a;
 }
 
 /* Maintenance Overlay Styling */
@@ -1911,127 +2225,238 @@ body.light-mode .search-result-item:hover {
 }
 
 /* ==========================================================================
-   POP-UP TOASTER ADS STYLE
+   MODERN FLOATING WELCOME TOAST BANNER (GLASSMORPHISM)
    ========================================================================== */
 .ad-toaster {
     position: fixed;
     top: -450px; /* Hidden offscreen at the top */
-    right: 30px;
-    width: 520px; /* Wider layout as shown in screenshot */
-    background: #ffffff;
-    border: 1px solid #e2e8f0;
-    border-radius: 28px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    right: 28px;
+    width: 480px;
+    max-width: calc(100vw - 40px);
+    background: rgba(18, 22, 28, 0.88);
+    backdrop-filter: blur(28px) saturate(190%);
+    -webkit-backdrop-filter: blur(28px) saturate(190%);
+    border: 1px solid rgba(212, 175, 55, 0.35);
+    border-radius: 24px;
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.65), 0 0 30px rgba(212, 175, 55, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     z-index: 10000;
-    padding: 24px 40px 24px 24px;
+    padding: 1.25rem 1.4rem;
     display: flex;
-    gap: 20px;
+    gap: 16px;
     align-items: flex-start;
-    transition: top 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+    transition: top 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease, transform 0.4s ease;
     opacity: 0;
 }
 
 .ad-toaster.show {
-    top: 30px;
+    top: 25px;
     opacity: 1;
 }
 
-.ad-toaster-icon-wrapper {
-    background: linear-gradient(135deg, #38bdf8 0%, #0284c7 100%);
-    width: 64px;
-    height: 64px;
-    min-width: 64px;
+.ad-toaster-avatar-wrap {
+    position: relative;
+    width: 58px;
+    height: 58px;
+    min-width: 58px;
     border-radius: 18px;
+    padding: 2px;
+    background: linear-gradient(135deg, #d4af37 0%, #38bdf8 100%);
+    box-shadow: 0 8px 20px rgba(212, 175, 55, 0.25);
+    flex-shrink: 0;
+}
+
+.ad-toaster-avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 16px;
+    object-fit: cover;
+    background: #0f172a;
+    display: block;
+}
+
+.ad-toaster-badge-icon {
+    position: absolute;
+    bottom: -4px;
+    right: -4px;
+    width: 22px;
+    height: 22px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+    color: #0d0d0d;
+    font-size: 0.65rem;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 8px 20px rgba(2, 132, 199, 0.35);
-}
-
-.ad-toaster-icon-wrapper i {
-    color: #ffffff;
-    font-size: 1.7rem;
-    transform: rotate(-15deg);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    border: 2px solid rgba(18, 22, 28, 0.9);
 }
 
 .ad-toaster-content {
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    gap: 5px;
+}
+
+.ad-toaster-tag {
+    display: inline-flex;
+    align-items: center;
     gap: 6px;
-    padding-top: 2px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--accent-color);
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+.ad-toaster-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 6px #10b981;
+    animation: pulseDot 2s infinite;
 }
 
 .ad-toaster-title {
-    font-size: 1.35rem;
+    font-size: 1.15rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #f8fafc;
     margin: 0;
-    line-height: 1.2;
+    line-height: 1.3;
 }
 
 .ad-toaster-desc {
-    font-size: 0.95rem;
-    color: #475569;
-    line-height: 1.5;
+    font-size: 0.88rem;
+    color: #cbd5e1;
+    line-height: 1.45;
     margin: 0;
+    opacity: 0.95;
+}
+
+.ad-toaster-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-top: 6px;
+    flex-wrap: wrap;
+}
+
+.ad-toaster-btn-primary {
+    background: linear-gradient(135deg, #d4af37 0%, #b8860b 100%);
+    color: #0d0d0d;
+    font-size: 0.78rem;
+    font-weight: 700;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 12px rgba(212, 175, 55, 0.3);
+}
+
+.ad-toaster-btn-primary:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(212, 175, 55, 0.45);
+    filter: brightness(1.08);
+}
+
+.ad-toaster-btn-secondary {
+    background: rgba(255, 255, 255, 0.08);
+    color: #94a3b8;
+    font-size: 0.78rem;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ad-toaster-btn-secondary:hover {
+    background: rgba(255, 255, 255, 0.15);
+    color: #fff;
 }
 
 .ad-toaster-close {
     position: absolute;
-    top: 20px;
-    right: 24px;
+    top: 14px;
+    right: 16px;
     background: transparent;
     border: none;
     color: #94a3b8;
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     cursor: pointer;
     transition: color 0.2s ease, transform 0.2s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 24px;
-    height: 24px;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
 }
 
 .ad-toaster-close:hover {
-    color: #475569;
+    color: #ef4444;
+    background: rgba(239, 68, 68, 0.1);
     transform: scale(1.1);
 }
 
-/* Responsive adjustment for Mobile screens */
+/* Light mode support for toaster */
+body.light-mode .ad-toaster {
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid rgba(184, 134, 11, 0.3);
+    box-shadow: 0 20px 45px rgba(0, 0, 0, 0.1), 0 0 25px rgba(184, 134, 11, 0.08);
+}
+body.light-mode .ad-toaster-title {
+    color: #0f172a;
+}
+body.light-mode .ad-toaster-desc {
+    color: #475569;
+}
+body.light-mode .ad-toaster-btn-secondary {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: rgba(0, 0, 0, 0.1);
+    color: #475569;
+}
+
+/* Mobile adjustments */
 @media (max-width: 768px) {
     .ad-toaster {
-        right: 15px;
-        left: 15px;
-        width: calc(100% - 30px);
+        right: 12px;
+        left: 12px;
+        width: calc(100% - 24px);
+        max-width: 100%;
         top: -450px;
-        padding: 20px 28px 20px 16px;
-        gap: 14px;
+        padding: 1rem 1.1rem;
+        gap: 12px;
         border-radius: 20px;
     }
     
     .ad-toaster.show {
-        top: 20px;
+        top: 65px; /* Sits cleanly below header/hamburger on mobile */
     }
-    
-    .ad-toaster-icon-wrapper {
-        width: 52px;
-        height: 52px;
-        min-width: 52px;
+
+    .ad-toaster-avatar-wrap {
+        width: 48px;
+        height: 48px;
+        min-width: 48px;
         border-radius: 14px;
     }
-    
-    .ad-toaster-icon-wrapper i {
-        font-size: 1.4rem;
+
+    .ad-toaster-avatar {
+        border-radius: 12px;
     }
-    
+
     .ad-toaster-title {
-        font-size: 1.15rem;
+        font-size: 1.05rem;
     }
-    
+
     .ad-toaster-desc {
-        font-size: 0.85rem;
+        font-size: 0.82rem;
     }
 }
 
@@ -2039,24 +2464,66 @@ body.light-mode .search-result-item:hover {
    ELEGANT iPHONE-STYLE TAB BAR
    ========================================================================== */
 
-/* Hide sidebar and toggle on mobile, show tab bar */
+/* Hide sidebar on mobile, show mobile menu toggle and tab bar */
 @media (max-width: 768px) {
     .sidebar {
-        transform: translateX(-100%);
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 285px !important;
+        height: 100vh !important;
+        z-index: 10005 !important;
+        transform: translateX(-100%) !important;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1) !important;
+        box-shadow: none !important;
     }
+
+    .sidebar.show {
+        transform: translateX(0) !important;
+        box-shadow: 14px 0 45px rgba(0, 0, 0, 0.85) !important;
+    }
+
+    .sidebar-close-btn {
+        display: flex !important;
+    }
+
     .menu-toggle {
-        display: none !important;
+        display: flex !important;
     }
+
+    .sidebar-overlay {
+        position: fixed !important;
+        top: 0 !important;
+        left: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: rgba(0, 0, 0, 0.75) !important;
+        backdrop-filter: blur(6px) !important;
+        -webkit-backdrop-filter: blur(6px) !important;
+        z-index: 10004 !important;
+        display: none;
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+
+    .sidebar-overlay.show {
+        display: block !important;
+        opacity: 1 !important;
+    }
+
     .main-content {
-        margin-left: 0;
-        padding-bottom: 90px; /* Space for tab bar */
+        margin-left: 0 !important;
+        width: 100% !important;
+        padding: 5.5rem 1.2rem 95px 1.2rem !important; /* Space for tab bar */
     }
+
     .tab-bar {
         display: flex !important;
     }
+
     /* Move FAB up so it doesn't overlap tab bar */
     .fab-container {
-        bottom: 100px !important; 
+        bottom: 105px !important; 
     }
 }
 
@@ -2067,37 +2534,25 @@ body.light-mode .search-result-item:hover {
     bottom: 15px;
     left: 50%;
     transform: translateX(-50%);
-    width: 92%;
-    max-width: 600px;
-    background: rgba(20, 20, 20, 0.7);
+    width: 90%;
+    max-width: 380px; /* Sesuai dan ideal untuk 3 tab: Beranda, Project, Profile */
+    background: rgba(20, 20, 20, 0.75);
     backdrop-filter: blur(25px) saturate(200%);
     -webkit-backdrop-filter: blur(25px) saturate(200%);
-    border: 1px solid rgba(212, 175, 55, 0.3);
+    border: 1px solid rgba(212, 175, 55, 0.35);
     border-radius: 40px;
-    padding: 10px 15px;
+    padding: 10px 18px;
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     z-index: 9999;
-    
-    /* Scrollable "digeret-geret" */
-    overflow-x: auto;
-    overflow-y: hidden;
-    scroll-behavior: smooth;
-    -webkit-overflow-scrolling: touch;
-    white-space: nowrap;
-    
-    /* Hide scrollbar for elegant look */
-    -ms-overflow-style: none;  
-    scrollbar-width: none;  
-    
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-around;
     gap: 8px;
     height: 75px; /* Fixed height to accommodate animations inside */
 }
 
 body.light-mode .tab-bar {
-    background: rgba(255, 255, 255, 0.85);
-    border: 1px solid rgba(184, 134, 11, 0.3);
+    background: rgba(255, 255, 255, 0.88);
+    border: 1px solid rgba(184, 134, 11, 0.35);
     box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
