@@ -59,7 +59,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- Custom CSS (Liquid Glass Theme) -->
-    <link rel="stylesheet" href="index.css?v=2.3">
+    <link rel="stylesheet" href="index.css?v=2.4">
 
     <!-- JSON-LD Structured Data: Person Schema (untuk Google Search thumbnail) -->
     <script type="application/ld+json">
@@ -240,18 +240,10 @@
             <li><a href="#/logbook" onclick="showSection('logbook', event)"><i class="fas fa-book"></i> Logbook</a></li>
             <li><a href="#/galeri" onclick="showSection('gallery', event)"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
             <li><a href="#/pencapaian" onclick="showSection('achievements', event)"><i class="fas fa-trophy"></i> Pencapaian</a></li>
-            <li id="pwaNavLi">
-                <a href="#" onclick="triggerPWAInstall(event)" style="color: var(--accent-color); font-weight: 600;"><i
-                        class="fas fa-download"></i> Unduh / Install App</a>
-            </li>
             <li id="adminNavLi"
                 style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem; display: none;">
                 <a href="admin.html" target="_blank" style="color: var(--accent-color); font-weight: 500;"><i
                         class="fas fa-user-shield"></i> Panel Admin</a>
-            </li>
-            <li>
-                <a href="#" onclick="logoutVisitor()" style="color: #ef4444;"><i class="fas fa-sign-out-alt"></i> Keluar
-                    / Ganti Nama</a>
             </li>
         </ul>
 
@@ -3566,64 +3558,6 @@
             }
         });
 
-        // Sensor Goyang HP (Shake Gesture) untuk Membuka Panel Admin di Perangkat Mobile
-        (function initShakeToAdmin() {
-            let lastX = null, lastY = null, lastZ = null;
-            let lastTime = new Date().getTime();
-            const SHAKE_THRESHOLD = 15;
-
-            function handleMotion(e) {
-                const current = e.accelerationIncludingGravity;
-                if (!current || current.x === null) return;
-
-                const currentTime = new Date().getTime();
-                const diffTime = currentTime - lastTime;
-
-                if (diffTime > 100) {
-                    if (lastX !== null && lastY !== null && lastZ !== null) {
-                        const deltaX = Math.abs(current.x - lastX);
-                        const deltaY = Math.abs(current.y - lastY);
-                        const deltaZ = Math.abs(current.z - lastZ);
-
-                        if ((deltaX + deltaY + deltaZ) > SHAKE_THRESHOLD) {
-                            const adminLi = document.getElementById('adminNavLi');
-                            if (adminLi) {
-                                adminLi.style.display = 'block';
-                            }
-                            const sidebar = document.querySelector('.sidebar');
-                            if (sidebar && !sidebar.classList.contains('active')) {
-                                sidebar.classList.add('active');
-                            }
-                            if (typeof showAdminToast === 'function') {
-                                showAdminToast('📱 Goyangan HP Terdeteksi! Membuka Panel Admin...');
-                            }
-                            setTimeout(() => {
-                                window.open('admin.html', '_blank');
-                            }, 700);
-                        }
-                    }
-                    lastX = current.x;
-                    lastY = current.y;
-                    lastZ = current.z;
-                    lastTime = currentTime;
-                }
-            }
-
-            if (window.DeviceMotionEvent) {
-                if (typeof DeviceMotionEvent.requestPermission === 'function') {
-                    document.addEventListener('touchstart', function reqPermission() {
-                        DeviceMotionEvent.requestPermission().then(permission => {
-                            if (permission === 'granted') {
-                                window.addEventListener('devicemotion', handleMotion, false);
-                            }
-                        }).catch(console.error);
-                    }, { once: true });
-                } else {
-                    window.addEventListener('devicemotion', handleMotion, false);
-                }
-            }
-        })();
-
         // Fungsi Toast Notification Sederhana & Elegan untuk Status Panel Admin
         function showAdminToast(message) {
             let toast = document.getElementById('admin-toast-notification');
@@ -3666,7 +3600,7 @@
 
     <!-- Menu Navigation Modules -->
     <script src="menu/sidebar.js"></script>
-    <script src="menu/tabbar.js?v=2.3"></script>
+    <script src="menu/tabbar.js?v=2.4"></script>
 
     <!-- User Feature Modules -->
     <script src="user/beranda.js"></script>

@@ -473,17 +473,37 @@
     <div id="loginOverlay" class="login-overlay">
         <div class="login-card">
             <img src="foto/logo/logo.jpeg" alt="Arnof" onerror="this.src='arnof.jpg'">
-            <h2 style="font-size: 1.3rem; margin-bottom: 0.3rem;">Login Panel Admin</h2>
-            <p style="font-size: 0.8rem; color: #a0a0a0; margin-bottom: 1.5rem;">
+            <h2 style="font-size: 1.35rem; margin-bottom: 0.3rem; color: #fff;">Login Panel Admin</h2>
+            <p style="font-size: 0.82rem; color: #94a3b8; margin-bottom: 1.4rem;">
                 Kelola Seluruh Halaman Portofolio Arnof Dwi Ferdiza
             </p>
             <form onsubmit="handleAdminLogin(event)">
-                <div class="form-group" style="text-align: left; margin-bottom: 1.2rem;">
-                    <label for="adminPass">Password Admin</label>
-                    <input type="password" id="adminPass" class="form-input" placeholder="Masukkan password..." required autofocus>
-                    <small style="color: #666; font-size: 0.75rem; margin-top: 4px;">Default: <code style="color: var(--accent-color);">selamattt datangggg bree</code></small>
+                <!-- Input Username / Nama -->
+                <div class="form-group" style="text-align: left; margin-bottom: 1rem;">
+                    <label for="adminUser" style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">
+                        <i class="fas fa-user" style="color: var(--accent-color);"></i> Username / Nama
+                    </label>
+                    <input type="text" id="adminUser" class="form-input" placeholder="Masukkan nama atau username..." required autofocus autocomplete="username" style="width: 100%; box-sizing: border-box;">
                 </div>
-                <button type="submit" class="btn-gold" style="width: 100%; justify-content: center;">
+
+                <!-- Input Password -->
+                <div class="form-group" style="text-align: left; margin-bottom: 1.3rem;">
+                    <label for="adminPass" style="display: flex; align-items: center; gap: 6px; font-size: 0.85rem; font-weight: 600; color: #e2e8f0; margin-bottom: 6px;">
+                        <i class="fas fa-lock" style="color: var(--accent-color);"></i> Password Admin
+                    </label>
+                    <div style="position: relative;">
+                        <input type="password" id="adminPass" class="form-input" placeholder="Masukkan password..." required autocomplete="current-password" style="width: 100%; box-sizing: border-box; padding-right: 42px;">
+                        <button type="button" onclick="togglePassVisibility()" aria-label="Lihat Password" style="position: absolute; right: 12px; top: 50%; transform: translateY(-50%); background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 1rem; padding: 4px;">
+                            <i id="passEyeIcon" class="fas fa-eye"></i>
+                        </button>
+                    </div>
+                    <div style="margin-top: 6px; font-size: 0.74rem; color: #64748b; display: flex; align-items: center; gap: 5px;">
+                        <i class="fas fa-shield-alt" style="color: var(--accent-color);"></i>
+                        <span>Akun Admin Resmi &bull; Langsung Masuk (Tanpa Daftar)</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-gold" style="width: 100%; justify-content: center; padding: 0.8rem; font-size: 0.95rem; font-weight: 700; border-radius: 12px; display: flex; align-items: center; gap: 8px;">
                     <i class="fas fa-sign-in-alt"></i> Masuk Admin
                 </button>
             </form>
@@ -1094,17 +1114,58 @@
         window.uploadBytesResumable = uploadBytesResumable;
         window.getDownloadURL = getDownloadURL;
 
-        // Global check auth
+        // Global check auth (Username & Password Tanpa Daftar)
         window.handleAdminLogin = function(e) {
             e.preventDefault();
-            const pass = document.getElementById("adminPass").value;
-            if (pass === "arnof111105cihuyanjaykerenn") {
+            const userEl = document.getElementById("adminUser");
+            const passEl = document.getElementById("adminPass");
+            const user = (userEl ? userEl.value : "").trim().toLowerCase();
+            const pass = (passEl ? passEl.value : "").trim();
+
+            // Username yang diterima (arnof, admin, nama lengkap, atau yang mengandung arnof)
+            const validUsers = ["arnof", "admin", "arnof dwi ferdiza", "owner", "superadmin"];
+            const isUserValid = validUsers.includes(user) || user.includes("arnof");
+
+            // Password yang diterima
+            const validPasswords = [
+                "selamattt datangggg bree",
+                "arnof111105cihuyanjaykerenn",
+                "arnof123",
+                "admin123"
+            ];
+
+            if (isUserValid && validPasswords.includes(pass)) {
                 sessionStorage.setItem("arnof_auth", "true");
+                const displayName = userEl ? userEl.value.trim() : "Arnof";
+                sessionStorage.setItem("admin_name", displayName);
+
                 document.getElementById("loginOverlay").style.display = "none";
-                showToast("Selamat datang di Panel Admin!", "success");
+                showToast(`Selamat datang, ${displayName}! Berhasil masuk ke Panel Admin.`, "success");
                 loadAllData();
+            } else if (!isUserValid) {
+                showToast("Username / Nama admin tidak dikenali!", "error");
             } else {
-                showToast("Password salah!", "error");
+                showToast("Password admin salah!", "error");
+            }
+        };
+
+        window.togglePassVisibility = function() {
+            const passInput = document.getElementById('adminPass');
+            const eyeIcon = document.getElementById('passEyeIcon');
+            if (passInput) {
+                if (passInput.type === 'password') {
+                    passInput.type = 'text';
+                    if (eyeIcon) {
+                        eyeIcon.classList.remove('fa-eye');
+                        eyeIcon.classList.add('fa-eye-slash');
+                    }
+                } else {
+                    passInput.type = 'password';
+                    if (eyeIcon) {
+                        eyeIcon.classList.remove('fa-eye-slash');
+                        eyeIcon.classList.add('fa-eye');
+                    }
+                }
             }
         };
 

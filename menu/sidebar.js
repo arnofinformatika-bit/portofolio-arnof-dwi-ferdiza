@@ -91,59 +91,7 @@ function initSecretAdminShortcut() {
     });
 }
 
-// Goyang HP (Shake Gesture) untuk Membuka Panel Admin
-function initShakeToAdmin() {
-    let lastX = null, lastY = null, lastZ = null;
-    let lastTime = new Date().getTime();
-    const SHAKE_THRESHOLD = 15;
 
-    function handleMotion(e) {
-        const current = e.accelerationIncludingGravity;
-        if (!current || current.x === null) return;
-
-        const currentTime = new Date().getTime();
-        const diffTime = currentTime - lastTime;
-
-        if (diffTime > 100) {
-            if (lastX !== null && lastY !== null && lastZ !== null) {
-                const deltaX = Math.abs(current.x - lastX);
-                const deltaY = Math.abs(current.y - lastY);
-                const deltaZ = Math.abs(current.z - lastZ);
-
-                if ((deltaX + deltaY + deltaZ) > SHAKE_THRESHOLD) {
-                    const adminLi = document.getElementById('adminNavLi');
-                    if (adminLi) adminLi.style.display = 'block';
-                    const sidebar = document.querySelector('.sidebar');
-                    if (sidebar) sidebar.classList.add('show');
-                    if (typeof showAdminToast === 'function') {
-                        showAdminToast('📱 Goyangan HP Terdeteksi! Membuka Panel Admin...');
-                    }
-                    setTimeout(() => {
-                        window.open('admin.html', '_blank');
-                    }, 700);
-                }
-            }
-            lastX = current.x;
-            lastY = current.y;
-            lastZ = current.z;
-            lastTime = currentTime;
-        }
-    }
-
-    if (window.DeviceMotionEvent) {
-        if (typeof DeviceMotionEvent.requestPermission === 'function') {
-            document.addEventListener('touchstart', function reqPermission() {
-                DeviceMotionEvent.requestPermission().then(permission => {
-                    if (permission === 'granted') {
-                        window.addEventListener('devicemotion', handleMotion, false);
-                    }
-                }).catch(console.error);
-            }, { once: true });
-        } else {
-            window.addEventListener('devicemotion', handleMotion, false);
-        }
-    }
-}
 
 // Logout Tamu / Pengunjung
 function logoutVisitor() {
@@ -167,7 +115,6 @@ function initSidebar() {
 
     initThemeToggle();
     initSecretAdminShortcut();
-    initShakeToAdmin();
 }
 
 // Expose ke window
