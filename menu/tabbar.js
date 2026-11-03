@@ -43,6 +43,33 @@ function syncActiveTab(sectionId) {
             moreTab.classList.remove('active');
         }
     }
+
+    if (typeof updateUblActiveTile === 'function') {
+        updateUblActiveTile(sectionId);
+    }
+}
+
+// Sinkronisasi Tile Aktif di Menu Lainnya
+function updateUblActiveTile(sectionId) {
+    if (!sectionId) return;
+    const slugMap = {
+        'home': 'beranda',
+        'projects': 'projek',
+        'about': 'tentang'
+    };
+    const slug = slugMap[sectionId] || sectionId;
+    const items = document.querySelectorAll('.ubl-menu-grid .ubl-menu-item');
+    items.forEach(item => {
+        const tile = item.querySelector('.ubl-tile');
+        if (!tile) return;
+        const onclickVal = item.getAttribute('onclick') || '';
+        const hrefVal = item.getAttribute('href') || '';
+        if (onclickVal.includes(sectionId) || hrefVal.includes(slug)) {
+            tile.classList.add('ubl-tile-active');
+        } else {
+            tile.classList.remove('ubl-tile-active');
+        }
+    });
 }
 
 // Buka / Tutup Modal Sheet Menu Lainnya
@@ -65,8 +92,17 @@ function openMoreMenuModal() {
     const sheet = document.getElementById('more-menu-sheet');
     const searchInput = document.getElementById('moreMenuSearchInput');
 
-    if (overlay) overlay.classList.add('show');
-    if (sheet) sheet.classList.add('show');
+    if (overlay) {
+        overlay.style.display = 'block';
+        setTimeout(() => overlay.classList.add('show'), 10);
+    }
+    if (sheet) {
+        sheet.style.display = 'flex';
+        setTimeout(() => {
+            sheet.classList.add('show');
+            sheet.style.transform = 'translateX(-50%) translateY(0)';
+        }, 10);
+    }
 
     // Update greeting name in profile card if visitorName exists
     const savedName = sessionStorage.getItem('visitorName');
@@ -88,7 +124,7 @@ function openMoreMenuModal() {
         filterMoreMenuItems('');
         setTimeout(() => {
             searchInput.focus();
-        }, 280);
+        }, 300);
     }
 }
 
@@ -97,8 +133,15 @@ function closeMoreMenuModal() {
     const overlay = document.getElementById('more-menu-overlay');
     const sheet = document.getElementById('more-menu-sheet');
 
-    if (overlay) overlay.classList.remove('show');
-    if (sheet) sheet.classList.remove('show');
+    if (overlay) {
+        overlay.classList.remove('show');
+        setTimeout(() => { overlay.style.display = ''; }, 300);
+    }
+    if (sheet) {
+        sheet.classList.remove('show');
+        sheet.style.transform = 'translateX(-50%) translateY(105%)';
+        setTimeout(() => { sheet.style.display = ''; }, 350);
+    }
 
     // Kembalikan scroll halaman
     document.body.style.overflow = '';
@@ -178,6 +221,7 @@ function initTabBar() {
 // Expose ke window
 window.updateActiveTab = updateActiveTab;
 window.syncActiveTab = syncActiveTab;
+window.updateUblActiveTile = updateUblActiveTile;
 window.initTabBar = initTabBar;
 window.toggleMoreMenuModal = toggleMoreMenuModal;
 window.openMoreMenuModal = openMoreMenuModal;

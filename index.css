@@ -3250,15 +3250,23 @@ body.light-mode .more-menu-footer {
     color: #fff !important;
 }
 
-/* Modal Bottom Sheet: UBL Style (Matching Image 2) */
+/* Modal Bottom Sheet: UBL Style - LUXURY GOLD THEME (WARNA EMAS) */
 .more-menu-sheet.ubl-style {
-    background: #ffffff;
-    border-radius: 26px 26px 0 0;
-    max-height: 88vh;
-    padding: 16px 20px 24px;
-    box-shadow: 0 -15px 45px rgba(0, 0, 0, 0.28);
-    border: none;
-    color: #1e293b;
+    background: #ffffff !important;
+    border-radius: 26px 26px 0 0 !important;
+    border-top: 3.5px solid #d4af37 !important;
+    max-height: 88vh !important;
+    padding: 16px 20px 24px !important;
+    box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.4), 0 0 25px rgba(212, 175, 55, 0.2) !important;
+    color: #1e293b !important;
+    z-index: 10002 !important;
+}
+
+.more-menu-overlay {
+    background: rgba(0, 0, 0, 0.68) !important;
+    backdrop-filter: blur(8px) !important;
+    -webkit-backdrop-filter: blur(8px) !important;
+    z-index: 10001 !important;
 }
 
 .ubl-sheet-header {
@@ -3270,9 +3278,9 @@ body.light-mode .more-menu-footer {
 }
 
 .ubl-sheet-title {
-    font-size: 1.25rem;
-    font-weight: 700;
-    color: #0f172a;
+    font-size: 1.25rem !important;
+    font-weight: 700 !important;
+    color: #0f172a !important;
     margin: 0;
     letter-spacing: -0.3px;
 }
@@ -3281,7 +3289,7 @@ body.light-mode .more-menu-footer {
     background: transparent;
     border: none;
     font-size: 1.6rem;
-    color: #64748b;
+    color: #64748b !important;
     cursor: pointer;
     padding: 0 4px;
     line-height: 1;
@@ -3289,8 +3297,8 @@ body.light-mode .more-menu-footer {
 }
 
 .ubl-sheet-close:hover {
-    color: #ef4444;
-    transform: scale(1.1);
+    color: #d4af37 !important;
+    transform: scale(1.15);
 }
 
 .ubl-sheet-scrollable {
@@ -3304,18 +3312,19 @@ body.light-mode .more-menu-footer {
 }
 
 .ubl-sheet-scrollable::-webkit-scrollbar-thumb {
-    background: #cbd5e1;
+    background: rgba(212, 175, 55, 0.4);
     border-radius: 10px;
 }
 
-/* Blue Profile Banner Card */
+/* Luxury Gold Profile Banner Card */
 .ubl-profile-card {
-    background: linear-gradient(135deg, #07153a 0%, #153275 100%);
-    border-radius: 20px;
-    padding: 16px 18px;
+    background: linear-gradient(135deg, #181510 0%, #2f2512 50%, #1a160f 100%) !important;
+    border: 1.5px solid rgba(212, 175, 55, 0.65) !important;
+    border-radius: 20px !important;
+    padding: 16px 18px !important;
     margin-bottom: 16px;
-    color: #ffffff;
-    box-shadow: 0 8px 24px rgba(7, 21, 58, 0.35);
+    color: #ffffff !important;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35), 0 0 22px rgba(212, 175, 55, 0.25) !important;
 }
 
 .ubl-profile-top {
@@ -3326,18 +3335,19 @@ body.light-mode .more-menu-footer {
 }
 
 .ubl-avatar-circle {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
+    width: 50px;
+    height: 50px;
+    min-width: 50px;
     border-radius: 50%;
-    background: #ffffff;
-    color: #07153a;
-    font-size: 1.5rem;
-    font-weight: 800;
+    background: linear-gradient(135deg, #ffd700 0%, #d4af37 50%, #b8860b 100%) !important;
+    color: #120e06 !important;
+    font-size: 1.55rem !important;
+    font-weight: 800 !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 3px 12px rgba(212, 175, 55, 0.5) !important;
+    border: 2px solid #fff5cf !important;
 }
 
 .ubl-profile-details {
@@ -3348,15 +3358,15 @@ body.light-mode .more-menu-footer {
 
 .ubl-profile-name {
     margin: 0;
-    font-size: 1.15rem;
-    font-weight: 700;
-    color: #ffffff;
+    font-size: 1.18rem !important;
+    font-weight: 700 !important;
+    color: #ffffff !important;
     letter-spacing: -0.2px;
 }
 
 .ubl-profile-sub {
-    font-size: 0.78rem;
-    color: #93c5fd;
+    font-size: 0.8rem !important;
+    color: #f3e5ab !important;
     margin-top: 3px;
 }
 
@@ -3365,38 +3375,41 @@ body.light-mode .more-menu-footer {
     gap: 10px;
 }
 
+/* Button 1: Profil Saya (Gold Gradient) */
 .ubl-btn-profile {
     flex: 1;
-    background: #ffffff;
-    color: #07153a;
-    border: none;
-    border-radius: 12px;
-    padding: 9px 12px;
-    font-size: 0.85rem;
-    font-weight: 700;
+    background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%) !important;
+    color: #120e06 !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 10px 12px !important;
+    font-size: 0.85rem !important;
+    font-weight: 700 !important;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 3px 10px rgba(212, 175, 55, 0.35) !important;
 }
 
 .ubl-btn-profile:hover {
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 5px 14px rgba(212, 175, 55, 0.5) !important;
+    filter: brightness(1.06);
 }
 
+/* Button 2: Pengaturan (Glass with Gold Border) */
 .ubl-btn-settings {
     flex: 1;
-    background: rgba(255, 255, 255, 0.16);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    border-radius: 12px;
-    padding: 9px 12px;
-    font-size: 0.85rem;
-    font-weight: 600;
+    background: rgba(212, 175, 55, 0.15) !important;
+    color: #fce79a !important;
+    border: 1px solid rgba(212, 175, 55, 0.5) !important;
+    border-radius: 12px !important;
+    padding: 10px 12px !important;
+    font-size: 0.85rem !important;
+    font-weight: 600 !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3406,11 +3419,12 @@ body.light-mode .more-menu-footer {
 }
 
 .ubl-btn-settings:hover {
-    background: rgba(255, 255, 255, 0.25);
+    background: rgba(212, 175, 55, 0.3) !important;
+    color: #ffffff !important;
     transform: translateY(-2px);
 }
 
-/* Search Bar (Cari menu...) */
+/* Search Bar (Cari menu... with Gold Accent) */
 .ubl-search-wrap {
     position: relative;
     margin-bottom: 14px;
@@ -3421,33 +3435,33 @@ body.light-mode .more-menu-footer {
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: #64748b;
+    color: #b8860b !important;
     font-size: 0.95rem;
     pointer-events: none;
 }
 
 .ubl-search-input {
     width: 100%;
-    border: 1.5px solid #e2e8f0;
-    border-radius: 14px;
+    border: 1.5px solid rgba(212, 175, 55, 0.35) !important;
+    border-radius: 14px !important;
     padding: 11px 38px 11px 40px;
     font-size: 0.92rem;
-    color: #1e293b;
+    color: #1e293b !important;
     outline: none;
-    background: #f8fafc;
+    background: #fffdf8 !important;
     font-family: inherit;
     box-sizing: border-box;
     transition: all 0.2s ease;
 }
 
 .ubl-search-input:focus {
-    border-color: #07153a;
-    background: #ffffff;
-    box-shadow: 0 0 10px rgba(7, 21, 58, 0.12);
+    border-color: #d4af37 !important;
+    background: #ffffff !important;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.25) !important;
 }
 
 .ubl-search-input::placeholder {
-    color: #94a3b8;
+    color: #94a3b8 !important;
 }
 
 .ubl-search-clear {
@@ -3465,15 +3479,15 @@ body.light-mode .more-menu-footer {
 }
 
 .ubl-search-clear:hover {
-    color: #0f172a;
+    color: #b8860b;
 }
 
 /* Category Label (MENU) */
 .ubl-section-label {
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: #94a3b8;
-    letter-spacing: 0.6px;
+    font-size: 0.75rem !important;
+    font-weight: 800 !important;
+    color: #b8860b !important;
+    letter-spacing: 0.8px !important;
     margin: 14px 0 12px;
     text-transform: uppercase;
 }
@@ -3490,7 +3504,7 @@ body.light-mode .more-menu-footer {
 
 .ubl-empty-state i {
     font-size: 2rem;
-    color: #64748b;
+    color: #d4af37;
     margin-bottom: 8px;
 }
 
@@ -3531,59 +3545,64 @@ body.light-mode .more-menu-footer {
     transform: translateY(-2px);
 }
 
-/* Rounded Tile Squircle */
+/* Rounded Tile Squircle: Warm Champagne & Gold Tint */
 .ubl-tile {
-    width: 54px;
-    height: 54px;
-    border-radius: 16px;
-    background: #f1f5f9;
+    width: 54px !important;
+    height: 54px !important;
+    border-radius: 16px !important;
+    background: #fffdf5 !important;
+    border: 1px solid rgba(212, 175, 55, 0.28) !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #07153a;
-    font-size: 1.3rem;
+    color: #b8860b !important;
+    font-size: 1.3rem !important;
     transition: all 0.25s ease;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+    box-shadow: 0 2px 8px rgba(212, 175, 55, 0.08) !important;
 }
 
+/* Active Tile (Shining Gold with dark icon) */
 .ubl-tile.ubl-tile-active {
-    background: #07153a;
-    color: #ffffff;
-    box-shadow: 0 4px 14px rgba(7, 21, 58, 0.28);
+    background: linear-gradient(135deg, #ffd700 0%, #d4af37 50%, #b8860b 100%) !important;
+    color: #120e06 !important;
+    border-color: #ffd700 !important;
+    box-shadow: 0 5px 16px rgba(212, 175, 55, 0.5) !important;
 }
 
 .ubl-menu-item:hover .ubl-tile {
-    background: #07153a;
-    color: #ffffff;
-    transform: scale(1.05);
+    background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%) !important;
+    color: #120e06 !important;
+    border-color: #ffd700 !important;
+    transform: scale(1.06);
+    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.4) !important;
 }
 
 .ubl-menu-name {
-    font-size: 0.72rem;
-    font-weight: 600;
+    font-size: 0.72rem !important;
+    font-weight: 600 !important;
     line-height: 1.25;
     max-width: 76px;
-    color: #334155;
+    color: #334155 !important;
     word-wrap: break-word;
 }
 
-/* Pink / Magenta Outlined Logout Button (Matching Image 2) */
+/* Logout Button (Gold Theme - Warna Emas) */
 .ubl-btn-logout {
     width: 100%;
-    border: 1.5px solid #d946ef;
-    color: #c026d3;
-    background: #ffffff;
-    border-radius: 14px;
-    padding: 12px 18px;
-    font-size: 0.95rem;
-    font-weight: 700;
+    border: 1.5px solid #d4af37 !important;
+    color: #b8860b !important;
+    background: #fffdf5 !important;
+    border-radius: 14px !important;
+    padding: 12px 18px !important;
+    font-size: 0.95rem !important;
+    font-weight: 700 !important;
     display: flex;
     align-items: center;
     justify-content: center;
     gap: 8px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 8px rgba(217, 70, 239, 0.08);
+    box-shadow: 0 2px 10px rgba(212, 175, 55, 0.15) !important;
     margin-top: 10px;
     font-family: inherit;
     box-sizing: border-box;
@@ -3591,76 +3610,13 @@ body.light-mode .more-menu-footer {
 
 .ubl-btn-logout i {
     font-size: 1.1rem;
+    color: #d4af37 !important;
 }
 
 .ubl-btn-logout:hover {
-    background: #fdf2f8;
-    border-color: #c026d3;
+    background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(184, 134, 11, 0.22) 100%) !important;
+    border-color: #b8860b !important;
+    color: #996515 !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 14px rgba(217, 70, 239, 0.2);
-}
-
-/* Dark Mode support for UBL-style sheet */
-body:not(.light-mode) .more-menu-sheet.ubl-style {
-    background: #0b1222;
-    border: 1px solid rgba(212, 175, 55, 0.3);
-    box-shadow: 0 -15px 45px rgba(0, 0, 0, 0.75);
-    color: #f8fafc;
-}
-
-body:not(.light-mode) .ubl-sheet-title {
-    color: #f8fafc;
-}
-
-body:not(.light-mode) .ubl-sheet-close {
-    color: #94a3b8;
-}
-
-body:not(.light-mode) .ubl-search-input {
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(255, 255, 255, 0.15);
-    color: #f8fafc;
-}
-
-body:not(.light-mode) .ubl-search-input:focus {
-    border-color: var(--accent-color);
-    background: rgba(255, 255, 255, 0.1);
-    box-shadow: 0 0 12px rgba(212, 175, 55, 0.25);
-}
-
-body:not(.light-mode) .ubl-search-clear {
-    color: #94a3b8;
-}
-
-body:not(.light-mode) .ubl-tile {
-    background: rgba(255, 255, 255, 0.08);
-    color: #cbd5e1;
-}
-
-body:not(.light-mode) .ubl-tile.ubl-tile-active {
-    background: var(--accent-gradient);
-    color: #07153a;
-}
-
-body:not(.light-mode) .ubl-menu-item:hover .ubl-tile {
-    background: var(--accent-gradient);
-    color: #07153a;
-}
-
-body:not(.light-mode) .ubl-menu-name {
-    color: #cbd5e1;
-}
-
-body:not(.light-mode) .ubl-empty-state p {
-    color: #e2e8f0;
-}
-
-body:not(.light-mode) .ubl-btn-logout {
-    background: rgba(217, 70, 239, 0.08);
-    border-color: #d946ef;
-    color: #f472b6;
-}
-
-body:not(.light-mode) .ubl-btn-logout:hover {
-    background: rgba(217, 70, 239, 0.2);
+    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3) !important;
 }
