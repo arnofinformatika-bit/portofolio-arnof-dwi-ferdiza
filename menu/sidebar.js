@@ -32,35 +32,90 @@ function syncSidebarActive(sectionId) {
     });
 }
 
+// Update icon & text pada tombol Pengaturan di Menu Lainnya
+function updateSettingsButtonUI(theme) {
+    const btn = document.getElementById('ubl-btn-settings');
+    if (!btn) return;
+    const isLight = (theme === 'light');
+    btn.innerHTML = `<i class="fas fa-${isLight ? 'sun' : 'moon'}"></i> <span>${isLight ? 'Mode Terang' : 'Mode Gelap'}</span>`;
+}
+
+// Toast notifikasi saat ganti tema
+function showThemeToast(theme) {
+    let toast = document.getElementById('theme-toast-alert');
+    if (!toast) {
+        toast = document.createElement('div');
+        toast.id = 'theme-toast-alert';
+        toast.style.cssText = 'position:fixed;bottom:85px;left:50%;transform:translateX(-50%);background:rgba(18,18,18,0.92);color:#ffd700;padding:8px 18px;border-radius:20px;font-size:0.85rem;font-weight:600;box-shadow:0 6px 20px rgba(0,0,0,0.3);border:1px solid rgba(212,175,55,0.4);z-index:99999;transition:opacity 0.3s ease;pointer-events:none;display:flex;align-items:center;gap:8px;';
+        document.body.appendChild(toast);
+    }
+    const isLight = (theme === 'light');
+    toast.innerHTML = `<i class="fas fa-${isLight ? 'sun' : 'moon'}"></i> ${isLight ? 'Mode Terang Diaktifkan' : 'Mode Gelap Diaktifkan'}`;
+    toast.style.opacity = '1';
+    clearTimeout(toast.timer);
+    toast.timer = setTimeout(() => {
+        toast.style.opacity = '0';
+    }, 1800);
+}
+
+// Toggle Cepat Tema (Gelap / Terang)
+function toggleThemeQuick() {
+    const body = document.body;
+    const themeCheckbox = document.getElementById('checkbox');
+    const isCurrentlyLight = body.classList.contains('light-mode');
+    const newTheme = isCurrentlyLight ? 'dark' : 'light';
+
+    if (newTheme === 'light') {
+        body.classList.add('light-mode');
+        document.documentElement.classList.add('light-mode');
+        localStorage.setItem('theme', 'light');
+        if (themeCheckbox) themeCheckbox.checked = true;
+    } else {
+        body.classList.remove('light-mode');
+        document.documentElement.classList.remove('light-mode');
+        localStorage.setItem('theme', 'dark');
+        if (themeCheckbox) themeCheckbox.checked = false;
+    }
+
+    updateSettingsButtonUI(newTheme);
+    showThemeToast(newTheme);
+}
+
 // Inisialisasi Toggle Theme (Gelap / Terang)
 function initThemeToggle() {
     const themeCheckbox = document.getElementById('checkbox');
     const body = document.body;
-    if (!themeCheckbox) return;
+    const currentTheme = localStorage.getItem('theme') || 'dark';
 
-    const currentTheme = localStorage.getItem('theme');
     if (currentTheme === 'light') {
         body.classList.add('light-mode');
-        themeCheckbox.checked = true;
+        document.documentElement.classList.add('light-mode');
+        if (themeCheckbox) themeCheckbox.checked = true;
+    } else {
+        body.classList.remove('light-mode');
+        document.documentElement.classList.remove('light-mode');
+        if (themeCheckbox) themeCheckbox.checked = false;
     }
 
-    themeCheckbox.addEventListener('change', (e) => {
-        if (e.target.checked) {
-            body.classList.add('light-mode');
-            localStorage.setItem('theme', 'light');
-        } else {
-            body.classList.remove('light-mode');
-            localStorage.setItem('theme', 'dark');
-        }
-    });
+    updateSettingsButtonUI(currentTheme);
+
+    if (themeCheckbox) {
+        themeCheckbox.onchange = function(e) {
+            const nextTheme = e.target.checked ? 'light' : 'dark';
+            if (nextTheme === 'light') {
+                body.classList.add('light-mode');
+                document.documentElement.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+            } else {
+                body.classList.remove('light-mode');
+                document.documentElement.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+            }
+            updateSettingsButtonUI(nextTheme);
+            showThemeToast(nextTheme);
+        };
+    }
 }
-
-
-        }
-    });
-}
-
-
 
 // Logout Tamu / Pengunjung
 function logoutVisitor() {
@@ -91,6 +146,10 @@ window.closeSidebarMobile = closeSidebarMobile;
 window.syncSidebarActive = syncSidebarActive;
 window.logoutVisitor = logoutVisitor;
 window.initSidebar = initSidebar;
+window.initThemeToggle = initThemeToggle;
+window.toggleThemeQuick = toggleThemeQuick;
+window.updateSettingsButtonUI = updateSettingsButtonUI;
+window.showThemeToast = showThemeToast;
 
 document.addEventListener('DOMContentLoaded', () => {
     initSidebar();

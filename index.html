@@ -4,6 +4,21 @@
 <head>
     <!-- Neutralize any device motion/shake gestures & purge stale PWA cache -->
     <script>
+        
+        // Inisialisasi tema instan dari localStorage
+        (function() {
+            try {
+                if (localStorage.getItem('theme') === 'light') {
+                    document.documentElement.classList.add('light-mode');
+                    document.addEventListener('DOMContentLoaded', function() {
+                        document.body.classList.add('light-mode');
+                        var cb = document.getElementById('checkbox');
+                        if (cb) cb.checked = true;
+                    });
+                }
+            } catch(e) {}
+        })();
+
         // Matikan sensor gerak/goyangan agar tidak pernah mengarah ke admin
         window.ondevicemotion = null;
         window.ondeviceorientation = null;
@@ -89,7 +104,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- Custom CSS (Liquid Glass Theme) -->
-    <link rel="stylesheet" href="index.css?v=3.0">
+    <link rel="stylesheet" href="index.css?v=3.2">
 
     <!-- JSON-LD Structured Data: Person Schema (untuk Google Search thumbnail) -->
     <script type="application/ld+json">
@@ -3208,15 +3223,27 @@
             }
         }
 
-        // Toggle Cepat Tema dari tombol Pengaturan di kartu profil
+        // Toggle Cepat Tema (Gelap / Terang)
         function toggleThemeQuick() {
+            const body = document.body;
             const themeCheckbox = document.getElementById('checkbox');
-            if (themeCheckbox) {
-                themeCheckbox.checked = !themeCheckbox.checked;
-                themeCheckbox.dispatchEvent(new Event('change'));
+            const shouldBeLight = !body.classList.contains('light-mode');
+            const newTheme = shouldBeLight ? 'light' : 'dark';
+
+            if (shouldBeLight) {
+                body.classList.add('light-mode');
+                document.documentElement.classList.add('light-mode');
+                localStorage.setItem('theme', 'light');
+                if (themeCheckbox) themeCheckbox.checked = true;
             } else {
-                document.body.classList.toggle('light-mode');
+                body.classList.remove('light-mode');
+                document.documentElement.classList.remove('light-mode');
+                localStorage.setItem('theme', 'dark');
+                if (themeCheckbox) themeCheckbox.checked = false;
             }
+
+            if (typeof updateSettingsButtonUI === 'function') updateSettingsButtonUI(newTheme);
+            if (typeof showThemeToast === 'function') showThemeToast(newTheme);
         }
 
         // Expose functions globally
@@ -3285,9 +3312,9 @@
                         <i class="fas fa-user"></i>
                         <span>Profil Saya</span>
                     </button>
-                    <button type="button" class="ubl-btn-settings" onclick="toggleThemeQuick();">
-                        <i class="fas fa-cog"></i>
-                        <span>Pengaturan</span>
+                    <button type="button" class="ubl-btn-settings" id="ubl-btn-settings" onclick="toggleThemeQuick();" title="Ganti Mode Gelap / Terang">
+                        <i class="fas fa-moon"></i>
+                        <span>Mode Gelap</span>
                     </button>
                 </div>
             </div>
@@ -3549,8 +3576,8 @@
     </div>
 
     <!-- Menu Navigation Modules -->
-    <script src="menu/sidebar.js"></script>
-    <script src="menu/tabbar.js?v=3.0"></script>
+    <script src="menu/sidebar.js?v=3.2"></script>
+    <script src="menu/tabbar.js?v=3.2"></script>
 
     <!-- User Feature Modules -->
     <script src="user/beranda.js"></script>

@@ -3250,50 +3250,51 @@ body.light-mode .more-menu-footer {
     color: #fff !important;
 }
 
-/* Modal Bottom Sheet: UBL Style - LUXURY GOLD THEME (WARNA EMAS) */
+/* Modal Bottom Sheet: UBL Style - LUXURY GOLD THEME (ADAPTIVE DARK & LIGHT MODE) */
 .more-menu-sheet.ubl-style {
-    background: #ffffff !important;
+    background: #12141a !important;
     border-radius: 26px 26px 0 0 !important;
     border-top: 3.5px solid #d4af37 !important;
     max-height: 88vh !important;
     padding: 16px 20px 24px !important;
-    box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.4), 0 0 25px rgba(212, 175, 55, 0.2) !important;
-    color: #1e293b !important;
+    box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.65), 0 0 25px rgba(212, 175, 55, 0.2) !important;
+    color: #f1f5f9 !important;
     z-index: 10002 !important;
+    transition: background 0.3s ease, color 0.3s ease;
 }
 
-.more-menu-overlay {
-    background: rgba(0, 0, 0, 0.68) !important;
-    backdrop-filter: blur(8px) !important;
-    -webkit-backdrop-filter: blur(8px) !important;
-    z-index: 10001 !important;
-}
-
-.ubl-sheet-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 14px;
-    padding: 0 2px;
+body.light-mode .more-menu-sheet.ubl-style {
+    background: #ffffff !important;
+    color: #1e293b !important;
+    box-shadow: 0 -15px 50px rgba(0, 0, 0, 0.15), 0 0 25px rgba(212, 175, 55, 0.2) !important;
 }
 
 .ubl-sheet-title {
     font-size: 1.25rem !important;
     font-weight: 700 !important;
-    color: #0f172a !important;
+    color: #f8fafc !important;
     margin: 0;
     letter-spacing: -0.3px;
+    transition: color 0.3s ease;
+}
+
+body.light-mode .ubl-sheet-title {
+    color: #0f172a !important;
 }
 
 .ubl-sheet-close {
     background: transparent;
     border: none;
     font-size: 1.6rem;
-    color: #64748b !important;
+    color: #94a3b8 !important;
     cursor: pointer;
     padding: 0 4px;
     line-height: 1;
     transition: color 0.2s ease, transform 0.2s ease;
+}
+
+body.light-mode .ubl-sheet-close {
+    color: #64748b !important;
 }
 
 .ubl-sheet-close:hover {
@@ -3400,7 +3401,7 @@ body.light-mode .more-menu-footer {
     filter: brightness(1.06);
 }
 
-/* Button 2: Pengaturan (Glass with Gold Border) */
+/* Button 2: Pengaturan / Mode Gelap-Terang (Glass with Gold Border) */
 .ubl-btn-settings {
     flex: 1;
     background: rgba(212, 175, 55, 0.15) !important;
@@ -3435,7 +3436,7 @@ body.light-mode .more-menu-footer {
     left: 14px;
     top: 50%;
     transform: translateY(-50%);
-    color: #b8860b !important;
+    color: #d4af37 !important;
     font-size: 0.95rem;
     pointer-events: none;
 }
@@ -3446,18 +3447,22 @@ body.light-mode .more-menu-footer {
     border-radius: 14px !important;
     padding: 11px 38px 11px 40px;
     font-size: 0.92rem;
-    color: #1e293b !important;
+    color: #f8fafc !important;
     outline: none;
-    background: #fffdf8 !important;
+    background: #1a1e28 !important;
     font-family: inherit;
     box-sizing: border-box;
     transition: all 0.2s ease;
 }
 
+body.light-mode .ubl-search-input {
+    color: #1e293b !important;
+    background: #fffdf8 !important;
+}
+
 .ubl-search-input:focus {
     border-color: #d4af37 !important;
-    background: #ffffff !important;
-    box-shadow: 0 0 12px rgba(212, 175, 55, 0.25) !important;
+    box-shadow: 0 0 12px rgba(212, 175, 55, 0.35) !important;
 }
 
 .ubl-search-input::placeholder {
@@ -3479,14 +3484,14 @@ body.light-mode .more-menu-footer {
 }
 
 .ubl-search-clear:hover {
-    color: #b8860b;
+    color: #d4af37;
 }
 
 /* Category Label (MENU) */
 .ubl-section-label {
     font-size: 0.75rem !important;
     font-weight: 800 !important;
-    color: #b8860b !important;
+    color: #d4af37 !important;
     letter-spacing: 0.8px !important;
     margin: 14px 0 12px;
     text-transform: uppercase;
@@ -3512,6 +3517,10 @@ body.light-mode .more-menu-footer {
     margin: 0 0 4px;
     font-size: 0.95rem;
     font-weight: 600;
+    color: #e2e8f0;
+}
+
+body.light-mode .ubl-empty-state p {
     color: #334155;
 }
 
@@ -3535,9 +3544,13 @@ body.light-mode .more-menu-footer {
     text-decoration: none;
     text-align: center;
     gap: 8px;
-    color: #334155;
+    color: #cbd5e1;
     cursor: pointer;
     transition: transform 0.2s ease;
+}
+
+body.light-mode .ubl-menu-item {
+    color: #334155;
 }
 
 .ubl-menu-item:hover,
@@ -3545,19 +3558,25 @@ body.light-mode .more-menu-footer {
     transform: translateY(-2px);
 }
 
-/* Rounded Tile Squircle: Warm Champagne & Gold Tint */
+/* Rounded Tile Squircle */
 .ubl-tile {
     width: 54px !important;
     height: 54px !important;
     border-radius: 16px !important;
-    background: #fffdf5 !important;
+    background: #1a1e28 !important;
     border: 1px solid rgba(212, 175, 55, 0.28) !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #b8860b !important;
+    color: #ffd700 !important;
     font-size: 1.3rem !important;
     transition: all 0.25s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2) !important;
+}
+
+body.light-mode .ubl-tile {
+    background: #fffdf5 !important;
+    color: #b8860b !important;
     box-shadow: 0 2px 8px rgba(212, 175, 55, 0.08) !important;
 }
 
@@ -3569,54 +3588,51 @@ body.light-mode .more-menu-footer {
     box-shadow: 0 5px 16px rgba(212, 175, 55, 0.5) !important;
 }
 
-.ubl-menu-item:hover .ubl-tile {
-    background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%) !important;
-    color: #120e06 !important;
-    border-color: #ffd700 !important;
-    transform: scale(1.06);
-    box-shadow: 0 4px 14px rgba(212, 175, 55, 0.4) !important;
-}
-
 .ubl-menu-name {
-    font-size: 0.72rem !important;
+    font-size: 0.76rem !important;
     font-weight: 600 !important;
+    color: #cbd5e1 !important;
     line-height: 1.25;
-    max-width: 76px;
-    color: #334155 !important;
-    word-wrap: break-word;
+    text-align: center;
+    word-break: break-word;
+    white-space: normal;
+    transition: color 0.25s ease;
 }
 
-/* Logout Button (Gold Theme - Warna Emas) */
+body.light-mode .ubl-menu-name {
+    color: #334155 !important;
+}
+
+/* Logout Button */
 .ubl-btn-logout {
     width: 100%;
-    border: 1.5px solid #d4af37 !important;
-    color: #b8860b !important;
-    background: #fffdf5 !important;
+    background: rgba(239, 68, 68, 0.12) !important;
+    color: #f87171 !important;
+    border: 1.5px solid rgba(239, 68, 68, 0.45) !important;
     border-radius: 14px !important;
-    padding: 12px 18px !important;
+    padding: 13px !important;
     font-size: 0.95rem !important;
     font-weight: 700 !important;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 10px;
     cursor: pointer;
     transition: all 0.2s ease;
-    box-shadow: 0 2px 10px rgba(212, 175, 55, 0.15) !important;
-    margin-top: 10px;
-    font-family: inherit;
     box-sizing: border-box;
+    margin-top: 8px;
+    margin-bottom: 12px;
 }
 
-.ubl-btn-logout i {
-    font-size: 1.1rem;
-    color: #d4af37 !important;
+body.light-mode .ubl-btn-logout {
+    background: rgba(239, 68, 68, 0.05) !important;
+    color: #e11d48 !important;
+    border: 1.5px solid rgba(225, 29, 72, 0.4) !important;
 }
 
 .ubl-btn-logout:hover {
-    background: linear-gradient(135deg, rgba(212, 175, 55, 0.12) 0%, rgba(184, 134, 11, 0.22) 100%) !important;
-    border-color: #b8860b !important;
-    color: #996515 !important;
+    background: #ef4444 !important;
+    color: #ffffff !important;
     transform: translateY(-2px);
-    box-shadow: 0 4px 16px rgba(212, 175, 55, 0.3) !important;
+    box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35);
 }

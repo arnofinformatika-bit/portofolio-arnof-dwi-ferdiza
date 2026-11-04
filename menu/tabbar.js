@@ -188,13 +188,29 @@ function clearMoreMenuSearch() {
 
 // Toggle Cepat Tema dari tombol Pengaturan
 function toggleThemeQuick() {
-    const themeCheckbox = document.getElementById('checkbox');
-    if (themeCheckbox) {
-        themeCheckbox.checked = !themeCheckbox.checked;
-        themeCheckbox.dispatchEvent(new Event('change'));
-    } else {
-        document.body.classList.toggle('light-mode');
+    if (window.toggleThemeQuick && window.toggleThemeQuick !== toggleThemeQuick) {
+        window.toggleThemeQuick();
+        return;
     }
+    const body = document.body;
+    const themeCheckbox = document.getElementById('checkbox');
+    const isCurrentlyLight = body.classList.contains('light-mode');
+    const newTheme = isCurrentlyLight ? 'dark' : 'light';
+
+    if (newTheme === 'light') {
+        body.classList.add('light-mode');
+        document.documentElement.classList.add('light-mode');
+        localStorage.setItem('theme', 'light');
+        if (themeCheckbox) themeCheckbox.checked = true;
+    } else {
+        body.classList.remove('light-mode');
+        document.documentElement.classList.remove('light-mode');
+        localStorage.setItem('theme', 'dark');
+        if (themeCheckbox) themeCheckbox.checked = false;
+    }
+
+    if (typeof updateSettingsButtonUI === 'function') updateSettingsButtonUI(newTheme);
+    if (typeof showThemeToast === 'function') showThemeToast(newTheme);
 }
 
 // Inisialisasi Event Listener Tab Bar & Menu Lainnya
