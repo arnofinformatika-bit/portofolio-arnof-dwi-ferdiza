@@ -1,8 +1,7 @@
-const CACHE_NAME = 'arnof-portfolio-v2';
+const CACHE_NAME = 'arnof-portfolio-v5';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
-  '/admin.html',
   '/index.css',
   '/manifest.json',
   '/foto/logo/logo.jpeg',
@@ -21,17 +20,6 @@ const ASSETS_TO_CACHE = [
   '/user/loogbook.js',
   '/user/galeri.js',
   '/user/pencapaian.js',
-  '/admin/beranda.js',
-  '/admin/projek.js',
-  '/admin/tentang.js',
-  '/admin/pendidikan.js',
-  '/admin/skill.js',
-  '/admin/pengalaman.js',
-  '/admin/sertifikat.js',
-  '/admin/learning.js',
-  '/admin/loogbook.js',
-  '/admin/galeri.js',
-  '/admin/pencapaian.js',
   'https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
 ];
@@ -48,7 +36,7 @@ self.addEventListener('install', (event) => {
   );
 });
 
-// Activate Event
+// Activate Event - Hapus semua cache lama segera
 self.addEventListener('activate', (event) => {
   event.waitUntil(
     caches.keys().then((cacheNames) => {
@@ -64,45 +52,36 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch Event
+// Fetch Event - Network First untuk mencegah file JS/HTML basi di HP
 self.addEventListener('fetch', (event) => {
-  // Ignore non-GET requests or browser extension URLs
   if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
     return;
   }
 
+  // Jangan pernah cache atau intercept halaman admin
+  if (event.request.url.includes('admin.html')) {
+    return;
+  }
+
   event.respondWith(
-    caches.match(event.request).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Fetch fresh copy in background to keep cache updated
-        fetch(event.request).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(event.request, networkResponse.clone());
-            });
-          }
-        }).catch(() => { /* Ignore background refresh network errors */ });
-
-        return cachedResponse;
-      }
-
-      return fetch(event.request).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || networkResponse.type !== 'basic') {
-          return networkResponse;
+    fetch(event.request)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(event.request, responseToCache);
+          });
         }
-
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(event.request, responseToCache);
-        });
-
         return networkResponse;
-      }).catch(() => {
-        // Offline fallback for html pages
-        if (event.request.headers.get('accept')?.includes('text/html')) {
-          return caches.match('/index.html');
-        }
-      });
-    })
+      })
+      .catch(() => {
+        // Jika offline, gunakan cache lokal
+        return caches.match(event.request).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
+          if (event.request.headers.get('accept')?.includes('text/html')) {
+            return caches.match('/index.html');
+          }
+        });
+      })
   );
 });

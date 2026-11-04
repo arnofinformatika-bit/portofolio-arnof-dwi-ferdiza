@@ -55,38 +55,7 @@ function initThemeToggle() {
     });
 }
 
-// Shortcut Rahasia Panel Admin (Ctrl + Shift + A atau Ctrl + A)
-function initSecretAdminShortcut() {
-    document.addEventListener('keydown', function (e) {
-        const isCtrl = e.ctrlKey || e.metaKey;
-        const isKeyA = e.key && e.key.toLowerCase() === 'a';
 
-        if (isCtrl && isKeyA) {
-            const targetTag = e.target.tagName ? e.target.tagName.toLowerCase() : '';
-            if (targetTag === 'input' || targetTag === 'textarea' || e.target.isContentEditable) {
-                return;
-            }
-
-            e.preventDefault();
-            const adminLi = document.getElementById('adminNavLi');
-            if (adminLi) {
-                const isHidden = adminLi.style.display === 'none' || adminLi.style.display === '';
-                if (isHidden) {
-                    adminLi.style.display = 'block';
-                    if (typeof showAdminToast === 'function') {
-                        showAdminToast('🔓 Panel Admin ditampilkan!');
-                    }
-                    const sidebar = document.querySelector('.sidebar');
-                    if (sidebar && !sidebar.classList.contains('active') && !sidebar.classList.contains('show')) {
-                        sidebar.classList.add('show');
-                    }
-                } else {
-                    adminLi.style.display = 'none';
-                    if (typeof showAdminToast === 'function') {
-                        showAdminToast('🔒 Panel Admin disembunyikan!');
-                    }
-                }
-            }
         }
     });
 }
@@ -114,7 +83,6 @@ function initSidebar() {
     }
 
     initThemeToggle();
-    initSecretAdminShortcut();
 }
 
 // Expose ke window
