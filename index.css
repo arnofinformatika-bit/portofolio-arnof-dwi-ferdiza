@@ -1895,11 +1895,239 @@ body.light-mode .welcome-input {
     color: #0f172a;
 }
 
-/* Maintenance Overlay Styling */
-#maintenance-overlay {
+/* ===================================================== */
+/* MODERN 503 ASTRONAUT MAINTENANCE SCREEN ANIMATION     */
+/* ===================================================== */
+
+.maintenance-overlay-wrapper {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: #090d16;
+    background-image: 
+        radial-gradient(ellipse at 50% 25%, rgba(190, 242, 100, 0.12) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 80%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+        linear-gradient(180deg, #070a12 0%, #0f1422 100%);
+    z-index: 1000000;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    color: white;
+    text-align: center;
+    padding: 1.5rem 1rem;
+    overflow-y: auto;
+    box-sizing: border-box;
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
 }
+
+.maintenance-stars-bg {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    pointer-events: none;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.m-star {
+    position: absolute;
+    background: #ffffff;
+    border-radius: 50%;
+    opacity: 0.3;
+    animation: mTwinkle 3s ease-in-out infinite;
+}
+
+@keyframes mTwinkle {
+    0%, 100% { opacity: 0.2; transform: scale(0.8); }
+    50% { opacity: 0.9; transform: scale(1.3); }
+}
+
+.maintenance-content-box {
+    position: relative;
+    z-index: 2;
+    max-width: 440px;
+    width: 100%;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Space Scene Container */
+.maintenance-space-scene {
+    position: relative;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+    max-height: 310px;
+    margin: 0 auto 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.maintenance-nebula-glow {
+    position: absolute;
+    width: 240px;
+    height: 240px;
+    background: radial-gradient(circle, rgba(220, 252, 160, 0.28) 0%, rgba(180, 230, 100, 0.12) 55%, transparent 75%);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    filter: blur(28px);
+    pointer-events: none;
+    animation: mPulseNebula 6s ease-in-out infinite alternate;
+}
+
+@keyframes mPulseNebula {
+    0% { transform: translate(-50%, -50%) scale(0.92); opacity: 0.7; }
+    100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+/* Floating Astronaut Keyframe Animation */
+.m-floating-astronaut {
+    animation: mAstronautFloat 5s ease-in-out infinite alternate;
+    transform-origin: center center;
+}
+
+@keyframes mAstronautFloat {
+    0% {
+        transform: translateY(-6px) rotate(0deg);
+    }
+    50% {
+        transform: translateY(-18px) rotate(-3deg);
+    }
+    100% {
+        transform: translateY(2px) rotate(2.5deg);
+    }
+}
+
+/* Tether Cable Breathing */
+.m-tether-cable {
+    animation: mCableWave 5s ease-in-out infinite alternate;
+    transform-origin: center;
+}
+
+@keyframes mCableWave {
+    0% { transform: scaleY(1) translateY(0); }
+    50% { transform: scaleY(1.03) translateY(-2px); }
+    100% { transform: scaleY(0.98) translateY(2px); }
+}
+
+/* Floating Planets */
+.m-planet-1 {
+    animation: mPlanetFloat1 7s ease-in-out infinite alternate;
+    transform-origin: center;
+}
+@keyframes mPlanetFloat1 {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-10px) rotate(15deg); }
+}
+
+.m-planet-2 {
+    animation: mPlanetFloat2 8s ease-in-out infinite alternate;
+    transform-origin: center;
+}
+@keyframes mPlanetFloat2 {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(12px) rotate(-20deg); }
+}
+
+.m-planet-3 {
+    animation: mPlanetFloat3 6.5s ease-in-out infinite alternate;
+    transform-origin: center;
+}
+@keyframes mPlanetFloat3 {
+    0% { transform: translateY(0) rotate(0deg); }
+    100% { transform: translateY(-8px) rotate(8deg); }
+}
+
+/* Typography & Badges */
+.maintenance-title {
+    font-size: 1.55rem !important;
+    font-weight: 800 !important;
+    color: #f59e0b !important;
+    margin: 6px 0 8px !important;
+    letter-spacing: -0.3px;
+    text-shadow: 0 2px 14px rgba(245, 158, 11, 0.25);
+}
+
+.maintenance-desc {
+    color: #94a3b8 !important;
+    font-size: 0.92rem !important;
+    line-height: 1.6 !important;
+    max-width: 370px !important;
+    margin: 0 auto 14px !important;
+}
+
+.maintenance-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(56, 189, 248, 0.12);
+    border: 1px solid rgba(56, 189, 248, 0.35);
+    color: #38bdf8;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 7px 16px;
+    border-radius: 999px;
+    margin-bottom: 18px;
+    box-shadow: 0 4px 15px rgba(56, 189, 248, 0.1);
+}
+
+.m-pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #38bdf8;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #38bdf8;
+    animation: mPulseDot 1.6s ease-in-out infinite;
+}
+
+@keyframes mPulseDot {
+    0%, 100% { transform: scale(0.9); opacity: 0.5; }
+    50% { transform: scale(1.3); opacity: 1; }
+}
+
+/* Actions Group */
+.maintenance-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.maintenance-btn-refresh {
+    background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    color: #111827;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 0.88rem;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.25s ease;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+}
+
+.maintenance-btn-refresh:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(245, 158, 11, 0.45);
+    filter: brightness(1.08);
+}
+
+
 
 /* Responsive Styles */
 @media (max-width: 992px) {
