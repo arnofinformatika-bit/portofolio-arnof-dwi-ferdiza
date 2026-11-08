@@ -4338,13 +4338,6 @@
                     <button type="button" id="btnPerformUpdate" onclick="performInstantCacheUpdate()" class="pwa-install-btn" style="width: 100%; justify-content: center; padding: 12px; font-size: 0.92rem; background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%); color: #0d0d0d; font-weight: 700; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);">
                         <i class="fas fa-redo-alt"></i> Perbarui Cache & Muat Ulang
                     </button>
-                    
-                    <button type="button" onclick="copyChromeWebApkLink()" class="pwa-install-btn" style="width: 100%; justify-content: center; padding: 11px; font-size: 0.85rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); color: var(--text-color, #fff); border-radius: 12px; cursor: pointer;">
-                        <i class="fab fa-chrome" style="color: #4285f4;"></i> Salin chrome://webapks (Android)
-                    </button>
-                </div>
-                <div id="copyUpdateFeedback" style="font-size: 0.78rem; color: #10b981; margin-top: 8px; display: none;">
-                    ✓ Teks chrome://webapks tersalin! Buka di tab baru Chrome untuk update WebAPK.
                 </div>
             </div>
         </div>
@@ -4459,32 +4452,10 @@
             }
         }
 
-        function copyChromeWebApkLink() {
-            const text = 'chrome://webapks';
-            if (navigator.clipboard && navigator.clipboard.writeText) {
-                navigator.clipboard.writeText(text).then(() => {
-                    showCopyFeedback();
-                }).catch(() => {
-                    prompt('Salin dan buka di tab baru Chrome:', text);
-                });
-            } else {
-                prompt('Salin dan buka di tab baru Chrome:', text);
-            }
-        }
-
-        function showCopyFeedback() {
-            const fb = document.getElementById('copyUpdateFeedback');
-            if (fb) {
-                fb.style.display = 'block';
-                setTimeout(() => { fb.style.display = 'none'; }, 4000);
-            }
-        }
-
         window.triggerAppUpdate = triggerAppUpdate;
         window.openUpdateAppModal = openUpdateAppModal;
         window.closeUpdateAppModal = closeUpdateAppModal;
         window.performInstantCacheUpdate = performInstantCacheUpdate;
-        window.copyChromeWebApkLink = copyChromeWebApkLink;
     </script>
 </body>
 </html>
