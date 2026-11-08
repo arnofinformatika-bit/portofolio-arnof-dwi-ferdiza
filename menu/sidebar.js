@@ -117,12 +117,33 @@ function initThemeToggle() {
     }
 }
 
-// Logout Tamu / Pengunjung
+// Buka Custom Modal Logout (Tanpa Domain Vercel)
 function logoutVisitor() {
-    if (confirm('Apakah Anda yakin ingin mengganti nama tamu atau keluar dari sesi ini bro?')) {
+    const overlay = document.getElementById('custom-logout-overlay');
+    const modal = document.getElementById('custom-logout-modal');
+    if (overlay && modal) {
+        overlay.classList.add('show');
+        modal.classList.add('show');
+    } else {
         sessionStorage.removeItem('visitorName');
         location.reload();
     }
+}
+
+// Tutup Custom Modal Logout
+function closeLogoutModal() {
+    const overlay = document.getElementById('custom-logout-overlay');
+    const modal = document.getElementById('custom-logout-modal');
+    if (overlay && modal) {
+        overlay.classList.remove('show');
+        modal.classList.remove('show');
+    }
+}
+
+// Konfirmasi Logout
+function confirmLogoutVisitor() {
+    sessionStorage.removeItem('visitorName');
+    location.reload();
 }
 
 // Inisialisasi Sidebar
@@ -145,6 +166,8 @@ window.toggleSidebar = toggleSidebar;
 window.closeSidebarMobile = closeSidebarMobile;
 window.syncSidebarActive = syncSidebarActive;
 window.logoutVisitor = logoutVisitor;
+window.closeLogoutModal = closeLogoutModal;
+window.confirmLogoutVisitor = confirmLogoutVisitor;
 window.initSidebar = initSidebar;
 window.initThemeToggle = initThemeToggle;
 window.toggleThemeQuick = toggleThemeQuick;

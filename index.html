@@ -104,7 +104,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- Custom CSS (Liquid Glass Theme) -->
-    <link rel="stylesheet" href="index.css?v=3.8">
+    <link rel="stylesheet" href="index.css?v=3.9">
 
     <!-- JSON-LD Structured Data: Person Schema (untuk Google Search thumbnail) -->
     <script type="application/ld+json">
@@ -3361,10 +3361,29 @@
 
         // Function to logout visitor
         function logoutVisitor() {
-            if (confirm('Apakah Anda yakin ingin mengganti nama tamu atau keluar dari sesi ini bro?')) {
+            const overlay = document.getElementById('custom-logout-overlay');
+            const modal = document.getElementById('custom-logout-modal');
+            if (overlay && modal) {
+                overlay.classList.add('show');
+                modal.classList.add('show');
+            } else {
                 sessionStorage.removeItem('visitorName');
                 location.reload();
             }
+        }
+
+        function closeLogoutModal() {
+            const overlay = document.getElementById('custom-logout-overlay');
+            const modal = document.getElementById('custom-logout-modal');
+            if (overlay && modal) {
+                overlay.classList.remove('show');
+                modal.classList.remove('show');
+            }
+        }
+
+        function confirmLogoutVisitor() {
+            sessionStorage.removeItem('visitorName');
+            location.reload();
         }
 
         // Tab Bar Active State Update
@@ -3574,6 +3593,24 @@
             <span>Lainnya</span>
         </a>
     </nav>
+
+    
+    <!-- Custom Confirmation Modal Logout (Tanpa popup bawaan browser vercel.app) -->
+    <div id="custom-logout-overlay" class="custom-logout-overlay" onclick="closeLogoutModal()"></div>
+    <div id="custom-logout-modal" class="custom-logout-modal" role="dialog" aria-modal="true" aria-labelledby="logoutDialogMsg">
+        <div class="custom-logout-box">
+            <div class="logout-icon-wrap">
+                <i class="fas fa-sign-out-alt"></i>
+            </div>
+            <p class="logout-dialog-msg" id="logoutDialogMsg">
+                Apakah Anda yakin ingin mengganti nama tamu atau keluar dari sesi ini bro?
+            </p>
+            <div class="logout-dialog-actions">
+                <button type="button" class="logout-btn-cancel" onclick="closeLogoutModal()">Batal</button>
+                <button type="button" class="logout-btn-confirm" onclick="confirmLogoutVisitor()">Oke</button>
+            </div>
+        </div>
+    </div>
 
     <!-- Modal / Bottom Sheet Menu Lainnya (Gaya Aplikasi Mahasiswa UBL Sesuai Gambar) -->
     <div id="more-menu-overlay" class="more-menu-overlay" onclick="closeMoreMenuModal()"></div>
