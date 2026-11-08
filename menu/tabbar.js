@@ -250,6 +250,15 @@ window.triggerAppUpdate = function(e) {
         window.openUpdateAppModal();
     }
 };
+window.downloadApkV2 = function(e) {
+    if (e && e.preventDefault) e.preventDefault();
+    const link = document.createElement('a');
+    link.href = 'Arnof-App-v2.apk';
+    link.download = 'Arnof-App-v2.apk';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     initTabBar();
