@@ -4,19 +4,19 @@
 <head>
     <!-- Neutralize any device motion/shake gestures & purge stale PWA cache -->
     <script>
-        
+
         // Inisialisasi tema instan dari localStorage
-        (function() {
+        (function () {
             try {
                 if (localStorage.getItem('theme') === 'light') {
                     document.documentElement.classList.add('light-mode');
-                    document.addEventListener('DOMContentLoaded', function() {
+                    document.addEventListener('DOMContentLoaded', function () {
                         document.body.classList.add('light-mode');
                         var cb = document.getElementById('checkbox');
                         if (cb) cb.checked = true;
                     });
                 }
-            } catch(e) {}
+            } catch (e) { }
         })();
 
         // Matikan sensor gerak/goyangan agar tidak pernah mengarah ke admin
@@ -24,20 +24,20 @@
         window.ondeviceorientation = null;
         if (typeof window.DeviceMotionEvent !== 'undefined') {
             try {
-                window.removeEventListener('devicemotion', () => {});
-                window.removeEventListener('deviceorientation', () => {});
-            } catch(e) {}
+                window.removeEventListener('devicemotion', () => { });
+                window.removeEventListener('deviceorientation', () => { });
+            } catch (e) { }
         }
         // Force update service worker & purge old caches immediately
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.getRegistrations().then(function(registrations) {
+            navigator.serviceWorker.getRegistrations().then(function (registrations) {
                 for (var i = 0; i < registrations.length; i++) {
                     registrations[i].update();
                 }
             });
             if ('caches' in window) {
-                caches.keys().then(function(keys) {
-                    keys.forEach(function(key) {
+                caches.keys().then(function (keys) {
+                    keys.forEach(function (key) {
                         if (key !== 'arnof-portfolio-v5') {
                             caches.delete(key);
                         }
@@ -171,10 +171,10 @@
         <div class="liquid-blob blob-4"></div>
     </div>
 
-        <!-- Maintenance / Server Error Overlay (Animated Astronaut 503 Style) -->
+    <!-- Maintenance / Server Error Overlay (Animated Astronaut 503 Style) -->
     <div id="maintenance-overlay" class="maintenance-overlay-wrapper">
         <!-- Ambient Stars Background -->
-                <!-- Flying Rocket Flight Track across Space -->
+        <!-- Flying Rocket Flight Track across Space -->
         <div class="maintenance-rocket-track">
             <div class="m-flying-rocket">
                 <svg viewBox="0 0 100 100" class="m-rocket-svg" xmlns="http://www.w3.org/2000/svg">
@@ -202,8 +202,10 @@
 
                     <!-- Thruster Flame -->
                     <g>
-                        <path class="m-rocket-flame-main" d="M 44,72 Q 50,102 50,107 Q 50,102 56,72 Z" fill="url(#m-fire-grad)" />
-                        <path class="m-rocket-flame-core" d="M 46,72 Q 50,91 50,96 Q 50,91 54,72 Z" fill="url(#m-fire-core)" />
+                        <path class="m-rocket-flame-main" d="M 44,72 Q 50,102 50,107 Q 50,102 56,72 Z"
+                            fill="url(#m-fire-grad)" />
+                        <path class="m-rocket-flame-core" d="M 46,72 Q 50,91 50,96 Q 50,91 54,72 Z"
+                            fill="url(#m-fire-core)" />
                     </g>
 
                     <!-- Left & Right Tail Fins -->
@@ -211,15 +213,16 @@
                     <path d="M 65,54 L 82,74 L 65,69 Z" fill="url(#m-rocket-fin)" stroke="#0f172a" stroke-width="1.8" />
 
                     <!-- Thruster Nozzle -->
-                    <rect x="43" y="68" width="14" height="6" rx="2" fill="#334155" stroke="#0f172a" stroke-width="1.5" />
+                    <rect x="43" y="68" width="14" height="6" rx="2" fill="#334155" stroke="#0f172a"
+                        stroke-width="1.5" />
 
                     <!-- Rocket Fuselage -->
-                    <path d="M 50,12 C 38,28 34,48 34,70 L 66,70 C 66,48 62,28 50,12 Z"
-                          fill="url(#m-rocket-body)" stroke="#0f172a" stroke-width="2.2" />
+                    <path d="M 50,12 C 38,28 34,48 34,70 L 66,70 C 66,48 62,28 50,12 Z" fill="url(#m-rocket-body)"
+                        stroke="#0f172a" stroke-width="2.2" />
 
                     <!-- Nose Cone -->
-                    <path d="M 50,12 C 43,22 40,29 38,34 L 62,34 C 60,29 57,22 50,12 Z"
-                          fill="url(#m-rocket-fin)" stroke="#0f172a" stroke-width="2" />
+                    <path d="M 50,12 C 43,22 40,29 38,34 L 62,34 C 60,29 57,22 50,12 Z" fill="url(#m-rocket-fin)"
+                        stroke="#0f172a" stroke-width="2" />
 
                     <!-- Center Fin Stripe -->
                     <path d="M 48,56 L 50,72 L 52,56 Z" fill="#991b1b" />
@@ -227,7 +230,8 @@
                     <!-- Porthole Window -->
                     <circle cx="50" cy="46" r="9" fill="#1e293b" stroke="#0f172a" stroke-width="1.8" />
                     <circle cx="50" cy="46" r="6.5" fill="#38bdf8" />
-                    <path d="M 46,43 A 4 4 0 0 1 52,42" fill="none" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" />
+                    <path d="M 46,43 A 4 4 0 0 1 52,42" fill="none" stroke="#ffffff" stroke-width="1.8"
+                        stroke-linecap="round" />
                 </svg>
             </div>
         </div>
@@ -246,20 +250,24 @@
             <div class="maintenance-space-scene">
                 <div class="maintenance-nebula-glow"></div>
 
-                <svg viewBox="0 0 420 360" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg" class="maintenance-svg" style="overflow: visible;">
+                <svg viewBox="0 0 420 360" width="100%" height="100%" xmlns="http://www.w3.org/2000/svg"
+                    class="maintenance-svg" style="overflow: visible;">
                     <defs>
                         <!-- Planet 1 Stripes Pattern -->
-                        <pattern id="m-stripes-p1" width="10" height="20" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+                        <pattern id="m-stripes-p1" width="10" height="20" patternTransform="rotate(45 0 0)"
+                            patternUnits="userSpaceOnUse">
                             <line x1="0" y1="0" x2="0" y2="20" stroke="#182214" stroke-width="4.5" />
                             <line x1="5" y1="0" x2="5" y2="20" stroke="#bef264" stroke-width="5.5" />
                         </pattern>
                         <!-- Planet 2 Stripes Pattern -->
-                        <pattern id="m-stripes-p2" width="8" height="16" patternTransform="rotate(-30 0 0)" patternUnits="userSpaceOnUse">
+                        <pattern id="m-stripes-p2" width="8" height="16" patternTransform="rotate(-30 0 0)"
+                            patternUnits="userSpaceOnUse">
                             <line x1="0" y1="0" x2="0" y2="16" stroke="#182214" stroke-width="3.5" />
                             <line x1="4" y1="0" x2="4" y2="16" stroke="#bef264" stroke-width="4.5" />
                         </pattern>
                         <!-- Planet 3 Stripes Pattern -->
-                        <pattern id="m-stripes-p3" width="9" height="18" patternTransform="rotate(65 0 0)" patternUnits="userSpaceOnUse">
+                        <pattern id="m-stripes-p3" width="9" height="18" patternTransform="rotate(65 0 0)"
+                            patternUnits="userSpaceOnUse">
                             <line x1="0" y1="0" x2="0" y2="18" stroke="#182214" stroke-width="4" />
                             <line x1="4.5" y1="0" x2="4.5" y2="18" stroke="#bef264" stroke-width="5" />
                         </pattern>
@@ -284,8 +292,10 @@
                     </defs>
 
                     <!-- Soft Light-Green Background Backdrop Shape -->
-                    <path d="M 210,35 C 310,30 380,85 365,185 C 350,285 290,340 190,345 C 90,350 45,280 55,180 C 65,80 110,40 210,35 Z"
-                          fill="url(#m-blob-grad)" opacity="0.92" filter="drop-shadow(0 10px 25px rgba(217, 249, 157, 0.25))" />
+                    <path
+                        d="M 210,35 C 310,30 380,85 365,185 C 350,285 290,340 190,345 C 90,350 45,280 55,180 C 65,80 110,40 210,35 Z"
+                        fill="url(#m-blob-grad)" opacity="0.92"
+                        filter="drop-shadow(0 10px 25px rgba(217, 249, 157, 0.25))" />
 
                     <!-- Floating Planet 1: Upper Left (Striped Green/Dark) -->
                     <g class="m-planet-1">
@@ -299,89 +309,114 @@
 
                     <!-- Floating Planet 3: Bottom Center (Saturn with Ring) -->
                     <g class="m-planet-3">
-                        <path d="M 182,342 A 32 10 25 0 1 234,325" fill="none" stroke="#111827" stroke-width="3" stroke-linecap="round" />
-                        <circle cx="206" cy="336" r="15" fill="url(#m-stripes-p3)" stroke="#111827" stroke-width="2.5" />
-                        <path d="M 178,345 A 34 11 25 0 0 238,322" fill="none" stroke="#111827" stroke-width="4.5" stroke-linecap="round" />
-                        <path d="M 180,344 A 32 10 25 0 0 236,323" fill="none" stroke="#bef264" stroke-width="2.5" stroke-linecap="round" />
+                        <path d="M 182,342 A 32 10 25 0 1 234,325" fill="none" stroke="#111827" stroke-width="3"
+                            stroke-linecap="round" />
+                        <circle cx="206" cy="336" r="15" fill="url(#m-stripes-p3)" stroke="#111827"
+                            stroke-width="2.5" />
+                        <path d="M 178,345 A 34 11 25 0 0 238,322" fill="none" stroke="#111827" stroke-width="4.5"
+                            stroke-linecap="round" />
+                        <path d="M 180,344 A 32 10 25 0 0 236,323" fill="none" stroke="#bef264" stroke-width="2.5"
+                            stroke-linecap="round" />
                     </g>
 
                     <!-- TETHER CABLE: Back Segment (Loops behind astronaut & behind 503) -->
                     <path class="m-tether-cable"
-                          d="M 295,122 C 380,120 405,215 310,215 C 220,215 200,225 155,230 C 70,240 30,270 45,300 C 60,330 115,310 135,285"
-                          fill="none" stroke="#222b3d" stroke-width="8" stroke-linecap="round" />
+                        d="M 295,122 C 380,120 405,215 310,215 C 220,215 200,225 155,230 C 70,240 30,270 45,300 C 60,330 115,310 135,285"
+                        fill="none" stroke="#222b3d" stroke-width="8" stroke-linecap="round" />
                     <path class="m-tether-cable"
-                          d="M 295,122 C 380,120 405,215 310,215 C 220,215 200,225 155,230 C 70,240 30,270 45,300 C 60,330 115,310 135,285"
-                          fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
+                        d="M 295,122 C 380,120 405,215 310,215 C 220,215 200,225 155,230 C 70,240 30,270 45,300 C 60,330 115,310 135,285"
+                        fill="none" stroke="#ffffff" stroke-width="4" stroke-linecap="round" />
 
                     <!-- BIG BOLD NUMBERS "503" -->
                     <g filter="url(#m-shadow-503)">
-                        <text x="105" y="258" font-family="'Poppins', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="124" fill="#1e2638" letter-spacing="-4">5</text>
-                        <text x="172" y="258" font-family="'Poppins', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="124" fill="#1e2638" letter-spacing="-4">0</text>
-                        <text x="248" y="258" font-family="'Poppins', 'Arial Black', Impact, sans-serif" font-weight="900" font-size="124" fill="#1e2638" letter-spacing="-4">3</text>
+                        <text x="105" y="258" font-family="'Poppins', 'Arial Black', Impact, sans-serif"
+                            font-weight="900" font-size="124" fill="#1e2638" letter-spacing="-4">5</text>
+                        <text x="172" y="258" font-family="'Poppins', 'Arial Black', Impact, sans-serif"
+                            font-weight="900" font-size="124" fill="#1e2638" letter-spacing="-4">0</text>
+                        <text x="248" y="258" font-family="'Poppins', 'Arial Black', Impact, sans-serif"
+                            font-weight="900" font-size="124" fill="#1e2638" letter-spacing="-4">3</text>
                     </g>
 
                     <!-- TETHER CABLE: Front Segment (Weaves over the 503 digits) -->
                     <path class="m-tether-cable"
-                          d="M 115,248 C 145,210 215,190 285,225 C 320,240 395,245 385,160 C 375,100 310,125 292,122"
-                          fill="none" stroke="#222b3d" stroke-width="7" stroke-linecap="round" />
+                        d="M 115,248 C 145,210 215,190 285,225 C 320,240 395,245 385,160 C 375,100 310,125 292,122"
+                        fill="none" stroke="#222b3d" stroke-width="7" stroke-linecap="round" />
                     <path class="m-tether-cable"
-                          d="M 115,248 C 145,210 215,190 285,225 C 320,240 395,245 385,160 C 375,100 310,125 292,122"
-                          fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
+                        d="M 115,248 C 145,210 215,190 285,225 C 320,240 395,245 385,160 C 375,100 310,125 292,122"
+                        fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
 
                     <!-- SUBTITLE UNDER 503: Service Unavailable -->
-                    <text x="206" y="295" font-family="'Poppins', sans-serif" font-weight="700" font-size="19" fill="#2d3748" text-anchor="middle" letter-spacing="1">Service Unavailable</text>
+                    <text x="206" y="295" font-family="'Poppins', sans-serif" font-weight="700" font-size="19"
+                        fill="#2d3748" text-anchor="middle" letter-spacing="1">Service Unavailable</text>
 
                     <!-- FLOATING ASTRONAUT -->
                     <g class="m-floating-astronaut" transform="translate(0, -6)">
                         <!-- Backpack -->
-                        <rect x="225" y="80" width="30" height="42" rx="8" fill="#e2e8f0" stroke="#111827" stroke-width="3" />
-                        <rect x="242" y="86" width="9" height="15" rx="3" fill="#a3e635" stroke="#111827" stroke-width="2" />
-                        <line x1="250" y1="80" x2="256" y2="68" stroke="#111827" stroke-width="2.5" stroke-linecap="round" />
+                        <rect x="225" y="80" width="30" height="42" rx="8" fill="#e2e8f0" stroke="#111827"
+                            stroke-width="3" />
+                        <rect x="242" y="86" width="9" height="15" rx="3" fill="#a3e635" stroke="#111827"
+                            stroke-width="2" />
+                        <line x1="250" y1="80" x2="256" y2="68" stroke="#111827" stroke-width="2.5"
+                            stroke-linecap="round" />
                         <circle cx="257" cy="66" r="3" fill="#bef264" stroke="#111827" stroke-width="1.5" />
 
                         <!-- Left Leg -->
                         <g>
-                            <path d="M 188,78 L 175,98 L 195,108 L 208,86 Z" fill="#ffffff" stroke="#111827" stroke-width="3" />
+                            <path d="M 188,78 L 175,98 L 195,108 L 208,86 Z" fill="#ffffff" stroke="#111827"
+                                stroke-width="3" />
                             <circle cx="178" cy="103" r="10" fill="#a3e635" stroke="#111827" stroke-width="2.5" />
-                            <path d="M 172,108 L 165,130 L 192,132 L 188,112 Z" fill="#ffffff" stroke="#111827" stroke-width="3" />
-                            <path d="M 160,130 C 160,130 178,142 195,133 L 192,126 L 163,124 Z" fill="#cbd5e1" stroke="#111827" stroke-width="3" />
+                            <path d="M 172,108 L 165,130 L 192,132 L 188,112 Z" fill="#ffffff" stroke="#111827"
+                                stroke-width="3" />
+                            <path d="M 160,130 C 160,130 178,142 195,133 L 192,126 L 163,124 Z" fill="#cbd5e1"
+                                stroke="#111827" stroke-width="3" />
                         </g>
 
                         <!-- Right Leg -->
                         <g>
-                            <path d="M 215,70 L 230,95 L 246,86 L 230,62 Z" fill="#ffffff" stroke="#111827" stroke-width="3" />
+                            <path d="M 215,70 L 230,95 L 246,86 L 230,62 Z" fill="#ffffff" stroke="#111827"
+                                stroke-width="3" />
                             <circle cx="236" cy="92" r="10" fill="#a3e635" stroke="#111827" stroke-width="2.5" />
-                            <path d="M 235,98 L 246,125 L 268,118 L 248,93 Z" fill="#ffffff" stroke="#111827" stroke-width="3" />
-                            <path d="M 242,124 C 248,135 268,132 272,118 L 265,114 L 243,119 Z" fill="#cbd5e1" stroke="#111827" stroke-width="3" />
+                            <path d="M 235,98 L 246,125 L 268,118 L 248,93 Z" fill="#ffffff" stroke="#111827"
+                                stroke-width="3" />
+                            <path d="M 242,124 C 248,135 268,132 272,118 L 265,114 L 243,119 Z" fill="#cbd5e1"
+                                stroke="#111827" stroke-width="3" />
                         </g>
 
                         <!-- Torso -->
                         <path d="M 190,65 C 190,65 178,92 195,102 C 210,110 238,98 238,78 C 238,65 210,55 190,65 Z"
-                              fill="#ffffff" stroke="#111827" stroke-width="3.5" />
-                        <rect x="198" y="72" width="22" height="24" rx="4" fill="#e2e8f0" stroke="#111827" stroke-width="2.5" />
+                            fill="#ffffff" stroke="#111827" stroke-width="3.5" />
+                        <rect x="198" y="72" width="22" height="24" rx="4" fill="#e2e8f0" stroke="#111827"
+                            stroke-width="2.5" />
                         <circle cx="204" cy="79" r="2.5" fill="#111827" />
                         <circle cx="213" cy="79" r="2.5" fill="#111827" />
-                        <line x1="202" y1="87" x2="216" y2="87" stroke="#111827" stroke-width="2" stroke-linecap="round" />
+                        <line x1="202" y1="87" x2="216" y2="87" stroke="#111827" stroke-width="2"
+                            stroke-linecap="round" />
 
                         <!-- Helmet -->
                         <circle cx="235" cy="45" r="28" fill="#ffffff" stroke="#111827" stroke-width="3.5" />
-                        <ellipse cx="238" cy="46" rx="20" ry="18" fill="url(#m-visor-grad)" stroke="#111827" stroke-width="2.5" />
-                        <path d="M 226,38 A 14 12 0 0 1 250,40" fill="none" stroke="#ffffff" stroke-width="3.5" stroke-linecap="round" />
+                        <ellipse cx="238" cy="46" rx="20" ry="18" fill="url(#m-visor-grad)" stroke="#111827"
+                            stroke-width="2.5" />
+                        <path d="M 226,38 A 14 12 0 0 1 250,40" fill="none" stroke="#ffffff" stroke-width="3.5"
+                            stroke-linecap="round" />
 
                         <!-- Left Arm -->
                         <g>
-                            <path d="M 194,62 L 182,42 L 170,52 L 184,70 Z" fill="#ffffff" stroke="#111827" stroke-width="3" />
+                            <path d="M 194,62 L 182,42 L 170,52 L 184,70 Z" fill="#ffffff" stroke="#111827"
+                                stroke-width="3" />
                             <circle cx="178" cy="48" r="8" fill="#a3e635" stroke="#111827" stroke-width="2" />
                             <circle cx="168" cy="44" r="8" fill="#ffffff" stroke="#111827" stroke-width="2.5" />
                         </g>
 
                         <!-- Right Arm -->
                         <g>
-                            <path d="M 225,68 L 244,88 L 256,78 L 235,60 Z" fill="#ffffff" stroke="#111827" stroke-width="3" />
+                            <path d="M 225,68 L 244,88 L 256,78 L 235,60 Z" fill="#ffffff" stroke="#111827"
+                                stroke-width="3" />
                             <circle cx="248" cy="82" r="8" fill="#a3e635" stroke="#111827" stroke-width="2" />
-                            <path d="M 246,86 L 260,110 L 272,102 L 254,80 Z" fill="#ffffff" stroke="#111827" stroke-width="3" />
-                            <path d="M 260,108 C 265,116 268,124 264,128 C 260,132 254,124 252,118 C 250,126 244,128 242,122 C 240,116 244,110 248,106 Z"
-                                  fill="#ffffff" stroke="#111827" stroke-width="2.5" />
+                            <path d="M 246,86 L 260,110 L 272,102 L 254,80 Z" fill="#ffffff" stroke="#111827"
+                                stroke-width="3" />
+                            <path
+                                d="M 260,108 C 265,116 268,124 264,128 C 260,132 254,124 252,118 C 250,126 244,128 242,122 C 240,116 244,110 248,106 Z"
+                                fill="#ffffff" stroke="#111827" stroke-width="2.5" />
                         </g>
                     </g>
                 </svg>
@@ -414,12 +449,13 @@
                     <span class="m-countdown-label">DETIK</span>
                 </div>
             </div>
-</div>
+        </div>
     </div>
 
     <!-- Welcome Overlay (New Modern Glassmorphic Experience) -->
     <!-- 1. Opening Splash Screen (Animasi Teks: Welcome to Portfolio Arnof) -->
-    <div id="intro-splash-screen" class="intro-splash-screen" onclick="proceedToLogin(event)" ontouchstart="proceedToLogin(event)">
+    <div id="intro-splash-screen" class="intro-splash-screen" onclick="proceedToLogin(event)"
+        ontouchstart="proceedToLogin(event)">
         <!-- Ambient Glowing Aura -->
         <div class="splash-text-glow splash-text-glow-gold"></div>
         <div class="splash-text-glow splash-text-glow-blue"></div>
@@ -498,7 +534,8 @@
             <!-- Profile Avatar with Animated Glow Ring & Status -->
             <div class="welcome-avatar-container">
                 <div class="welcome-avatar-ring"></div>
-                <img src="profil.jpeg" alt="Foto Arnof Dwi Ferdiza" class="welcome-avatar-img" onerror="this.src='foto/logo/logo.jpeg'">
+                <img src="profil.jpeg" alt="Foto Arnof Dwi Ferdiza" class="welcome-avatar-img"
+                    onerror="this.src='foto/logo/logo.jpeg'">
                 <div class="welcome-status-badge" title="Tersedia & Online">
                     <span class="status-dot"></span>
                 </div>
@@ -527,7 +564,8 @@
             <form id="welcomeForm" class="welcome-form" onsubmit="submitWelcomeForm(event)">
                 <div class="welcome-input-wrapper">
                     <i class="fas fa-user welcome-input-icon"></i>
-                    <input type="text" id="visitorName" class="welcome-input" placeholder="Nama Lengkap Anda..." required autocomplete="name" maxlength="40">
+                    <input type="text" id="visitorName" class="welcome-input" placeholder="Nama Lengkap Anda..."
+                        required autocomplete="name" maxlength="40">
                 </div>
 
                 <div id="name-error" class="welcome-error-msg" style="display: none;">
@@ -580,20 +618,30 @@
         <div id="google_translate_element"></div>
 
         <ul class="nav-links">
-            <li><a href="#/beranda" class="active" onclick="showSection('home', event)"><i class="fas fa-home"></i> Beranda</a></li>
-            <li><a href="#/introduction" onclick="showSection('introduction', event)"><i class="fas fa-sparkles"></i> Introduction</a></li>
-            <li><a href="#/projek" onclick="showSection('projects', event)"><i class="fas fa-project-diagram"></i> Projek Selesai</a>
+            <li><a href="#/beranda" class="active" onclick="showSection('home', event)"><i class="fas fa-home"></i>
+                    Beranda</a></li>
+            <li><a href="#/introduction" onclick="showSection('introduction', event)"><i class="fas fa-sparkles"></i>
+                    Introduction</a></li>
+            <li><a href="#/projek" onclick="showSection('projects', event)"><i class="fas fa-project-diagram"></i>
+                    Projek Selesai</a>
             </li>
-            <li><a href="#/tentang" onclick="showSection('about', event)"><i class="fas fa-user"></i> Tentang Saya</a></li>
-            <li><a href="#/pendidikan" onclick="showSection('education', event)"><i class="fas fa-graduation-cap"></i> Pendidikan</a></li>
+            <li><a href="#/tentang" onclick="showSection('about', event)"><i class="fas fa-user"></i> Tentang Saya</a>
+            </li>
+            <li><a href="#/pendidikan" onclick="showSection('education', event)"><i class="fas fa-graduation-cap"></i>
+                    Pendidikan</a></li>
             <li><a href="#/skill" onclick="showSection('skills', event)"><i class="fas fa-code"></i> Skill</a></li>
-            <li><a href="#/pengalaman" onclick="showSection('experience', event)"><i class="fas fa-briefcase"></i> Pengalaman</a></li>
-            <li><a href="#/sertifikat" onclick="showSection('certificates', event)"><i class="fas fa-certificate"></i> Sertifikat</a></li>
-            <li><a href="#/learning" onclick="showSection('learning-path', event)"><i class="fas fa-map-signs"></i> Learning Path</a>
+            <li><a href="#/pengalaman" onclick="showSection('experience', event)"><i class="fas fa-briefcase"></i>
+                    Pengalaman</a></li>
+            <li><a href="#/sertifikat" onclick="showSection('certificates', event)"><i class="fas fa-certificate"></i>
+                    Sertifikat</a></li>
+            <li><a href="#/learning" onclick="showSection('learning-path', event)"><i class="fas fa-map-signs"></i>
+                    Learning Path</a>
             </li>
             <li><a href="#/logbook" onclick="showSection('logbook', event)"><i class="fas fa-book"></i> Logbook</a></li>
-            <li><a href="#/galeri" onclick="showSection('gallery', event)"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
-            <li><a href="#/pencapaian" onclick="showSection('achievements', event)"><i class="fas fa-trophy"></i> Pencapaian</a></li>
+            <li><a href="#/galeri" onclick="showSection('gallery', event)"><i class="fas fa-image"></i> Galeri
+                    Kegiatan</a></li>
+            <li><a href="#/pencapaian" onclick="showSection('achievements', event)"><i class="fas fa-trophy"></i>
+                    Pencapaian</a></li>
         </ul>
 
 
@@ -651,15 +699,19 @@
         <div class="top-marquee-banner" id="topMarqueeBanner" role="region" aria-label="Pengumuman Berjalan">
             <div class="marquee-content-track">
                 <div class="marquee-text-item">
-                    <span>Selamat Datang di portofolio <strong class="marquee-highlight-name">ARNOF DWI FERDIZA</strong>, semoga kita bisa bekerja sama</span>
+                    <span>Selamat Datang di portofolio <strong class="marquee-highlight-name">ARNOF DWI
+                            FERDIZA</strong>, semoga kita bisa bekerja sama</span>
                     <span class="marquee-dot"></span>
-                    <span>Selamat Datang di portofolio <strong class="marquee-highlight-name">ARNOF DWI FERDIZA</strong>, semoga kita bisa bekerja sama</span>
+                    <span>Selamat Datang di portofolio <strong class="marquee-highlight-name">ARNOF DWI
+                            FERDIZA</strong>, semoga kita bisa bekerja sama</span>
                     <span class="marquee-dot"></span>
                 </div>
                 <div class="marquee-text-item" aria-hidden="true">
-                    <span>Selamat Datang di portofolio <strong class="marquee-highlight-name">ARNOF DWI FERDIZA</strong>, semoga kita bisa bekerja sama</span>
+                    <span>Selamat Datang di portofolio <strong class="marquee-highlight-name">ARNOF DWI
+                            FERDIZA</strong>, semoga kita bisa bekerja sama</span>
                     <span class="marquee-dot"></span>
-                    <span>Selamat Datang di portofolio <strong class="marquee-highlight-name">ARNOF DWI FERDIZA</strong>, semoga kita bisa bekerja sama</span>
+                    <span>Selamat Datang di portofolio <strong class="marquee-highlight-name">ARNOF DWI
+                            FERDIZA</strong>, semoga kita bisa bekerja sama</span>
                     <span class="marquee-dot"></span>
                 </div>
             </div>
@@ -686,7 +738,8 @@
 
                     <div class="intro-avatar-wrapper">
                         <div class="intro-avatar-orbit"></div>
-                        <img src="profil.jpeg" alt="Foto Arnof Dwi Ferdiza" class="intro-avatar-photo" onerror="this.src='foto/logo/logo.jpeg'">
+                        <img src="profil.jpeg" alt="Foto Arnof Dwi Ferdiza" class="intro-avatar-photo"
+                            onerror="this.src='foto/logo/logo.jpeg'">
                         <div class="intro-avatar-badge">
                             <i class="fas fa-check"></i>
                         </div>
@@ -699,12 +752,15 @@
 
                     <div class="intro-role-tagline">
                         <i class="fas fa-terminal"></i>
-                        <span id="intro-typewriter-text" class="intro-typewriter">Informatika UBL &bull; Web Developer &bull; UI/UX</span>
+                        <span id="intro-typewriter-text" class="intro-typewriter">Informatika UBL &bull; Web Developer
+                            &bull; UI/UX</span>
                         <span class="intro-cursor">|</span>
                     </div>
 
                     <p class="intro-bio-text">
-                        Terima kasih telah berkunjung! Jelajahi berbagai projek inovatif, rekam jejak sertifikasi, keahlian teknis, dan portofolio teknologi saya dalam satu platform terpadu. Semoga kita bisa bekerja sama! ✨
+                        Terima kasih telah berkunjung! Jelajahi berbagai projek inovatif, rekam jejak sertifikasi,
+                        keahlian teknis, dan portofolio teknologi saya dalam satu platform terpadu. Semoga kita bisa
+                        bekerja sama! ✨
                     </p>
 
                     <div class="intro-action-buttons">
@@ -2281,20 +2337,25 @@
 
         <!-- SECTION: GALERI KEGIATAN -->
         <section id="gallery">
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+            <div
+                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
                 <h2 class="section-title" style="margin-bottom: 0;">Blog & Galeri Kegiatan</h2>
                 <div style="display: flex; gap: 0.75rem; align-items: center;">
-                    <button class="btn" onclick="showAllHMIFKegiatan()" style="background: linear-gradient(135deg, #06b6d4, #3b82f6); border: none; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35); font-weight: 600;">
+                    <button class="btn" onclick="showAllHMIFKegiatan()"
+                        style="background: linear-gradient(135deg, #06b6d4, #3b82f6); border: none; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.35); font-weight: 600;">
                         <i class="fas fa-users"></i> Kegiatan HMIF
                     </button>
-                    <button class="btn" onclick="openUploadModal()" style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);" title="Tambah Foto Kegiatan Baru">
+                    <button class="btn" onclick="openUploadModal()"
+                        style="background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);"
+                        title="Tambah Foto Kegiatan Baru">
                         <i class="fas fa-plus"></i> Tambah Foto
                     </button>
                 </div>
             </div>
 
             <div class="card">
-                <p class="text-lead" style="margin-bottom: 1.25rem;">Dokumentasi kegiatan kampus, Kegiatan HMIF, Kegiatan Pengabdian
+                <p class="text-lead" style="margin-bottom: 1.25rem;">Dokumentasi kegiatan kampus, Kegiatan HMIF,
+                    Kegiatan Pengabdian
                     Kepada Masyarakat Bersama Dosen, proyek robotika, Seminar Himpunan, Pengabdian Kepada Masyarakat dan
                     organisasi.</p>
 
@@ -2334,7 +2395,8 @@
                         </div>
                         <div class="form-group">
                             <label>Kepengurusan / Periode HMIF</label>
-                            <select id="activityPeriod" class="form-control" style="background: rgba(15, 23, 42, 0.8); color: #fff; border: 1px solid var(--glass-border); border-radius: 8px; padding: 10px;">
+                            <select id="activityPeriod" class="form-control"
+                                style="background: rgba(15, 23, 42, 0.8); color: #fff; border: 1px solid var(--glass-border); border-radius: 8px; padding: 10px;">
                                 <option value="2025/2026">HMIF KEPENGURUSAN 2025/2026</option>
                                 <option value="2026/2027" selected>HMIF KEPENGURUSAN 2026/2027</option>
                             </select>
@@ -3323,7 +3385,7 @@
                     }
                 });
 
-                                // Update tab bar links
+                // Update tab bar links
                 const tabLinks = document.querySelectorAll('.tab-bar .tab-item');
                 const mainSections = ['home', 'projects', 'about'];
                 const moreTab = document.getElementById('tab-item-more');
@@ -3813,26 +3875,28 @@
             <i class="fas fa-user"></i>
             <span>Profile</span>
         </a>
-        <a href="javascript:void(0)" class="tab-item" id="tab-item-more" onclick="toggleMoreMenuModal(event)" aria-label="Menu Lainnya">
+        <a href="javascript:void(0)" class="tab-item" id="tab-item-more" onclick="toggleMoreMenuModal(event)"
+            aria-label="Menu Lainnya">
             <svg class="tab-grid-icon" width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
-                <rect x="2.5" y="2.5" width="5.2" height="5.2" rx="1.2"/>
-                <rect x="9.4" y="2.5" width="5.2" height="5.2" rx="1.2"/>
-                <rect x="16.3" y="2.5" width="5.2" height="5.2" rx="1.2"/>
-                <rect x="2.5" y="9.4" width="5.2" height="5.2" rx="1.2"/>
-                <rect x="9.4" y="9.4" width="5.2" height="5.2" rx="1.2"/>
-                <rect x="16.3" y="9.4" width="5.2" height="5.2" rx="1.2"/>
-                <rect x="2.5" y="16.3" width="5.2" height="5.2" rx="1.2"/>
-                <rect x="9.4" y="16.3" width="5.2" height="5.2" rx="1.2"/>
-                <rect x="16.3" y="16.3" width="5.2" height="5.2" rx="1.2"/>
+                <rect x="2.5" y="2.5" width="5.2" height="5.2" rx="1.2" />
+                <rect x="9.4" y="2.5" width="5.2" height="5.2" rx="1.2" />
+                <rect x="16.3" y="2.5" width="5.2" height="5.2" rx="1.2" />
+                <rect x="2.5" y="9.4" width="5.2" height="5.2" rx="1.2" />
+                <rect x="9.4" y="9.4" width="5.2" height="5.2" rx="1.2" />
+                <rect x="16.3" y="9.4" width="5.2" height="5.2" rx="1.2" />
+                <rect x="2.5" y="16.3" width="5.2" height="5.2" rx="1.2" />
+                <rect x="9.4" y="16.3" width="5.2" height="5.2" rx="1.2" />
+                <rect x="16.3" y="16.3" width="5.2" height="5.2" rx="1.2" />
             </svg>
             <span>Lainnya</span>
         </a>
     </nav>
 
-    
+
     <!-- Custom Confirmation Modal Logout (Tanpa popup bawaan browser vercel.app) -->
     <div id="custom-logout-overlay" class="custom-logout-overlay" onclick="closeLogoutModal()"></div>
-    <div id="custom-logout-modal" class="custom-logout-modal" role="dialog" aria-modal="true" aria-labelledby="logoutDialogMsg">
+    <div id="custom-logout-modal" class="custom-logout-modal" role="dialog" aria-modal="true"
+        aria-labelledby="logoutDialogMsg">
         <div class="custom-logout-box">
             <div class="logout-icon-wrap">
                 <i class="fas fa-sign-out-alt"></i>
@@ -3869,11 +3933,13 @@
                     </div>
                 </div>
                 <div class="ubl-profile-actions">
-                    <button type="button" class="ubl-btn-profile" onclick="showSection('about', event); closeMoreMenuModal();">
+                    <button type="button" class="ubl-btn-profile"
+                        onclick="showSection('about', event); closeMoreMenuModal();">
                         <i class="fas fa-user"></i>
                         <span>Profil Saya</span>
                     </button>
-                    <button type="button" class="ubl-btn-settings" id="ubl-btn-settings" onclick="toggleThemeQuick();" title="Ganti Mode Gelap / Terang">
+                    <button type="button" class="ubl-btn-settings" id="ubl-btn-settings" onclick="toggleThemeQuick();"
+                        title="Ganti Mode Gelap / Terang">
                         <i class="fas fa-moon"></i>
                         <span>Mode Gelap</span>
                     </button>
@@ -3883,11 +3949,10 @@
             <!-- Search Bar: Cari menu... -->
             <div class="ubl-search-wrap">
                 <i class="fas fa-search ubl-search-icon"></i>
-                <input type="text" id="moreMenuSearchInput" class="ubl-search-input"
-                       placeholder="Cari menu..."
-                       oninput="filterMoreMenuItems(this.value)" autocomplete="off">
-                <button type="button" id="moreMenuSearchClear" class="ubl-search-clear"
-                        onclick="clearMoreMenuSearch()" aria-label="Hapus">&times;</button>
+                <input type="text" id="moreMenuSearchInput" class="ubl-search-input" placeholder="Cari menu..."
+                    oninput="filterMoreMenuItems(this.value)" autocomplete="off">
+                <button type="button" id="moreMenuSearchClear" class="ubl-search-clear" onclick="clearMoreMenuSearch()"
+                    aria-label="Hapus">&times;</button>
             </div>
 
             <!-- Section Label: MENU -->
@@ -3904,7 +3969,7 @@
             <div class="ubl-menu-grid">
                 <!-- 1. Dashboard / Beranda -->
                 <a href="#/beranda" class="ubl-menu-item" data-keywords="dashboard beranda home utama arnof"
-                   onclick="showSection('home', event); closeMoreMenuModal();">
+                    onclick="showSection('home', event); closeMoreMenuModal();">
                     <div class="ubl-tile ubl-tile-active">
                         <i class="fas fa-th-large"></i>
                     </div>
@@ -3912,8 +3977,9 @@
                 </a>
 
                 <!-- 2. Projek Selesai -->
-                <a href="#/projek" class="ubl-menu-item" data-keywords="projek project portofolio aplikasi karya coding web feed showcase"
-                   onclick="showSection('projects', event); closeMoreMenuModal();">
+                <a href="#/projek" class="ubl-menu-item"
+                    data-keywords="projek project portofolio aplikasi karya coding web feed showcase"
+                    onclick="showSection('projects', event); closeMoreMenuModal();">
                     <div class="ubl-tile">
                         <i class="fas fa-layer-group"></i>
                     </div>
@@ -3921,8 +3987,9 @@
                 </a>
 
                 <!-- 3. Tentang Saya / Bimbingan -->
-                <a href="#/tentang" class="ubl-menu-item" data-keywords="tentang saya profile profil biodata bio diri bimbingan"
-                   onclick="showSection('about', event); closeMoreMenuModal();">
+                <a href="#/tentang" class="ubl-menu-item"
+                    data-keywords="tentang saya profile profil biodata bio diri bimbingan"
+                    onclick="showSection('about', event); closeMoreMenuModal();">
                     <div class="ubl-tile">
                         <i class="fas fa-user-circle"></i>
                     </div>
@@ -3930,8 +3997,9 @@
                 </a>
 
                 <!-- 4. Pendidikan -->
-                <a href="#/pendidikan" class="ubl-menu-item" data-keywords="pendidikan sekolah kuliah universitas bandar lampung ubl edukasi education study"
-                   onclick="showSection('education', event); closeMoreMenuModal();">
+                <a href="#/pendidikan" class="ubl-menu-item"
+                    data-keywords="pendidikan sekolah kuliah universitas bandar lampung ubl edukasi education study"
+                    onclick="showSection('education', event); closeMoreMenuModal();">
                     <div class="ubl-tile">
                         <i class="fas fa-graduation-cap"></i>
                     </div>
@@ -3939,8 +4007,9 @@
                 </a>
 
                 <!-- 5. Skill -->
-                <a href="#/skill" class="ubl-menu-item" data-keywords="skill keahlian teknologi coding programming matakuliah non generic tech stack"
-                   onclick="showSection('skills', event); closeMoreMenuModal();">
+                <a href="#/skill" class="ubl-menu-item"
+                    data-keywords="skill keahlian teknologi coding programming matakuliah non generic tech stack"
+                    onclick="showSection('skills', event); closeMoreMenuModal();">
                     <div class="ubl-tile">
                         <i class="fas fa-code"></i>
                     </div>
@@ -3948,8 +4017,9 @@
                 </a>
 
                 <!-- 6. Pengalaman -->
-                <a href="#/pengalaman" class="ubl-menu-item" data-keywords="pengalaman experience organisasi kepanitiaan kerja magang pemagangan hmif ubl"
-                   onclick="showSection('experience', event); closeMoreMenuModal();">
+                <a href="#/pengalaman" class="ubl-menu-item"
+                    data-keywords="pengalaman experience organisasi kepanitiaan kerja magang pemagangan hmif ubl"
+                    onclick="showSection('experience', event); closeMoreMenuModal();">
                     <div class="ubl-tile">
                         <i class="fas fa-briefcase"></i>
                     </div>
@@ -3957,8 +4027,9 @@
                 </a>
 
                 <!-- 7. Sertifikat -->
-                <a href="#/sertifikat" class="ubl-menu-item" data-keywords="sertifikat sertifikasi certificate lisensi info pcc dicoding kursus"
-                   onclick="showSection('certificates', event); closeMoreMenuModal();">
+                <a href="#/sertifikat" class="ubl-menu-item"
+                    data-keywords="sertifikat sertifikasi certificate lisensi info pcc dicoding kursus"
+                    onclick="showSection('certificates', event); closeMoreMenuModal();">
                     <div class="ubl-tile">
                         <i class="fas fa-certificate"></i>
                     </div>
@@ -3966,8 +4037,9 @@
                 </a>
 
                 <!-- 8. Learning Path -->
-                <a href="#/learning" class="ubl-menu-item" data-keywords="learning path alur belajar kurikulum roadmap rencana studi"
-                   onclick="showSection('learning-path', event); closeMoreMenuModal();">
+                <a href="#/learning" class="ubl-menu-item"
+                    data-keywords="learning path alur belajar kurikulum roadmap rencana studi"
+                    onclick="showSection('learning-path', event); closeMoreMenuModal();">
                     <div class="ubl-tile">
                         <i class="fas fa-map-signs"></i>
                     </div>
@@ -3975,8 +4047,9 @@
                 </a>
 
                 <!-- 9. Logbook -->
-                <a href="#/logbook" class="ubl-menu-item" data-keywords="logbook jurnal harian catatan diary tagihan progress aktivitas"
-                   onclick="showSection('logbook', event); closeMoreMenuModal();">
+                <a href="#/logbook" class="ubl-menu-item"
+                    data-keywords="logbook jurnal harian catatan diary tagihan progress aktivitas"
+                    onclick="showSection('logbook', event); closeMoreMenuModal();">
                     <div class="ubl-tile">
                         <i class="fas fa-book"></i>
                     </div>
@@ -3984,8 +4057,9 @@
                 </a>
 
                 <!-- 10. Galeri Kegiatan -->
-                <a href="#/galeri" class="ubl-menu-item" data-keywords="galeri gallery foto dokumentasi kegiatan album momen capture"
-                   onclick="showSection('gallery', event); closeMoreMenuModal();">
+                <a href="#/galeri" class="ubl-menu-item"
+                    data-keywords="galeri gallery foto dokumentasi kegiatan album momen capture"
+                    onclick="showSection('gallery', event); closeMoreMenuModal();">
                     <div class="ubl-tile">
                         <i class="fas fa-image"></i>
                     </div>
@@ -3993,8 +4067,9 @@
                 </a>
 
                 <!-- 11. Pencapaian -->
-                <a href="#/pencapaian" class="ubl-menu-item" data-keywords="pencapaian achievement prestasi penghargaan rekognisi award juara trophy"
-                   onclick="showSection('achievements', event); closeMoreMenuModal();">
+                <a href="#/pencapaian" class="ubl-menu-item"
+                    data-keywords="pencapaian achievement prestasi penghargaan rekognisi award juara trophy"
+                    onclick="showSection('achievements', event); closeMoreMenuModal();">
                     <div class="ubl-tile">
                         <i class="fas fa-trophy"></i>
                     </div>
@@ -4002,9 +4077,9 @@
                 </a>
 
                 <!-- 12. Unduh App (PWA) -->
-                <a href="javascript:void(0)" class="ubl-menu-item" data-keywords="install unduh download aplikasi app pwa mobile"
-                   href="Arnof-App-v2.apk" download="Arnof-App-v2.apk"
-                   onclick="closeMoreMenuModal(); downloadApkV2(event);">
+                <a href="javascript:void(0)" class="ubl-menu-item"
+                    data-keywords="install unduh download aplikasi app pwa mobile"
+                    onclick="closeMoreMenuModal(); triggerPWAInstall(event);">
                     <div class="ubl-tile">
                         <i class="fas fa-download"></i>
                     </div>
@@ -4012,8 +4087,9 @@
                 </a>
 
                 <!-- 13. Update App (Versi 2.0) -->
-                <a href="javascript:void(0)" class="ubl-menu-item" data-keywords="update perbarui versi version aplikasi app pwa v2 pembaruan"
-                   onclick="closeMoreMenuModal(); triggerAppUpdate(event);">
+                <a href="javascript:void(0)" class="ubl-menu-item"
+                    data-keywords="update perbarui versi version aplikasi app pwa v2 pembaruan"
+                    onclick="closeMoreMenuModal(); triggerAppUpdate(event);">
                     <div class="ubl-tile" style="position: relative;">
                         <i class="fas fa-sync-alt"></i>
                         <span class="update-badge-dot"></span>
@@ -4135,7 +4211,8 @@
                 <span>Portofolio Resmi &bull; Arnof Dwi Ferdiza</span>
             </div>
             <h4 class="ad-toaster-title">Selamat Datang! 👋</h4>
-            <p class="ad-toaster-desc">Selamat datang di Website Portofolio Arnof Dwi Ferdiza. Semoga menginspirasi Anda!</p>
+            <p class="ad-toaster-desc">Selamat datang di Website Portofolio Arnof Dwi Ferdiza. Semoga menginspirasi
+                Anda!</p>
             <div class="ad-toaster-actions">
                 <button class="ad-toaster-btn-primary" onclick="showSection('projects'); closeAdToast();">
                     <i class="fas fa-project-diagram"></i> Lihat Projek
@@ -4263,7 +4340,7 @@
             <span class="pwa-banner-title">Install Aplikasi Portofolio</span>
             <span class="pwa-banner-desc">Unduh ke layar utama HP / Laptop untuk akses lebih cepat!</span>
         </div>
-        <button onclick="downloadApkV2(event)" class="pwa-install-btn">
+        <button onclick="triggerPWAInstall(event)" class="pwa-install-btn">
             <i class="fas fa-download"></i> Install
         </button>
         <button onclick="dismissPWABanner()" class="pwa-close-btn" title="Tutup">
@@ -4284,28 +4361,34 @@
             </div>
             <div style="margin-bottom: 16px;">
                 <p style="font-size: 0.88rem; color: var(--text-secondary); margin-bottom: 12px; line-height: 1.5;">
-                    Jika tombol install otomatis tidak langsung memicu dialog, Anda dapat menginstall aplikasi ini secara manual di Google Chrome:
+                    Jika tombol install otomatis tidak langsung memicu dialog, Anda dapat menginstall aplikasi ini
+                    secara manual di Google Chrome:
                 </p>
                 <div class="pwa-step-item">
                     <div class="pwa-step-num">1</div>
                     <div class="pwa-step-text">
-                        Klik <strong>ikon titik tiga (⋮)</strong> atau ikon <strong>Install App (<i class="fas fa-desktop"></i>)</strong> di pojok kanan atas / address bar browser Google Chrome.
+                        Klik <strong>ikon titik tiga (⋮)</strong> atau ikon <strong>Install App (<i
+                                class="fas fa-desktop"></i>)</strong> di pojok kanan atas / address bar browser Google
+                        Chrome.
                     </div>
                 </div>
                 <div class="pwa-step-item">
                     <div class="pwa-step-num">2</div>
                     <div class="pwa-step-text">
-                        Pilih menu <strong>"Install Portofolio Arnof Dwi Ferdiza..."</strong> atau <strong>"Tambahkan ke Layar Utama" (Add to Home screen)</strong>.
+                        Pilih menu <strong>"Install Portofolio Arnof Dwi Ferdiza..."</strong> atau <strong>"Tambahkan ke
+                            Layar Utama" (Add to Home screen)</strong>.
                     </div>
                 </div>
                 <div class="pwa-step-item">
                     <div class="pwa-step-num">3</div>
                     <div class="pwa-step-text">
-                        Klik <strong>"Install"</strong> atau <strong>"Tambah"</strong>. Aplikasi kini terpasang langsung di perangkat Anda!
+                        Klik <strong>"Install"</strong> atau <strong>"Tambah"</strong>. Aplikasi kini terpasang langsung
+                        di perangkat Anda!
                     </div>
                 </div>
             </div>
-            <button onclick="closePWAModal()" class="btn" style="width: 100%; background: var(--accent-gradient); color: #0d0d0d; font-weight: 700; border: none; padding: 10px; border-radius: 12px; cursor: pointer;">
+            <button onclick="closePWAModal()" class="btn"
+                style="width: 100%; background: var(--accent-gradient); color: #0d0d0d; font-weight: 700; border: none; padding: 10px; border-radius: 12px; cursor: pointer;">
                 Saya Mengerti
             </button>
         </div>
@@ -4316,27 +4399,34 @@
         <div class="pwa-modal-card" style="max-width: 440px; text-align: center;">
             <div class="pwa-modal-header" style="justify-content: space-between;">
                 <div class="pwa-modal-title" style="display: flex; align-items: center; gap: 8px;">
-                    <i class="fas fa-sync-alt fa-spin" style="color: #ffd700; animation-duration: 4s;"></i> Update Aplikasi Portofolio
+                    <i class="fas fa-sync-alt fa-spin" style="color: #ffd700; animation-duration: 4s;"></i> Update
+                    Aplikasi Portofolio
                 </div>
                 <button onclick="closeUpdateAppModal()" class="pwa-close-btn" style="font-size: 1.3rem;">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            
+
             <div style="padding: 1.2rem 1rem;">
-                <div style="display: inline-block; padding: 6px 14px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981; border-radius: 999px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem;">
+                <div
+                    style="display: inline-block; padding: 6px 14px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981; border-radius: 999px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem;">
                     <i class="fas fa-check-circle"></i> Versi 2.0 Tersedia!
                 </div>
-                
-                <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-color, #fff);">
+
+                <h4
+                    style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-color, #fff);">
                     Pembaruan Sistem & Fitur Terbaru
                 </h4>
-                <p style="font-size: 0.85rem; color: var(--text-secondary, #94a3b8); line-height: 1.5; margin-bottom: 1.2rem;">
-                    Portofolio Arnof telah diperbarui ke <strong>Versi 2.0</strong> dengan logo resmi HD maskable, splash screen baru, dan performa lebih responsif.
+                <p
+                    style="font-size: 0.85rem; color: var(--text-secondary, #94a3b8); line-height: 1.5; margin-bottom: 1.2rem;">
+                    Portofolio Arnof telah diperbarui ke <strong>Versi 2.0</strong> dengan logo resmi HD maskable,
+                    splash screen baru, dan performa lebih responsif.
                 </p>
 
                 <div style="display: flex; flex-direction: column; gap: 10px; text-align: left;">
-                    <button type="button" id="btnPerformUpdate" onclick="performInstantCacheUpdate()" class="pwa-install-btn" style="width: 100%; justify-content: center; padding: 12px; font-size: 0.92rem; background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%); color: #0d0d0d; font-weight: 700; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);">
+                    <button type="button" id="btnPerformUpdate" onclick="performInstantCacheUpdate()"
+                        class="pwa-install-btn"
+                        style="width: 100%; justify-content: center; padding: 12px; font-size: 0.92rem; background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%); color: #0d0d0d; font-weight: 700; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);">
                         <i class="fas fa-redo-alt"></i> Perbarui Cache & Muat Ulang
                     </button>
                 </div>
@@ -4363,7 +4453,7 @@
         window.addEventListener('beforeinstallprompt', (e) => {
             e.preventDefault();
             deferredPwaPrompt = e;
-            
+
             // Show banner if not dismissed previously
             if (!localStorage.getItem('pwa_banner_dismissed')) {
                 setTimeout(() => {
@@ -4453,31 +4543,11 @@
             }
         }
 
-        function downloadApkV2(e) {
-            if (e && e.preventDefault) e.preventDefault();
-            const link = document.createElement('a');
-            link.href = 'Arnof-App-v2.apk';
-            link.download = 'Arnof-App-v2.apk';
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-
-            const toast = document.createElement('div');
-            toast.innerHTML = '<i class="fas fa-arrow-circle-down" style="color: #ffd700; margin-right: 8px;"></i> Mengunduh Arnof App Versi 2.0 (APK)...';
-            toast.style.cssText = 'position: fixed; bottom: 85px; left: 50%; transform: translateX(-50%); background: #1e293b; color: #fff; padding: 12px 22px; border-radius: 999px; font-weight: 600; font-size: 0.88rem; box-shadow: 0 10px 25px rgba(0,0,0,0.5); z-index: 999999; border: 1px solid rgba(212,175,55,0.5); transition: all 0.3s ease; text-align: center;';
-            document.body.appendChild(toast);
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(-50%) translateY(20px)';
-                setTimeout(() => toast.remove(), 350);
-            }, 3500);
-        }
-
-        window.downloadApkV2 = downloadApkV2;
         window.triggerAppUpdate = triggerAppUpdate;
         window.openUpdateAppModal = openUpdateAppModal;
         window.closeUpdateAppModal = closeUpdateAppModal;
         window.performInstantCacheUpdate = performInstantCacheUpdate;
     </script>
 </body>
+
 </html>
