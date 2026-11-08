@@ -4408,9 +4408,9 @@
             </div>
 
             <div style="padding: 1.2rem 1rem;">
-                <div
-                    style="display: inline-block; padding: 6px 14px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981; border-radius: 999px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem;">
-                    <i class="fas fa-check-circle"></i> Versi 2.0 Tersedia!
+                <div id="updateVersionBadge"
+                    style="display: inline-block; padding: 6px 14px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981; border-radius: 999px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem; transition: all 0.3s ease;">
+                    <i class="fas fa-sync-alt"></i> Siap Diperbarui ke Versi 2.0
                 </div>
 
                 <h4
@@ -4515,33 +4515,89 @@
             if (modal) modal.classList.remove('active');
         }
 
-        function performInstantCacheUpdate() {
+        async function performInstantCacheUpdate() {
             const btn = document.getElementById('btnPerformUpdate');
+            const badge = document.getElementById('updateVersionBadge');
+            
             if (btn) {
-                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memperbarui...';
-                btn.disabled = true;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Mengupdate ke Versi 2.0...';
+                btn.style.pointerEvents = 'none';
+                btn.style.opacity = '0.9';
             }
-            if ('serviceWorker' in navigator) {
-                navigator.serviceWorker.getRegistrations().then(registrations => {
+            if (badge) {
+                badge.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memproses pembaruan versi...';
+                badge.style.background = 'rgba(212, 175, 55, 0.2)';
+                badge.style.color = '#ffd700';
+                badge.style.borderColor = 'rgba(212, 175, 55, 0.5)';
+            }
+
+            try {
+                // 1. Force network fetch of latest manifest & assets
+                await fetch('/manifest.json?v=2&t=' + Date.now(), { cache: 'no-store' }).catch(() => {});
+                
+                // 2. Trigger Service Worker update
+                if ('serviceWorker' in navigator) {
+                    const registrations = await navigator.serviceWorker.getRegistrations();
                     for (let reg of registrations) {
-                        reg.update();
+                        await reg.update().catch(() => {});
                     }
-                });
-            }
-            if ('caches' in window) {
-                caches.keys().then(names => {
-                    return Promise.all(names.map(name => caches.delete(name)));
-                }).then(() => {
-                    setTimeout(() => {
-                        window.location.reload(true);
-                    }, 600);
-                });
-            } else {
+                }
+
+                // 3. Clear old caches
+                if ('caches' in window) {
+                    const names = await caches.keys();
+                    await Promise.all(names.map(name => caches.delete(name)));
+                }
+
+                // 4. Set update flags
+                localStorage.setItem('app_version', '2.0');
+                localStorage.setItem('app_last_updated', Date.now().toString());
+                sessionStorage.setItem('just_updated_v2', 'true');
+
+                // 5. Visual success feedback before reload
+                if (badge) {
+                    badge.innerHTML = '<i class="fas fa-check-circle"></i> Berhasil Diperbarui ke Versi 2.0!';
+                    badge.style.background = 'rgba(16, 185, 129, 0.25)';
+                    badge.style.color = '#10b981';
+                    badge.style.borderColor = '#10b981';
+                }
+                if (btn) {
+                    btn.innerHTML = '<i class="fas fa-check"></i> Berhasil! Memuat Ulang...';
+                    btn.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                    btn.style.color = '#fff';
+                }
+
                 setTimeout(() => {
-                    window.location.reload(true);
-                }, 600);
+                    const url = new URL(window.location.href);
+                    url.searchParams.set('v', '2');
+                    window.location.href = url.toString();
+                }, 900);
+
+            } catch (err) {
+                console.warn('Update fallback:', err);
+                sessionStorage.setItem('just_updated_v2', 'true');
+                window.location.reload(true);
             }
         }
+
+        // Tampilkan notifikasi keberhasilan jika baru saja di-update
+        window.addEventListener('load', () => {
+            if (sessionStorage.getItem('just_updated_v2') === 'true') {
+                sessionStorage.removeItem('just_updated_v2');
+                setTimeout(() => {
+                    const toast = document.createElement('div');
+                    toast.innerHTML = '<i class="fas fa-check-circle" style="color: #10b981; font-size: 1.1rem; margin-right: 8px;"></i> <span>Aplikasi Berhasil Diperbarui ke <strong>Versi 2.0</strong>! 🎉</span>';
+                    toast.style.cssText = 'position: fixed; top: 20px; left: 50%; transform: translateX(-50%); background: #1a1e28; color: #fff; padding: 12px 24px; border-radius: 999px; font-weight: 600; font-size: 0.88rem; box-shadow: 0 10px 30px rgba(0,0,0,0.6); z-index: 9999999; border: 1px solid rgba(16, 185, 129, 0.6); display: flex; align-items: center; gap: 6px; text-align: center;';
+                    document.body.appendChild(toast);
+                    setTimeout(() => {
+                        toast.style.opacity = '0';
+                        toast.style.transform = 'translateX(-50%) translateY(-20px)';
+                        toast.style.transition = 'all 0.4s ease';
+                        setTimeout(() => toast.remove(), 400);
+                    }, 4000);
+                }, 1000);
+            }
+        });
 
         window.triggerAppUpdate = triggerAppUpdate;
         window.openUpdateAppModal = openUpdateAppModal;
