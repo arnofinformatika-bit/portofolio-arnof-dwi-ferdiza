@@ -3843,6 +3843,29 @@ body.light-mode .ubl-tile {
     box-shadow: 0 5px 16px rgba(212, 175, 55, 0.5) !important;
 }
 
+.update-badge-dot {
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    width: 9px;
+    height: 9px;
+    background: #10b981;
+    border-radius: 50%;
+    border: 2px solid #1a1e28;
+    box-shadow: 0 0 8px #10b981;
+    animation: pulse-update-dot 2s infinite;
+}
+
+@keyframes pulse-update-dot {
+    0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.7); }
+    70% { transform: scale(1.1); box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+    100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+}
+
+body.light-mode .update-badge-dot {
+    border-color: #fffdf5;
+}
+
 .ubl-menu-name {
     font-size: 0.76rem !important;
     font-weight: 600 !important;
