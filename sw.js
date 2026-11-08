@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arnof-portfolio-v27';
+const CACHE_NAME = 'arnof-portfolio-v28';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',

@@ -1,9 +1,11 @@
 {
   "name": "Portofolio Arnof Dwi Ferdiza",
   "short_name": "Arnof App",
+  "version": "2",
+  "version_name": "2.0",
   "description": "Aplikasi Resmi Portofolio Arnof Dwi Ferdiza - Software Engineer & Web Developer",
-  "start_url": "/",
-  "id": "/",
+  "start_url": "/?v=2",
+  "id": "/?v=2",
   "display": "standalone",
   "background_color": "#0d0d0d",
   "theme_color": "#0d0d0d",
