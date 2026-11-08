@@ -1,7 +1,7 @@
 {
   "name": "Portofolio Arnof Dwi Ferdiza",
   "short_name": "Arnof App",
-  "version": "2",
+  "version": "2.0",
   "version_name": "2.0",
   "description": "Aplikasi Resmi Portofolio Arnof Dwi Ferdiza - Software Engineer & Web Developer",
   "start_url": "/?v=2",
@@ -13,22 +13,44 @@
   "scope": "/",
   "icons": [
     {
-      "src": "foto/logo/logo.jpeg",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "foto/logo/logo.jpeg",
-      "sizes": "512x512",
-      "type": "image/jpeg",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "profil.jpeg",
-      "sizes": "512x512",
-      "type": "image/jpeg",
+      "type": "image/png",
       "purpose": "any"
+    },
+    {
+      "src": "icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "screenshot-wide.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide",
+      "label": "Tampilan Portofolio Desktop"
+    },
+    {
+      "src": "screenshot-mobile.png",
+      "sizes": "720x1280",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Tampilan Portofolio Mobile"
     }
   ],
   "categories": ["portfolio", "productivity", "utilities"]
