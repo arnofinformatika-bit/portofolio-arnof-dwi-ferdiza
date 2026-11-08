@@ -417,7 +417,78 @@
     </div>
 
     <!-- Welcome Overlay (New Modern Glassmorphic Experience) -->
-    <div id="welcome-overlay" class="welcome-overlay">
+    <!-- 1. Opening Splash Screen (Animasi Teks: Welcome to Portfolio Arnof) -->
+    <div id="intro-splash-screen" class="intro-splash-screen" onclick="proceedToLogin(event)" ontouchstart="proceedToLogin(event)">
+        <!-- Ambient Glowing Aura -->
+        <div class="splash-text-glow splash-text-glow-gold"></div>
+        <div class="splash-text-glow splash-text-glow-blue"></div>
+
+        <div class="intro-splash-content text-splash-content">
+            <!-- Main Animated Text -->
+            <div class="text-splash-hero">
+                <span class="text-splash-welcome">WELCOME TO</span>
+                <h1 class="text-splash-title">PORTFOLIO</h1>
+            </div>
+
+            <!-- Floating Animated Skills & Tools Cloud -->
+            <div class="splash-floating-items">
+                <div class="splash-float-pill float-item-code" title="Coding">
+                    <span class="pill-icon-code">&lt;/&gt;</span>
+                    <span class="pill-text">Code</span>
+                </div>
+                <div class="splash-float-pill float-item-html" title="HTML5">
+                    <i class="fab fa-html5 pill-icon"></i>
+                    <span class="pill-text">HTML5</span>
+                </div>
+                <div class="splash-float-pill float-item-js" title="JavaScript">
+                    <i class="fab fa-js pill-icon"></i>
+                    <span class="pill-text">JavaScript</span>
+                </div>
+                <div class="splash-float-pill float-item-ts" title="TypeScript">
+                    <i class="fas fa-code pill-icon"></i>
+                    <span class="pill-text">TypeScript</span>
+                </div>
+                <div class="splash-float-pill float-item-capcut" title="CapCut Video Editor">
+                    <i class="fas fa-scissors pill-icon"></i>
+                    <span class="pill-text">CapCut</span>
+                </div>
+                <div class="splash-float-pill float-item-fullstack" title="Full Stack Developer">
+                    <i class="fas fa-layer-group pill-icon"></i>
+                    <span class="pill-text">Full Stack</span>
+                </div>
+                <div class="splash-float-pill float-item-antigravity" title="Antigravity">
+                    <i class="fas fa-rocket pill-icon"></i>
+                    <span class="pill-text">Antigravity</span>
+                </div>
+                <div class="splash-float-pill float-item-ai" title="AI Engineering">
+                    <i class="fas fa-brain pill-icon"></i>
+                    <span class="pill-text">AI Engineering</span>
+                </div>
+                <div class="splash-float-pill float-item-python" title="Python">
+                    <i class="fab fa-python pill-icon"></i>
+                    <span class="pill-text">Python</span>
+                </div>
+                <div class="splash-float-pill float-item-mongo" title="MongoDB Database">
+                    <i class="fas fa-leaf pill-icon"></i>
+                    <span class="pill-text">MongoDB</span>
+                </div>
+                <div class="splash-float-pill float-item-vscode" title="Visual Studio Code">
+                    <i class="fas fa-laptop-code pill-icon"></i>
+                    <span class="pill-text">VS Code</span>
+                </div>
+            </div>
+
+            <!-- Dynamic Tagline -->
+            <p class="text-splash-tagline">
+                <span class="tag-dot">&bull;</span> Full Stack Developer
+                <span class="tag-dot">&bull;</span> UI/UX Designer
+                <span class="tag-dot">&bull;</span> Informatics UBL
+            </p>
+        </div>
+    </div>
+
+    <!-- 2. Welcome Overlay (Tampilan Login Seperti Sebelumnya) -->
+    <div id="welcome-overlay" class="welcome-overlay" style="display: none;">
         <!-- Ambient Glowing Background Blobs -->
         <div class="welcome-glow welcome-glow-1"></div>
         <div class="welcome-glow welcome-glow-2"></div>
@@ -448,7 +519,7 @@
             </p>
 
             <p class="welcome-intro">
-                Silakan ketik nama lengkap Anda untuk memulai pengalaman interaktif menjelajahi projek & keahlian saya.
+                Silakan ketik nama lengkap Anda untuk memulai pengalaman menjelajahi projek & keahlian saya.
             </p>
 
             <!-- Form Masuk -->
@@ -469,7 +540,7 @@
             </form>
 
             <div class="welcome-footer-info">
-                <span><i class="fas fa-shield-alt"></i> Sesi Interaktif</span>
+                <span><i class="fas fa-shield-alt"></i> Sesi Portofolio</span>
                 <span class="dot-separator">&bull;</span>
                 <span>Version</span>
             </div>
@@ -509,6 +580,7 @@
 
         <ul class="nav-links">
             <li><a href="#/beranda" class="active" onclick="showSection('home', event)"><i class="fas fa-home"></i> Beranda</a></li>
+            <li><a href="#/introduction" onclick="showSection('introduction', event)"><i class="fas fa-sparkles"></i> Introduction</a></li>
             <li><a href="#/projek" onclick="showSection('projects', event)"><i class="fas fa-project-diagram"></i> Projek Selesai</a>
             </li>
             <li><a href="#/tentang" onclick="showSection('about', event)"><i class="fas fa-user"></i> Tentang Saya</a></li>
@@ -602,6 +674,81 @@
                 <div id="search-results" class="search-results-dropdown"></div>
             </div>
         </div>
+
+        <!-- SECTION: INTRODUCTION (ANIMATED WELCOME) -->
+        <section id="introduction">
+            <div class="intro-page-wrapper">
+                <div class="intro-bg-glow intro-glow-left"></div>
+                <div class="intro-bg-glow intro-glow-right"></div>
+
+                <div class="intro-hero-card">
+
+                    <div class="intro-avatar-wrapper">
+                        <div class="intro-avatar-orbit"></div>
+                        <img src="profil.jpeg" alt="Foto Arnof Dwi Ferdiza" class="intro-avatar-photo" onerror="this.src='foto/logo/logo.jpeg'">
+                        <div class="intro-avatar-badge">
+                            <i class="fas fa-check"></i>
+                        </div>
+                    </div>
+
+                    <h1 class="intro-main-greeting">
+                        Selamat Datang di Portofolio
+                        <span class="intro-highlight-name">Arnof Dwi Ferdiza</span>
+                    </h1>
+
+                    <div class="intro-role-tagline">
+                        <i class="fas fa-terminal"></i>
+                        <span id="intro-typewriter-text" class="intro-typewriter">Informatika UBL &bull; Web Developer &bull; UI/UX</span>
+                        <span class="intro-cursor">|</span>
+                    </div>
+
+                    <p class="intro-bio-text">
+                        Terima kasih telah berkunjung! Jelajahi berbagai projek inovatif, rekam jejak sertifikasi, keahlian teknis, dan portofolio teknologi saya dalam satu platform terpadu. Semoga kita bisa bekerja sama! ✨
+                    </p>
+
+                    <div class="intro-action-buttons">
+                        <a href="#/beranda" class="intro-btn-primary" onclick="showSection('home', event)">
+                            <i class="fas fa-rocket"></i>
+                            <span>Mulai Jelajah Portofolio</span>
+                        </a>
+                        <button type="button" class="intro-btn-secondary" onclick="window.Introduction.replay()">
+                            <i class="fas fa-magic"></i>
+                            <span>Putar Ulang Animasi</span>
+                        </button>
+                        <a href="#/projek" class="intro-btn-outline" onclick="showSection('projects', event)">
+                            <i class="fas fa-folder-open"></i>
+                            <span>Lihat Projek</span>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="intro-highlights-grid">
+                    <div class="intro-card-item">
+                        <div class="intro-card-icon" style="background: rgba(212, 175, 55, 0.15); color: #ffd700;">
+                            <i class="fas fa-laptop-code"></i>
+                        </div>
+                        <h3>Web Development</h3>
+                        <p>Mengembangkan aplikasi web modern, responsif, dan interaktif dengan performa optimal.</p>
+                    </div>
+
+                    <div class="intro-card-item">
+                        <div class="intro-card-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
+                            <i class="fas fa-award"></i>
+                        </div>
+                        <h3>Prestasi & Sertifikat</h3>
+                        <p>Memiliki 10+ sertifikasi bidang IT, pemrograman, dan desain antarmuka pengguna.</p>
+                    </div>
+
+                    <div class="intro-card-item">
+                        <div class="intro-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
+                            <i class="fas fa-handshake"></i>
+                        </div>
+                        <h3>Siap Berkolaborasi</h3>
+                        <p>Terbuka untuk peluang kerja, magang, freelance, dan proyek kolaboratif lainnya.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
         <!-- SECTION: BERANDA -->
         <section id="home" class="active">
@@ -3086,6 +3233,7 @@
 
         // Hash Routing Map (Section ID <-> URL Slug)
         const routeSlugMap = {
+            'introduction': 'introduction',
             'home': 'beranda',
             'projects': 'projek',
             'about': 'tentang',
@@ -3100,6 +3248,7 @@
         };
 
         const reverseRouteSlugMap = {
+            'introduction': 'introduction',
             'beranda': 'home',
             'home': 'home',
             'projek': 'projects',
@@ -3220,6 +3369,16 @@
             if (hash && hash.startsWith('#/')) {
                 const route = hash.substring(2).toLowerCase().replace(/\/$/, '').trim();
                 const targetSection = reverseRouteSlugMap[route] || route;
+                if (targetSection === 'introduction' || route === 'introduction') {
+                    const overlay = document.getElementById('welcome-overlay');
+                    if (overlay) overlay.style.display = 'none';
+                    document.body.style.overflow = 'auto';
+                    showSection('introduction', null, false);
+                    if (window.Introduction && typeof window.Introduction.initPage === 'function') {
+                        window.Introduction.initPage();
+                    }
+                    return;
+                }
                 if (document.getElementById(targetSection)) {
                     showSection(targetSection, null, false);
                     return;
@@ -3269,22 +3428,66 @@
             }
         };
 
-        // Welcome Flow
+        // Welcome & Splash Flow
+        let splashTimer = null;
+
+        function proceedToLogin(e) {
+            if (e && typeof e.stopPropagation === 'function') {
+                e.stopPropagation();
+            }
+            clearTimeout(splashTimer);
+            const splash = document.getElementById('intro-splash-screen');
+            const welcomeOverlay = document.getElementById('welcome-overlay');
+
+            if (splash) {
+                splash.style.transition = 'opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), transform 0.45s ease';
+                splash.style.opacity = '0';
+                splash.style.transform = 'scale(1.03)';
+                splash.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    splash.style.display = 'none';
+                }, 450);
+            }
+
+            if (welcomeOverlay && !sessionStorage.getItem('visitorName')) {
+                welcomeOverlay.style.display = 'flex';
+                const inputEl = document.getElementById('visitorName');
+                if (inputEl) {
+                    setTimeout(() => inputEl.focus(), 300);
+                }
+            }
+        }
+        window.proceedToLogin = proceedToLogin;
+
         document.addEventListener('DOMContentLoaded', () => {
             const savedName = sessionStorage.getItem('visitorName');
+            const splash = document.getElementById('intro-splash-screen');
             const overlay = document.getElementById('welcome-overlay');
             const greetingName = document.getElementById('user-greeting-name');
+            const isIntroductionRoute = window.location.hash.toLowerCase().includes('introduction');
 
             if (savedName) {
-                // If name is already in sessionStorage, hide overlay immediately
-                overlay.style.display = 'none';
+                // If visitor already logged in, skip splash and welcome card
+                if (splash) splash.style.display = 'none';
+                if (overlay) overlay.style.display = 'none';
                 document.body.style.overflow = 'auto';
                 if (greetingName) greetingName.textContent = savedName;
                 showAdToast();
+            } else if (isIntroductionRoute) {
+                // If opening #/introduction directly, skip overlay
+                if (splash) splash.style.display = 'none';
+                if (overlay) overlay.style.display = 'none';
+                document.body.style.overflow = 'auto';
             } else {
-                // Otherwise show the overlay
-                overlay.style.display = 'flex';
-                document.body.style.overflow = 'hidden';
+                // First-time visit before login: Show opening splash, then transition to login
+                if (splash) {
+                    splash.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                    // No auto timer: touch or click anywhere to login
+                } else if (overlay) {
+                    overlay.style.display = 'flex';
+                    document.body.style.overflow = 'hidden';
+                }
             }
         });
 
@@ -3314,6 +3517,34 @@
                 toast.classList.remove('show');
             }
         }
+
+        function openIntroductionDirectly(e) {
+            if (e && typeof e.preventDefault === 'function') e.preventDefault();
+            const overlay = document.getElementById('welcome-overlay');
+            if (overlay) {
+                overlay.style.transition = 'opacity 0.3s ease, visibility 0.3s ease';
+                overlay.style.opacity = '0';
+                overlay.style.pointerEvents = 'none';
+                setTimeout(() => {
+                    overlay.style.display = 'none';
+                }, 300);
+            }
+            document.body.style.overflow = 'auto';
+            history.pushState(null, '', '#/introduction');
+            showSection('introduction', null, false);
+            if (window.Introduction && typeof window.Introduction.initPage === 'function') {
+                window.Introduction.initPage();
+            }
+            return false;
+        }
+        window.openIntroductionDirectly = openIntroductionDirectly;
+
+        function enterAsGuest() {
+            const input = document.getElementById('visitorName');
+            if (input) input.value = 'Sahabat';
+            submitWelcomeForm(new Event('submit'));
+        }
+        window.enterAsGuest = enterAsGuest;
 
         function submitWelcomeForm(e) {
             if (e && typeof e.preventDefault === 'function') {
@@ -3353,6 +3584,9 @@
                 // Trigger the loading effect into the home section
                 showSection('home');
                 showAdToast();
+                if (window.Introduction && typeof window.Introduction.play === 'function') {
+                    window.Introduction.play(nameInput);
+                }
             }, 400);
 
             return false;
@@ -3906,6 +4140,7 @@
     <script src="menu/tabbar.js?v=3.2"></script>
 
     <!-- User Feature Modules -->
+    <script src="introduction/introduction.js?v=2.0"></script>
     <script src="user/beranda.js"></script>
     <script src="user/projek.js"></script>
     <script src="user/tentang.js"></script>
