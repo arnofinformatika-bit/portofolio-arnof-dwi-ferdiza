@@ -4310,6 +4310,49 @@
         </div>
     </div>
 
+    <!-- Update App Modal (Versi 2.0) -->
+    <div id="updateAppModal" class="pwa-modal-overlay">
+        <div class="pwa-modal-card" style="max-width: 440px; text-align: center;">
+            <div class="pwa-modal-header" style="justify-content: space-between;">
+                <div class="pwa-modal-title" style="display: flex; align-items: center; gap: 8px;">
+                    <i class="fas fa-sync-alt fa-spin" style="color: #ffd700; animation-duration: 4s;"></i> Update Aplikasi Portofolio
+                </div>
+                <button onclick="closeUpdateAppModal()" class="pwa-close-btn" style="font-size: 1.3rem;">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div style="padding: 1.2rem 1rem;">
+                <div style="display: inline-block; padding: 6px 14px; background: rgba(16, 185, 129, 0.15); border: 1px solid rgba(16, 185, 129, 0.4); color: #10b981; border-radius: 999px; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem;">
+                    <i class="fas fa-check-circle"></i> Versi 2.0 Tersedia!
+                </div>
+                
+                <h4 style="font-size: 1.05rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-color, #fff);">
+                    Pembaruan Sistem & Fitur Terbaru
+                </h4>
+                <p style="font-size: 0.85rem; color: var(--text-secondary, #94a3b8); line-height: 1.5; margin-bottom: 1.2rem;">
+                    Portofolio Arnof telah diperbarui ke <strong>Versi 2.0</strong> dengan logo resmi HD maskable, splash screen baru, dan performa lebih responsif.
+                </p>
+
+                <div style="display: flex; flex-direction: column; gap: 10px; text-align: left;">
+                    <button type="button" id="btnPerformUpdate" onclick="performInstantCacheUpdate()" class="pwa-install-btn" style="width: 100%; justify-content: center; padding: 12px; font-size: 0.92rem; background: linear-gradient(135deg, #ffd700 0%, #d4af37 100%); color: #0d0d0d; font-weight: 700; border-radius: 12px; border: none; cursor: pointer; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.35);">
+                        <i class="fas fa-redo-alt"></i> Perbarui Cache & Muat Ulang
+                    </button>
+                    
+                    <button type="button" onclick="copyChromeWebApkLink()" class="pwa-install-btn" style="width: 100%; justify-content: center; padding: 11px; font-size: 0.85rem; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.18); color: var(--text-color, #fff); border-radius: 12px; cursor: pointer;">
+                        <i class="fab fa-chrome" style="color: #4285f4;"></i> Salin chrome://webapks (Android)
+                    </button>
+                </div>
+                <div id="copyUpdateFeedback" style="font-size: 0.78rem; color: #10b981; margin-top: 8px; display: none;">
+                    ✓ Teks chrome://webapks tersalin! Buka di tab baru Chrome untuk update WebAPK.
+                </div>
+            </div>
+        </div>
+    </div>
+            </button>
+        </div>
+    </div>
+
     <script>
         // PWA Service Worker & Install Logic
         let deferredPwaPrompt = null;
@@ -4375,6 +4418,76 @@
             console.log('PWA application installed successfully');
             dismissPWABanner();
         });
+
+        function triggerAppUpdate(e) {
+            if (e) e.preventDefault();
+            openUpdateAppModal();
+        }
+
+        function openUpdateAppModal() {
+            const modal = document.getElementById('updateAppModal');
+            if (modal) modal.classList.add('active');
+        }
+
+        function closeUpdateAppModal() {
+            const modal = document.getElementById('updateAppModal');
+            if (modal) modal.classList.remove('active');
+        }
+
+        function performInstantCacheUpdate() {
+            const btn = document.getElementById('btnPerformUpdate');
+            if (btn) {
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Memperbarui...';
+                btn.disabled = true;
+            }
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.getRegistrations().then(registrations => {
+                    for (let reg of registrations) {
+                        reg.update();
+                    }
+                });
+            }
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    return Promise.all(names.map(name => caches.delete(name)));
+                }).then(() => {
+                    setTimeout(() => {
+                        window.location.reload(true);
+                    }, 600);
+                });
+            } else {
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 600);
+            }
+        }
+
+        function copyChromeWebApkLink() {
+            const text = 'chrome://webapks';
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+                navigator.clipboard.writeText(text).then(() => {
+                    showCopyFeedback();
+                }).catch(() => {
+                    prompt('Salin dan buka di tab baru Chrome:', text);
+                });
+            } else {
+                prompt('Salin dan buka di tab baru Chrome:', text);
+            }
+        }
+
+        function showCopyFeedback() {
+            const fb = document.getElementById('copyUpdateFeedback');
+            if (fb) {
+                fb.style.display = 'block';
+                setTimeout(() => { fb.style.display = 'none'; }, 4000);
+            }
+        }
+
+        window.triggerAppUpdate = triggerAppUpdate;
+        window.openUpdateAppModal = openUpdateAppModal;
+        window.closeUpdateAppModal = closeUpdateAppModal;
+        window.performInstantCacheUpdate = performInstantCacheUpdate;
+        window.copyChromeWebApkLink = copyChromeWebApkLink;
     </script>
 </body>
 

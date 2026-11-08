@@ -245,6 +245,11 @@ window.closeMoreMenuModal = closeMoreMenuModal;
 window.filterMoreMenuItems = filterMoreMenuItems;
 window.clearMoreMenuSearch = clearMoreMenuSearch;
 window.toggleThemeQuick = toggleThemeQuick;
+window.triggerAppUpdate = function(e) {
+    if (typeof window.openUpdateAppModal === 'function') {
+        window.openUpdateAppModal();
+    }
+};
 
 document.addEventListener('DOMContentLoaded', () => {
     initTabBar();
