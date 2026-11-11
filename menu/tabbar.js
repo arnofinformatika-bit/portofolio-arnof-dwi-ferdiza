@@ -16,9 +16,10 @@ function syncActiveTab(sectionId) {
     const slugMap = {
         'home': 'beranda',
         'projects': 'projek',
+        'comments': 'komentar',
         'about': 'tentang'
     };
-    const mainSections = ['home', 'projects', 'about'];
+    const mainSections = ['home', 'projects', 'comments', 'about'];
     const slug = slugMap[sectionId] || sectionId;
 
     const tabs = document.querySelectorAll('.tab-bar .tab-item');
@@ -55,6 +56,7 @@ function updateUblActiveTile(sectionId) {
     const slugMap = {
         'home': 'beranda',
         'projects': 'projek',
+        'comments': 'komentar',
         'about': 'tentang'
     };
     const slug = slugMap[sectionId] || sectionId;

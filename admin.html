@@ -541,6 +541,7 @@
             <li><a href="#" onclick="switchSection('logbook')"><i class="fas fa-book"></i> Logbook</a></li>
             <li><a href="#" onclick="switchSection('gallery')"><i class="fas fa-image"></i> Galeri Kegiatan</a></li>
             <li><a href="#" onclick="switchSection('achievements')"><i class="fas fa-trophy"></i> Pencapaian</a></li>
+            <li><a href="#" onclick="switchSection('comments')"><i class="fas fa-comments"></i> Komentar</a></li>
             <li style="margin-top: 1rem; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 1rem;">
                 <a href="/" target="_blank" style="color: var(--accent-color);"><i class="fas fa-external-link-alt"></i> Buka Portofolio</a>
             </li>
@@ -1047,6 +1048,42 @@
             </div>
         </section>
 
+        <!-- SECTION: KELOLA & ISI KOMENTAR -->
+        <section id="comments" class="admin-section">
+            <div class="header-actions" style="margin-bottom: 1.5rem;">
+                <h2 class="section-title" style="margin-bottom: 0;">Kelola <span class="highlight">Komentar</span></h2>
+            </div>
+
+            <div class="card" style="margin-bottom: 2rem;">
+                <h3 style="margin-bottom: 1rem; color: var(--accent-color);"><i class="fas fa-comment-medical"></i> Tulis Komentar Baru</h3>
+                <form id="formAddComment" onsubmit="submitAdminComment(event)">
+                    <div class="form-grid-2">
+                        <div class="form-group">
+                            <label>Nama Pengirim *</label>
+                            <input type="text" id="adminCommentName" class="form-input" placeholder="Arnof Dwi Ferdiza" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Label Status</label>
+                            <select id="adminCommentRole" class="form-input">
+                                <option value="admin">Admin (Pemilik Portofolio)</option>
+                                <option value="visitor">Pengunjung</option>
+                            </select>
+                        </div>
+                        <div class="form-group" style="grid-column: 1 / -1;">
+                            <label>Isi Komentar *</label>
+                            <textarea id="adminCommentMessage" class="form-textarea" rows="3" placeholder="Tulis balasan atau komentar ke Firebase..." required></textarea>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-gold"><i class="fas fa-paper-plane"></i> Kirim Komentar ke Firebase</button>
+                </form>
+            </div>
+
+            <div class="card">
+                <h3 style="margin-bottom: 1rem;"><i class="fas fa-comments"></i> Daftar Komentar (Firebase)</h3>
+                <div id="adminCommentsList">Memuat komentar...</div>
+            </div>
+        </section>
+
     </main>
 
     <!-- TOAST NOTIFIKASI -->
@@ -1067,6 +1104,7 @@
     <script src="admin/loogbook.js"></script>
     <script src="admin/galeri.js"></script>
     <script src="admin/pencapaian.js"></script>
+    <script src="admin/komentar.js"></script>
 
     <!-- FIREBASE MODULE & SEMUA FUNGSI CRUD -->
     <script type="module">
@@ -1358,6 +1396,7 @@
             if (typeof window.loadLogbookData === 'function') window.loadLogbookData();
             if (typeof window.loadGalleryData === 'function') window.loadGalleryData();
             if (typeof window.loadAchieveData === 'function') window.loadAchieveData();
+            if (typeof window.loadCommentsData === 'function') window.loadCommentsData();
         }
         window.loadAllData = loadAllData;
 
@@ -1444,7 +1483,7 @@
                     }
 
                     // 2. Hapus elemen DOM langsung (Optimistic Remove)
-                    const domEl = document.getElementById(`card_gal_${id}`) || document.getElementById(`card_proj_${id}`) || document.getElementById(`card_cert_${id}`);
+                    const domEl = document.getElementById(`card_gal_${id}`) || document.getElementById(`card_proj_${id}`) || document.getElementById(`card_cert_${id}`) || document.getElementById(`card_comment_${id}`);
                     if (domEl) domEl.remove();
 
                     // 3. Hapus dari Firebase Realtime Database

@@ -98,7 +98,7 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- Custom CSS (Liquid Glass Theme) -->
-    <link rel="stylesheet" href="index.css?v=4.1">
+    <link rel="stylesheet" href="index.css?v=4.2">
 
     <!-- JSON-LD Structured Data: Person Schema (untuk Google Search thumbnail) -->
     <script type="application/ld+json">
@@ -633,6 +633,8 @@
                     Kegiatan</a></li>
             <li><a href="#/pencapaian" onclick="showSection('achievements', event)"><i class="fas fa-trophy"></i>
                     Pencapaian</a></li>
+            <li><a href="#/komentar" onclick="showSection('comments', event)"><i class="fas fa-comments"></i>
+                    Komentar</a></li>
         </ul>
 
 
@@ -2363,6 +2365,52 @@
             </div>
         </section>
 
+        <!-- SECTION: KOMENTAR PENGUNJUNG & ADMIN -->
+        <section id="comments">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
+                <h2 class="section-title" style="margin-bottom: 0;">Komentar &amp; <span class="highlight">Pesan</span></h2>
+                <span id="userCommentsCount" style="font-size: 0.82rem; font-weight: 700; background: rgba(212, 175, 55, 0.14); color: var(--accent-color); border: 1px solid rgba(212, 175, 55, 0.35); padding: 5px 14px; border-radius: 999px;">0 Komentar</span>
+            </div>
+
+            <!-- Form Input Komentar Pengunjung -->
+            <div class="card" style="margin-bottom: 1.75rem;">
+                <h3 style="margin-bottom: 0.4rem; color: var(--accent-color); font-size: 1.05rem;">
+                    <i class="fas fa-comment-dots"></i> Tinggalkan Komentar
+                </h3>
+                <p class="text-secondary" style="font-size: 0.85rem; margin-bottom: 1.1rem;">
+                    Tulis kesan, pesan, atau masukan kamu untuk Arnof. Komentar langsung tersimpan ke Firebase secara realtime!
+                </p>
+
+                <form id="visitorCommentForm" onsubmit="return submitVisitorComment(event)" class="comment-form-wrap">
+                    <div class="comment-input-group">
+                        <label for="visitorCommentName"><i class="fas fa-user"></i> Nama Pengunjung</label>
+                        <input type="text" id="visitorCommentName" class="comment-form-input" placeholder="Masukkan nama kamu..." required minlength="2">
+                    </div>
+
+                    <div class="comment-input-group">
+                        <label for="visitorCommentMessage"><i class="fas fa-pen"></i> Komentar / Pesan</label>
+                        <textarea id="visitorCommentMessage" class="comment-form-textarea" rows="3" placeholder="Tulis komentar kamu di sini..." required minlength="2"></textarea>
+                    </div>
+
+                    <div id="userCommentFeedback" class="comment-feedback" style="display: none;"></div>
+
+                    <button type="submit" id="btnSubmitVisitorComment" class="comment-submit-btn">
+                        <i class="fas fa-paper-plane"></i> Kirim Komentar
+                    </button>
+                </form>
+            </div>
+
+            <!-- Daftar Komentar Realtime -->
+            <div class="card">
+                <h3 style="margin-bottom: 1.1rem; font-size: 1.02rem;">
+                    <i class="fas fa-comments" style="color: var(--accent-color);"></i> Komentar Terbaru
+                </h3>
+                <div id="userCommentsList" class="comments-list-container">
+                    <p class="text-secondary" style="font-size: 0.88rem;">Memuat komentar dari Firebase...</p>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- CV TEMPLATE (HIDDEN) -->
@@ -3218,7 +3266,8 @@
             'learning-path': 'learning',
             'logbook': 'logbook',
             'gallery': 'galeri',
-            'achievements': 'pencapaian'
+            'achievements': 'pencapaian',
+            'comments': 'komentar'
         };
 
         const reverseRouteSlugMap = {
@@ -3243,7 +3292,9 @@
             'galeri': 'gallery',
             'gallery': 'gallery',
             'pencapaian': 'achievements',
-            'achievements': 'achievements'
+            'achievements': 'achievements',
+            'komentar': 'comments',
+            'comments': 'comments'
         };
 
         // Function to show sections immediately (0ms instant switch, zero blocking loader) & update URL Hash
@@ -3300,7 +3351,7 @@
 
             // Update tab bar links
             const tabLinks = document.querySelectorAll('.tab-bar .tab-item');
-            const mainSections = ['home', 'projects', 'about'];
+            const mainSections = ['home', 'projects', 'comments', 'about'];
             const moreTab = document.getElementById('tab-item-more');
             let anyMainActive = false;
 
@@ -3732,7 +3783,7 @@
         window.updateUblActiveTile = updateUblActiveTile;
     </script>
 
-    <!-- Tab Bar (Beranda, Project, Profile, Menu Lainnya) -->
+    <!-- Tab Bar (Beranda, Project, Komentar, Profile, Menu Lainnya) -->
     <nav class="tab-bar">
         <a href="#/beranda" class="tab-item active" onclick="showSection('home', event)">
             <i class="fas fa-home"></i>
@@ -3741,6 +3792,10 @@
         <a href="#/projek" class="tab-item" onclick="showSection('projects', event)">
             <i class="fas fa-project-diagram"></i>
             <span>Project</span>
+        </a>
+        <a href="#/komentar" class="tab-item" onclick="showSection('comments', event)">
+            <i class="fas fa-comments"></i>
+            <span>Komentar</span>
         </a>
         <a href="#/tentang" class="tab-item" onclick="showSection('about', event)">
             <i class="fas fa-user"></i>
@@ -3947,6 +4002,16 @@
                     <span class="ubl-menu-name">Pencapaian</span>
                 </a>
 
+                <!-- 12. Komentar -->
+                <a href="#/komentar" class="ubl-menu-item"
+                    data-keywords="komentar comment pesan ulasan kesan tamu feedback"
+                    onclick="showSection('comments', event); closeMoreMenuModal();">
+                    <div class="ubl-tile">
+                        <i class="fas fa-comments"></i>
+                    </div>
+                    <span class="ubl-menu-name">Komentar</span>
+                </a>
+
                 <!-- 12. Unduh App (PWA) -->
                 <a href="javascript:void(0)" class="ubl-menu-item"
                     data-keywords="install unduh download aplikasi app pwa mobile"
@@ -4111,6 +4176,7 @@
     <script src="user/loogbook.js"></script>
     <script src="user/galeri.js"></script>
     <script src="user/pencapaian.js"></script>
+    <script src="user/komentar.js"></script>
 
     <!-- Modul Firebase & Analytics -->
     <script type="module">
@@ -4194,12 +4260,14 @@
                 typeof window.syncCertificatesContent === 'function' ? window.syncCertificatesContent() : null,
                 typeof window.syncGalleryContent === 'function' ? window.syncGalleryContent() : null,
                 typeof window.syncLogbookContent === 'function' ? window.syncLogbookContent() : null,
-                typeof window.syncAchievementsContent === 'function' ? window.syncAchievementsContent() : null
+                typeof window.syncAchievementsContent === 'function' ? window.syncAchievementsContent() : null,
+                typeof window.syncCommentsContent === 'function' ? window.syncCommentsContent() : null
             ].filter(Boolean);
 
             if (typeof window.initCertificatesRealtime === 'function') window.initCertificatesRealtime();
             if (typeof window.initGalleryRealtime === 'function') window.initGalleryRealtime();
             if (typeof window.initLearningPathRealtime === 'function') window.initLearningPathRealtime();
+            if (typeof window.initCommentsRealtime === 'function') window.initCommentsRealtime();
 
             await Promise.allSettled(syncTasks);
         }
