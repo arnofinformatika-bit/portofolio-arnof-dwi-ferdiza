@@ -55,6 +55,13 @@ body.light-mode {
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', sans-serif;
+    -webkit-tap-highlight-color: transparent !important;
+}
+
+a, button, [onclick], input, select, textarea {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none;
+    touch-action: manipulation;
 }
 
 body {
@@ -64,11 +71,11 @@ body {
     display: flex;
     min-height: 100vh;
     overflow-x: hidden;
-    transition: background-color 0.8s ease, color 0.8s ease;
+    transition: background-color 0.35s ease, color 0.35s ease;
     position: relative;
 }
 
-/* Liquid Animated Background Blobs */
+/* Liquid Animated Background Blobs (GPU-optimized radial glow, zero heavy blur) */
 .glass-background {
     position: fixed;
     top: 0;
@@ -83,17 +90,13 @@ body {
 .liquid-blob {
     position: absolute;
     border-radius: 50%;
-    filter: blur(120px);
-    mix-blend-mode: screen;
-    opacity: 0.45;
-    animation: float-around 25s infinite ease-in-out alternate;
-    transition: filter 0.8s ease, opacity 0.8s ease;
+    opacity: 0.32;
+    animation: float-around 28s infinite ease-in-out alternate;
+    will-change: transform;
 }
 
 body.light-mode .liquid-blob {
-    mix-blend-mode: multiply;
-    opacity: 0.22;
-    filter: blur(100px);
+    opacity: 0.16;
 }
 
 .blob-1 {
@@ -347,19 +350,17 @@ section {
 
 section.active {
     display: block;
-    animation: dashboardEnter 0.7s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+    animation: dashboardEnter 0.22s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 @keyframes dashboardEnter {
     from {
         opacity: 0;
-        transform: scale(0.96) translateY(20px);
-        filter: blur(12px);
+        transform: translateY(8px);
     }
     to {
         opacity: 1;
-        transform: scale(1) translateY(0);
-        filter: blur(0);
+        transform: translateY(0);
     }
 }
 
@@ -2782,7 +2783,7 @@ body.light-mode .ad-toaster-btn-secondary {
     }
 }
 
-/* Base Tab Bar Style - Elegant Glassmorphism */
+/* Base Tab Bar Style - Elegant & Ultra Smooth Glassmorphism */
 .tab-bar {
     display: none; /* Hidden by default on desktop */
     position: fixed;
@@ -2791,31 +2792,52 @@ body.light-mode .ad-toaster-btn-secondary {
     transform: translateX(-50%);
     width: 90%;
     max-width: 420px; /* Optimal untuk 4 tab: Beranda, Project, Profile, Lainnya */
-    background: rgba(20, 20, 20, 0.75);
-    backdrop-filter: blur(25px) saturate(200%);
-    -webkit-backdrop-filter: blur(25px) saturate(200%);
+    background: rgba(20, 20, 20, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(212, 175, 55, 0.35);
     border-radius: 40px;
     padding: 10px 18px;
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.1);
     z-index: 9999;
     align-items: center;
     justify-content: space-around;
     gap: 8px;
-    height: 75px; /* Fixed height to accommodate animations inside */
+    height: 75px;
+    -webkit-tap-highlight-color: transparent !important;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    will-change: transform;
 }
 
 body.light-mode .tab-bar {
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.94);
     border: 1px solid rgba(184, 134, 11, 0.35);
-    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
 .tab-bar::-webkit-scrollbar {
     display: none;
 }
 
-/* Tab Items */
+/* Tab Items - Zero Blue Tap Highlight & Snappy 60fps Transition */
+.tab-item,
+.tab-item:hover,
+.tab-item:focus,
+.tab-item:active,
+.tab-item:focus-visible,
+.tab-item:visited {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
 .tab-item {
     position: relative;
     display: inline-flex;
@@ -2827,38 +2849,45 @@ body.light-mode .tab-bar {
     min-width: 54px;
     height: 100%;
     border-radius: 20px;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.25s cubic-bezier(0.22, 1, 0.36, 1), color 0.2s ease;
     flex-shrink: 0;
     z-index: 2;
 }
 
-.tab-item i {
+.tab-item:active {
+    transform: scale(0.92);
+}
+
+.tab-item i,
+.tab-item .tab-grid-icon {
     font-size: 1.4rem;
     margin-bottom: 4px;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease;
     position: relative;
     z-index: 2;
+    will-change: transform;
 }
 
 .tab-item span {
     font-size: 0.65rem;
     font-weight: 600;
     opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transform: translateY(8px);
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
     position: absolute;
     bottom: 2px;
+    will-change: transform, opacity;
 }
 
 /* Active State (Bubble Effect inside container) */
 .tab-item.active {
-    color: var(--bg-color); /* Contrast icon color */
+    color: var(--bg-color);
 }
 
 .tab-item.active i {
     transform: translateY(-8px);
     font-size: 1.4rem;
-    color: #fff; /* Ensure icon is visible on gold */
+    color: #fff;
 }
 
 body.light-mode .tab-item.active i {
@@ -2884,13 +2913,58 @@ body.light-mode .tab-item.active i {
     border-radius: 50%;
     z-index: 0;
     opacity: 0;
-    transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    transition: transform 0.28s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.2s ease;
     box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+    will-change: transform, opacity;
 }
 
 .tab-item.active::before {
     transform: translate(-50%, -65%) scale(1);
     opacity: 1;
+}
+
+/* Hilangkan blue highlight di semua tab bar / menu lainnya / sidebar / mobile cards */
+.ubl-menu-item,
+.ubl-menu-item:focus,
+.ubl-menu-item:active,
+.ubl-tile,
+.nav-links li a,
+.nav-links li a:focus,
+.nav-links li a:active,
+.menu-toggle,
+.menu-toggle:focus,
+.menu-toggle:active {
+    -webkit-tap-highlight-color: transparent !important;
+    outline: none !important;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+}
+
+/* Optimasi GPU Mobile agar scroll dan ganti tab anti-lag */
+@media (max-width: 768px) {
+    .card,
+    .timeline-item,
+    .course-card,
+    .stat-card,
+    .project-card,
+    .achievement-card,
+    .sidebar {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+    }
+
+    .card {
+        background: rgba(24, 24, 28, 0.92) !important;
+    }
+
+    body.light-mode .card {
+        background: rgba(255, 255, 255, 0.96) !important;
+    }
+
+    .liquid-blob {
+        display: none;
+    }
 }
 
 /* ==========================================================================
@@ -4199,7 +4273,7 @@ body:not(.light-mode) .logout-btn-confirm {
 
 
 /* ==========================================================================
-   ART LANDING PRE-LOGIN SCREEN (INSPIRED BY PORTFOLIO CHARACTER ARTWORK)
+   ART LANDING PRE-LOGIN SCREEN (INSPIRED BY PORTOFOLIO CHARACTER ARTWORK)
    ========================================================================== */
 .art-landing-overlay {
     position: fixed;
@@ -4949,7 +5023,7 @@ body.light-mode .text-splash-welcome {
     animation: splashZoomInText 0.9s 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-.text-word-portfolio {
+.text-word-portofolio {
     color: #ffffff;
     text-shadow: 0 4px 30px rgba(255, 255, 255, 0.3);
 }

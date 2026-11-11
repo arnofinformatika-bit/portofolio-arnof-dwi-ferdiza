@@ -94,14 +94,14 @@ function openMoreMenuModal() {
 
     if (overlay) {
         overlay.style.display = 'block';
-        setTimeout(() => overlay.classList.add('show'), 10);
+        requestAnimationFrame(() => overlay.classList.add('show'));
     }
     if (sheet) {
         sheet.style.display = 'flex';
-        setTimeout(() => {
+        requestAnimationFrame(() => {
             sheet.classList.add('show');
             sheet.style.transform = 'translateX(-50%) translateY(0)';
-        }, 10);
+        });
     }
 
     // Update greeting name in profile card if visitorName exists
@@ -118,13 +118,15 @@ function openMoreMenuModal() {
     // Kunci scroll halaman belakang
     document.body.style.overflow = 'hidden';
 
-    // Reset pencarian saat dibuka
+    // Reset pencarian saat dibuka (tanpa auto-focus di mobile)
     if (searchInput) {
-        searchInput.value = '';
-        filterMoreMenuItems('');
-        setTimeout(() => {
-            searchInput.focus();
-        }, 300);
+        if (searchInput.value) {
+            searchInput.value = '';
+            filterMoreMenuItems('');
+        }
+        if (window.innerWidth > 768) {
+            setTimeout(() => searchInput.focus(), 250);
+        }
     }
 }
 

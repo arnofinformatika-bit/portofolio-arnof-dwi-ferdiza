@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arnof-portfolio-v29';
+const CACHE_NAME = 'arnof-portfolio-v30';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -57,20 +57,45 @@ self.addEventListener('activate', (event) => {
   );
 });
 
-// Fetch Event - Network First untuk mencegah file JS/HTML basi di HP
+// Fetch Event - Stale-While-Revalidate untuk aset statis agar buka web 0ms instan, Network First untuk HTML
 self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET' || !event.request.url.startsWith('http')) {
     return;
   }
 
-  // Jangan pernah cache atau intercept halaman admin
-  if (event.request.url.includes('admin.html')) {
+  // Jangan pernah cache atau intercept halaman admin atau API Firebase
+  if (event.request.url.includes('admin.html') || event.request.url.includes('firebaseio.com') || event.request.url.includes('firebasedatabase.app')) {
     return;
   }
 
+  const isHTMLRequest = event.request.mode === 'navigate' || event.request.headers.get('accept')?.includes('text/html');
+
+  if (isHTMLRequest) {
+    // HTML: Network First agar update cepat masuk, fallback ke cache jika jaringan lambat/offline
+    event.respondWith(
+      fetch(event.request)
+        .then((networkResponse) => {
+          if (networkResponse && networkResponse.status === 200) {
+            const responseToCache = networkResponse.clone();
+            caches.open(CACHE_NAME).then((cache) => {
+              cache.put(event.request, responseToCache);
+            });
+          }
+          return networkResponse;
+        })
+        .catch(() => {
+          return caches.match(event.request).then((cachedResponse) => {
+            return cachedResponse || caches.match('/index.html');
+          });
+        })
+    );
+    return;
+  }
+
+  // Aset statis (CSS, JS, gambar, font): Cache First + Update di latar belakang (Instan 0ms)
   event.respondWith(
-    fetch(event.request)
-      .then((networkResponse) => {
+    caches.match(event.request).then((cachedResponse) => {
+      const fetchPromise = fetch(event.request).then((networkResponse) => {
         if (networkResponse && networkResponse.status === 200) {
           const responseToCache = networkResponse.clone();
           caches.open(CACHE_NAME).then((cache) => {
@@ -78,15 +103,9 @@ self.addEventListener('fetch', (event) => {
           });
         }
         return networkResponse;
-      })
-      .catch(() => {
-        // Jika offline, gunakan cache lokal
-        return caches.match(event.request).then((cachedResponse) => {
-          if (cachedResponse) return cachedResponse;
-          if (event.request.headers.get('accept')?.includes('text/html')) {
-            return caches.match('/index.html');
-          }
-        });
-      })
+      }).catch(() => cachedResponse);
+
+      return cachedResponse || fetchPromise;
+    })
   );
 });
