@@ -4473,6 +4473,45 @@
             }
         });
 
+        // Pengumuman Berjalan Otomatis (Ulang Tahun 11 November -> kembali normal di tanggal lain)
+        let lastMarqueeDateKey = '';
+        function updateTopMarqueeMessage() {
+            const banner = document.getElementById('topMarqueeBanner');
+            if (!banner) return;
+
+            const now = new Date();
+            const day = now.getDate();
+            const month = now.getMonth() + 1; // 1 = Januari, 11 = November
+            const year = now.getFullYear();
+            const dateKey = `${year}-${month}-${day}`;
+
+            if (dateKey === lastMarqueeDateKey) return;
+            lastMarqueeDateKey = dateKey;
+
+            const isBirthday = (day === 11 && month === 11);
+            const age = year - 2005; // 11 Nov 2026 = 21 Tahun, dst.
+
+            const messageHtml = isBirthday
+                ? `<span>🎂 Selamat Ulang Tahun <strong class="marquee-highlight-name">Arnof Dwi Ferdiza</strong> Yang Ke ${age} Tahun. Semoga Panjang Umur dan sehat Selalu dan dilancarkan kuliahnya aamiin ✨</span>`
+                : `<span>Selamat Datang di portofolio <strong class="marquee-highlight-name">ARNOF DWI FERDIZA</strong>, semoga kita bisa bekerja sama</span>`;
+
+            const trackContent = `
+                ${messageHtml}
+                <span class="marquee-dot"></span>
+                ${messageHtml}
+                <span class="marquee-dot"></span>
+            `;
+
+            const items = banner.querySelectorAll('.marquee-text-item');
+            items.forEach(item => {
+                item.innerHTML = trackContent;
+            });
+        }
+
+        updateTopMarqueeMessage();
+        setInterval(updateTopMarqueeMessage, 60000);
+        window.updateTopMarqueeMessage = updateTopMarqueeMessage;
+
         window.triggerAppUpdate = triggerAppUpdate;
         window.openUpdateAppModal = openUpdateAppModal;
         window.closeUpdateAppModal = closeUpdateAppModal;
