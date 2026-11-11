@@ -1,4 +1,4 @@
-const CACHE_NAME = 'arnof-portfolio-v30';
+const CACHE_NAME = 'arnof-portfolio-v31';
 const ASSETS_TO_CACHE = [
   '/',
   '/index.html',
@@ -13,7 +13,6 @@ const ASSETS_TO_CACHE = [
   '/arnof.jpg',
   '/menu/sidebar.js',
   '/menu/tabbar.js',
-  '/introduction/introduction.js',
   '/user/beranda.js',
   '/user/projek.js',
   '/user/tentang.js',

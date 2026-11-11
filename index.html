@@ -98,7 +98,7 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- Custom CSS (Liquid Glass Theme) -->
-    <link rel="stylesheet" href="index.css?v=4.0">
+    <link rel="stylesheet" href="index.css?v=4.1">
 
     <!-- JSON-LD Structured Data: Person Schema (untuk Google Search thumbnail) -->
     <script type="application/ld+json">
@@ -613,8 +613,6 @@
         <ul class="nav-links">
             <li><a href="#/beranda" class="active" onclick="showSection('home', event)"><i class="fas fa-home"></i>
                     Beranda</a></li>
-            <li><a href="#/introduction" onclick="showSection('introduction', event)"><i class="fas fa-sparkles"></i>
-                    Introduction</a></li>
             <li><a href="#/projek" onclick="showSection('projects', event)"><i class="fas fa-project-diagram"></i>
                     Projek Selesai</a>
             </li>
@@ -720,85 +718,6 @@
                 <div id="search-results" class="search-results-dropdown"></div>
             </div>
         </div>
-
-        <!-- SECTION: INTRODUCTION (ANIMATED WELCOME) -->
-        <section id="introduction">
-            <div class="intro-page-wrapper">
-                <div class="intro-bg-glow intro-glow-left"></div>
-                <div class="intro-bg-glow intro-glow-right"></div>
-
-                <div class="intro-hero-card">
-
-                    <div class="intro-avatar-wrapper">
-                        <div class="intro-avatar-orbit"></div>
-                        <img src="profil.jpeg" alt="Foto Arnof Dwi Ferdiza" class="intro-avatar-photo"
-                            onerror="this.src='foto/logo/logo.jpeg'">
-                        <div class="intro-avatar-badge">
-                            <i class="fas fa-check"></i>
-                        </div>
-                    </div>
-
-                    <h1 class="intro-main-greeting">
-                        Selamat Datang di Portofolio
-                        <span class="intro-highlight-name">Arnof Dwi Ferdiza</span>
-                    </h1>
-
-                    <div class="intro-role-tagline">
-                        <i class="fas fa-terminal"></i>
-                        <span id="intro-typewriter-text" class="intro-typewriter">Informatika UBL &bull; Web Developer
-                            &bull; UI/UX</span>
-                        <span class="intro-cursor">|</span>
-                    </div>
-
-                    <p class="intro-bio-text">
-                        Terima kasih telah berkunjung! Jelajahi berbagai projek inovatif, rekam jejak sertifikasi,
-                        keahlian teknis, dan portofolio teknologi saya dalam satu platform terpadu. Semoga kita bisa
-                        bekerja sama! ✨
-                    </p>
-
-                    <div class="intro-action-buttons">
-                        <a href="#/beranda" class="intro-btn-primary" onclick="showSection('home', event)">
-                            <i class="fas fa-rocket"></i>
-                            <span>Mulai Jelajah Portofolio</span>
-                        </a>
-                        <button type="button" class="intro-btn-secondary" onclick="window.Introduction.replay()">
-                            <i class="fas fa-magic"></i>
-                            <span>Putar Ulang Animasi</span>
-                        </button>
-                        <a href="#/projek" class="intro-btn-outline" onclick="showSection('projects', event)">
-                            <i class="fas fa-folder-open"></i>
-                            <span>Lihat Projek</span>
-                        </a>
-                    </div>
-                </div>
-
-                <div class="intro-highlights-grid">
-                    <div class="intro-card-item">
-                        <div class="intro-card-icon" style="background: rgba(212, 175, 55, 0.15); color: #ffd700;">
-                            <i class="fas fa-laptop-code"></i>
-                        </div>
-                        <h3>Web Development</h3>
-                        <p>Mengembangkan aplikasi web modern, responsif, dan interaktif dengan performa optimal.</p>
-                    </div>
-
-                    <div class="intro-card-item">
-                        <div class="intro-card-icon" style="background: rgba(56, 189, 248, 0.15); color: #38bdf8;">
-                            <i class="fas fa-award"></i>
-                        </div>
-                        <h3>Prestasi & Sertifikat</h3>
-                        <p>Memiliki 10+ sertifikasi bidang IT, pemrograman, dan desain antarmuka pengguna.</p>
-                    </div>
-
-                    <div class="intro-card-item">
-                        <div class="intro-card-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;">
-                            <i class="fas fa-handshake"></i>
-                        </div>
-                        <h3>Siap Berkolaborasi</h3>
-                        <p>Terbuka untuk peluang kerja, magang, freelance, dan proyek kolaboratif lainnya.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
 
         <!-- SECTION: BERANDA -->
         <section id="home" class="active">
@@ -3289,7 +3208,6 @@
 
         // Hash Routing Map (Section ID <-> URL Slug)
         const routeSlugMap = {
-            'introduction': 'introduction',
             'home': 'beranda',
             'projects': 'projek',
             'about': 'tentang',
@@ -3304,7 +3222,6 @@
         };
 
         const reverseRouteSlugMap = {
-            'introduction': 'introduction',
             'beranda': 'home',
             'home': 'home',
             'projek': 'projects',
@@ -3427,24 +3344,13 @@
             if (hash && hash.startsWith('#/')) {
                 const route = hash.substring(2).toLowerCase().replace(/\/$/, '').trim();
                 const targetSection = reverseRouteSlugMap[route] || route;
-                if (targetSection === 'introduction' || route === 'introduction') {
-                    const overlay = document.getElementById('welcome-overlay');
-                    if (overlay) overlay.style.display = 'none';
-                    document.body.style.overflow = 'auto';
-                    showSection('introduction', null, false);
-                    if (window.Introduction && typeof window.Introduction.initPage === 'function') {
-                        window.Introduction.initPage();
-                    }
-                    return;
-                }
-                if (document.getElementById(targetSection)) {
+                if (targetSection !== 'introduction' && document.getElementById(targetSection)) {
                     showSection(targetSection, null, false);
                     return;
                 }
-            } else if (!hash || hash === '#' || hash === '#/') {
-                history.replaceState(null, '', '#/beranda');
-                showSection('home', null, false);
             }
+            history.replaceState(null, '', '#/beranda');
+            showSection('home', null, false);
         }
 
         window.addEventListener('hashchange', handleHashRouting);
@@ -3520,7 +3426,6 @@
             const splash = document.getElementById('intro-splash-screen');
             const overlay = document.getElementById('welcome-overlay');
             const greetingName = document.getElementById('user-greeting-name');
-            const isIntroductionRoute = window.location.hash.toLowerCase().includes('introduction');
 
             if (savedName) {
                 // If visitor already logged in, skip splash and welcome card
@@ -3529,11 +3434,6 @@
                 document.body.style.overflow = 'auto';
                 if (greetingName) greetingName.textContent = savedName;
                 showAdToast();
-            } else if (isIntroductionRoute) {
-                // If opening #/introduction directly, skip overlay
-                if (splash) splash.style.display = 'none';
-                if (overlay) overlay.style.display = 'none';
-                document.body.style.overflow = 'auto';
             } else {
                 // First-time visit before login: Show opening splash, then transition to login
                 if (splash) {
@@ -3573,27 +3473,6 @@
                 toast.classList.remove('show');
             }
         }
-
-        function openIntroductionDirectly(e) {
-            if (e && typeof e.preventDefault === 'function') e.preventDefault();
-            const overlay = document.getElementById('welcome-overlay');
-            if (overlay) {
-                overlay.style.transition = 'opacity 0.3s ease, visibility 0.3s ease';
-                overlay.style.opacity = '0';
-                overlay.style.pointerEvents = 'none';
-                setTimeout(() => {
-                    overlay.style.display = 'none';
-                }, 300);
-            }
-            document.body.style.overflow = 'auto';
-            history.pushState(null, '', '#/introduction');
-            showSection('introduction', null, false);
-            if (window.Introduction && typeof window.Introduction.initPage === 'function') {
-                window.Introduction.initPage();
-            }
-            return false;
-        }
-        window.openIntroductionDirectly = openIntroductionDirectly;
 
         function enterAsGuest() {
             const input = document.getElementById('visitorName');
@@ -3640,9 +3519,6 @@
                 // Trigger the loading effect into the home section
                 showSection('home');
                 showAdToast();
-                if (window.Introduction && typeof window.Introduction.play === 'function') {
-                    window.Introduction.play(nameInput);
-                }
             }, 400);
 
             return false;
@@ -3931,7 +3807,7 @@
                     <button type="button" class="ubl-btn-profile"
                         onclick="showSection('about', event); closeMoreMenuModal();">
                         <i class="fas fa-user"></i>
-                        <span>Profil Saya</span>
+                        <span>PROFIL ARNOF</span>
                     </button>
                     <button type="button" class="ubl-btn-settings" id="ubl-btn-settings" onclick="toggleThemeQuick();"
                         title="Ganti Mode Gelap / Terang">
@@ -4224,7 +4100,6 @@
     <script src="menu/tabbar.js?v=3.2"></script>
 
     <!-- User Feature Modules -->
-    <script src="introduction/introduction.js?v=2.0"></script>
     <script src="user/beranda.js"></script>
     <script src="user/projek.js"></script>
     <script src="user/tentang.js"></script>
