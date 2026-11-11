@@ -198,3 +198,4 @@ async function submitVisitorComment(e) {
 window.syncCommentsContent = syncCommentsContent;
 window.initCommentsRealtime = initCommentsRealtime;
 window.submitVisitorComment = submitVisitorComment;
+

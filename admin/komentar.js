@@ -118,3 +118,4 @@ async function submitAdminComment(e) {
 
 window.loadCommentsData = loadCommentsData;
 window.submitAdminComment = submitAdminComment;
+
