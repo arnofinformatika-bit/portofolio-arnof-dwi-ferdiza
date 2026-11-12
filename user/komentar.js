@@ -68,6 +68,7 @@ function renderUserComments(items) {
         const isAdmin = item.role === 'admin';
         const initial = (name.trim().charAt(0) || 'P').toUpperCase();
         const timeStr = formatCommentTime(item.createdAt);
+        const editedBadge = item.updatedAt ? ' <span style="opacity:0.75;font-style:italic;">(diedit)</span>' : '';
 
         return `
             <div class="comment-card-item ${isAdmin ? 'comment-is-admin' : ''}">
@@ -80,7 +81,7 @@ function renderUserComments(items) {
                             <span class="comment-author-name">${name}</span>
                             ${isAdmin ? '<span class="comment-admin-badge"><i class="fas fa-check-circle"></i> Admin</span>' : ''}
                         </div>
-                        <span class="comment-time">${timeStr}</span>
+                        <span class="comment-time">${timeStr}${editedBadge}</span>
                     </div>
                     <p class="comment-message-text">${message}</p>
                 </div>

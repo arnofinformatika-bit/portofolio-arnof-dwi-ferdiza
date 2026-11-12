@@ -1055,8 +1055,9 @@
             </div>
 
             <div class="card" style="margin-bottom: 2rem;">
-                <h3 style="margin-bottom: 1rem; color: var(--accent-color);"><i class="fas fa-comment-medical"></i> Tulis Komentar Baru</h3>
+                <h3 id="adminCommentFormTitle" style="margin-bottom: 1rem; color: var(--accent-color);"><i class="fas fa-comment-medical"></i> Tulis Komentar Baru</h3>
                 <form id="formAddComment" onsubmit="submitAdminComment(event)">
+                    <input type="hidden" id="adminCommentEditId" value="">
                     <div class="form-grid-2">
                         <div class="form-group">
                             <label>Nama Pengirim *</label>
@@ -1074,7 +1075,10 @@
                             <textarea id="adminCommentMessage" class="form-textarea" rows="3" placeholder="Tulis balasan atau komentar ke Firebase..." required></textarea>
                         </div>
                     </div>
-                    <button type="submit" class="btn-gold"><i class="fas fa-paper-plane"></i> Kirim Komentar ke Firebase</button>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap; align-items: center;">
+                        <button type="submit" id="btnSubmitAdminComment" class="btn-gold"><i class="fas fa-paper-plane"></i> Kirim Komentar ke Firebase</button>
+                        <button type="button" id="btnCancelEditComment" onclick="cancelEditComment()" style="display: none; background: rgba(255,255,255,0.08); color: #cbd5e1; border: 1px solid rgba(255,255,255,0.2); padding: 0.7rem 1.2rem; border-radius: 10px; font-weight: 600; cursor: pointer;"><i class="fas fa-times"></i> Batal Edit</button>
+                    </div>
                 </form>
             </div>
 
@@ -1111,7 +1115,7 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, getDocs, deleteDoc, doc, updateDoc, setDoc, getDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getStorage, ref, uploadBytesResumable, getDownloadURL } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-storage.js";
-        import { getDatabase, ref as dbRef, set, push, get, child, remove } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+        import { getDatabase, ref as dbRef, set, push, get, child, remove, update } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
 
         const firebaseConfig = {
             apiKey: "AIzaSyD-jea6EVDJIZ8eZSO6TzLGpks9oO15rDE",
@@ -1140,6 +1144,7 @@
         window.get = get;
         window.child = child;
         window.remove = remove;
+        window.updateRtdb = update;
         window.doc = doc;
         window.setDoc = setDoc;
         window.getDoc = getDoc;
