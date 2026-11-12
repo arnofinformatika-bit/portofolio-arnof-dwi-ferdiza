@@ -98,7 +98,7 @@
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 
     <!-- Custom CSS (Liquid Glass Theme) -->
-    <link rel="stylesheet" href="index.css?v=4.2">
+    <link rel="stylesheet" href="index.css?v=4.3">
 
     <!-- JSON-LD Structured Data: Person Schema (untuk Google Search thumbnail) -->
     <script type="application/ld+json">
@@ -558,7 +558,27 @@
                 <div class="welcome-input-wrapper">
                     <i class="fas fa-user welcome-input-icon"></i>
                     <input type="text" id="visitorName" class="welcome-input" placeholder="Nama Lengkap Anda..."
-                        required autocomplete="name" maxlength="40">
+                        required autocomplete="name" maxlength="40" oninput="handleVisitorNameInput()">
+                </div>
+
+                <!-- Hidden Anti-Bot Honeypot -->
+                <input type="text" id="botTrapField" tabindex="-1" autocomplete="off"
+                    style="position:absolute; left:-9999px; opacity:0; pointer-events:none;" aria-hidden="true">
+
+                <!-- Captcha Verifikasi Manusia Ringan -->
+                <div id="humanCaptchaBox" class="captcha-verify-box" role="checkbox" aria-checked="false" tabindex="0"
+                    onclick="triggerHumanCaptchaCheck()" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();triggerHumanCaptchaCheck();}">
+                    <div class="captcha-left">
+                        <span id="captchaCheckCircle" class="captcha-checkbox-ui">
+                            <i class="fas fa-check captcha-check-icon"></i>
+                            <i class="fas fa-spinner fa-spin captcha-spin-icon"></i>
+                        </span>
+                        <span id="captchaLabelText" class="captcha-label-text">Saya bukan robot</span>
+                    </div>
+                    <div class="captcha-brand">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>ArnofGuard</span>
+                    </div>
                 </div>
 
                 <div id="name-error" class="welcome-error-msg" style="display: none;">
@@ -3525,9 +3545,89 @@
             }
         }
 
+        // Verifikasi Captcha Ringan + Log Pengunjung Otomatis ke Firebase
+        let isHumanCaptchaVerified = false;
+        let isHumanCaptchaVerifying = false;
+
+        function handleVisitorNameInput() {
+            const inputEl = document.getElementById('visitorName');
+            const box = document.getElementById('humanCaptchaBox');
+            const errEl = document.getElementById('name-error');
+            if (errEl && errEl.style.display !== 'none') {
+                errEl.style.display = 'none';
+            }
+            if (box && inputEl) {
+                if (inputEl.value.trim().length >= 2) {
+                    box.classList.add('ready');
+                } else {
+                    box.classList.remove('ready');
+                }
+            }
+        }
+        window.handleVisitorNameInput = handleVisitorNameInput;
+
+        function triggerHumanCaptchaCheck() {
+            if (isHumanCaptchaVerified || isHumanCaptchaVerifying) return;
+            const trap = document.getElementById('botTrapField');
+            if (trap && trap.value) return;
+
+            const box = document.getElementById('humanCaptchaBox');
+            const label = document.getElementById('captchaLabelText');
+            const errEl = document.getElementById('name-error');
+            if (errEl) errEl.style.display = 'none';
+
+            isHumanCaptchaVerifying = true;
+            if (box) {
+                box.classList.remove('shake', 'ready');
+                box.classList.add('verifying');
+            }
+            if (label) label.textContent = 'Memverifikasi...';
+
+            setTimeout(() => {
+                isHumanCaptchaVerifying = false;
+                isHumanCaptchaVerified = true;
+                if (box) {
+                    box.classList.remove('verifying');
+                    box.classList.add('verified');
+                    box.setAttribute('aria-checked', 'true');
+                }
+                if (label) label.textContent = 'Terverifikasi Manusia';
+            }, 380);
+        }
+        window.triggerHumanCaptchaCheck = triggerHumanCaptchaCheck;
+
+        function detectVisitorBrowser() {
+            const ua = navigator.userAgent || '';
+            if (ua.includes('Edg/')) return 'Edge';
+            if (ua.includes('Chrome/') && !ua.includes('Edg/')) return 'Chrome';
+            if (ua.includes('Firefox/')) return 'Firefox';
+            if (ua.includes('Safari/') && !ua.includes('Chrome/')) return 'Safari';
+            return 'Browser';
+        }
+
+        function logVisitorToFirebase(nameInput, attempt = 0) {
+            try {
+                if (window.rtdb && window.dbRef && window.push) {
+                    const isMobile = /Mobile|Android|iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+                    window.push(window.dbRef(window.rtdb, 'visitors'), {
+                        name: nameInput,
+                        verifiedAt: Date.now(),
+                        device: isMobile ? 'Mobile' : 'Desktop',
+                        browser: detectVisitorBrowser(),
+                        userAgent: (navigator.userAgent || '').slice(0, 120)
+                    }).catch((err) => console.warn('Visitor log note:', err));
+                } else if (attempt < 6) {
+                    setTimeout(() => logVisitorToFirebase(nameInput, attempt + 1), 600);
+                }
+            } catch (e) {
+                console.warn('logVisitorToFirebase error:', e);
+            }
+        }
+
         function enterAsGuest() {
             const input = document.getElementById('visitorName');
             if (input) input.value = 'Sahabat';
+            isHumanCaptchaVerified = true;
             submitWelcomeForm(new Event('submit'));
         }
         window.enterAsGuest = enterAsGuest;
@@ -3536,6 +3636,9 @@
             if (e && typeof e.preventDefault === 'function') {
                 e.preventDefault();
             }
+            const trap = document.getElementById('botTrapField');
+            if (trap && trap.value) return false;
+
             const inputEl = document.getElementById('visitorName');
             const nameInput = inputEl ? inputEl.value.trim() : '';
             const errorElement = document.getElementById('name-error');
@@ -3548,6 +3651,20 @@
                 return false;
             }
 
+            if (!isHumanCaptchaVerified) {
+                const box = document.getElementById('humanCaptchaBox');
+                if (box) {
+                    box.classList.remove('shake');
+                    void box.offsetWidth;
+                    box.classList.add('shake');
+                }
+                if (errorElement) {
+                    errorElement.innerHTML = '<i class="fas fa-shield-alt"></i> Mohon centang verifikasi "Saya bukan robot" terlebih dahulu.';
+                    errorElement.style.display = 'flex';
+                }
+                return false;
+            }
+
             if (errorElement) {
                 errorElement.style.display = 'none';
             }
@@ -3555,6 +3672,9 @@
             sessionStorage.setItem('visitorName', nameInput);
             const greetingName = document.getElementById('user-greeting-name');
             if (greetingName) greetingName.textContent = nameInput;
+
+            // Catat otomatis ke Firebase RTDB (visitors)
+            logVisitorToFirebase(nameInput);
 
             // Hide overlay smoothly
             const overlay = document.getElementById('welcome-overlay');

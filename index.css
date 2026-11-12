@@ -5770,3 +5770,138 @@ body.light-mode .comment-card-item.comment-is-admin {
         font-size: 0.88rem;
     }
 }
+
+/* ==========================================================================
+   CAPTCHA VERIFIKASI MANUSIA RINGAN (WELCOME LOGIN)
+   ========================================================================== */
+.captcha-verify-box {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 11px 14px;
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1.5px solid rgba(212, 175, 55, 0.28);
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease, transform 0.15s ease;
+    margin-bottom: 0.2rem;
+}
+
+.captcha-verify-box:hover,
+.captcha-verify-box.ready {
+    border-color: rgba(212, 175, 55, 0.65);
+    background: rgba(212, 175, 55, 0.08);
+}
+
+.captcha-verify-box:active {
+    transform: scale(0.985);
+}
+
+.captcha-verify-box.verified {
+    border-color: rgba(16, 185, 129, 0.65);
+    background: rgba(16, 185, 129, 0.1);
+    cursor: default;
+}
+
+body.light-mode .captcha-verify-box {
+    background: rgba(255, 255, 255, 0.9);
+    border-color: rgba(184, 134, 11, 0.3);
+}
+
+body.light-mode .captcha-verify-box.verified {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.6);
+}
+
+.captcha-left {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+}
+
+.captcha-checkbox-ui {
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    border: 2px solid rgba(212, 175, 55, 0.6);
+    background: rgba(0, 0, 0, 0.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.25s ease;
+    flex-shrink: 0;
+}
+
+body.light-mode .captcha-checkbox-ui {
+    background: #ffffff;
+}
+
+.captcha-check-icon,
+.captcha-spin-icon {
+    display: none !important;
+    font-size: 0.85rem;
+}
+
+.captcha-verify-box.verifying .captcha-checkbox-ui {
+    border-color: #d4af37;
+    background: rgba(212, 175, 55, 0.15);
+}
+
+.captcha-verify-box.verifying .captcha-spin-icon {
+    display: inline-block !important;
+    color: #ffd700;
+}
+
+.captcha-verify-box.verified .captcha-checkbox-ui {
+    border-color: #10b981;
+    background: #10b981;
+}
+
+.captcha-verify-box.verified .captcha-check-icon {
+    display: inline-block !important;
+    color: #ffffff;
+}
+
+.captcha-label-text {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.captcha-verify-box.verified .captcha-label-text {
+    color: #10b981;
+}
+
+.captcha-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    font-size: 0.64rem;
+    font-weight: 700;
+    color: var(--text-secondary);
+    opacity: 0.85;
+}
+
+.captcha-brand i {
+    font-size: 0.95rem;
+    color: var(--accent-color);
+}
+
+.captcha-verify-box.verified .captcha-brand i {
+    color: #10b981;
+}
+
+.captcha-verify-box.shake {
+    animation: captchaShake 0.35s ease-in-out;
+    border-color: #ef4444 !important;
+}
+
+@keyframes captchaShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-6px); }
+    50% { transform: translateX(6px); }
+    75% { transform: translateX(-4px); }
+}
